@@ -1,4 +1,119 @@
-*{
-  margin:0;
-  padding:0;
+@charset "UTF-8";
+/* Global reset */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+} 
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* End of global reset */
+
+#zoomgelato {
+  width:100%;
+  height:auto;
+  }
+
+ol {
+  line-height: 1.4em;
+}
+.custom_decimal li {
+font-family: "quicksand", "helvetica", sans-serif;
+  counter-increment: step-counter;
+  border:1px solid pink;
+}
+.custom_decimal li::before {
+  content: counter(step-counter)".";
+  color: red;
+  font-family: 'Baloo Paaji', sans-serif;
+  font-size: 1.3em;
+  border:1px solid blue;
+}
+
+.recepies { 
+  padding: 40px;
+  border: 1px solid red;
+}
+
+#navbar {
+  text-align: center;
+}
+
+p {
+font-family: "quicksand", "helvetica", sans-serif;
+line-height: 1.4em;
+}
+h1 {
+  font-family: 'Baloo Paaji', sans-serif;
+  font-size: 600%;
+  }
+
+h2 {
+  font-family: 'Baloo Paaji', sans-serif;
+  font-size: 180%;
+  padding: 15px 0;
+  }
+
+/* Columns */
+/* Create two equal columns that floats next to each other */
+* {
+  box-sizing: border-box;
+}
+
+.column {
+  float: left;
+  width: 50%;
+  padding: 40px;
+  border: 1px solid red;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Media */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+  }
 }
