@@ -45,27 +45,15 @@ table {
 }
 
 /* End of global reset */
+body {
+  /* background-color:#e0e7e5; */
+  background-color:#fbf4f5;
+  }
 
 #zoomgelato {
   width:100%;
   height:auto;
   }
-
-ol {
-  line-height: 1.4em;
-}
-.custom_decimal li {
-font-family: "quicksand", "helvetica", sans-serif;
-  counter-increment: step-counter;
-  border:1px solid pink;
-}
-.custom_decimal li::before {
-  content: counter(step-counter)".";
-  color: red;
-  font-family: 'Baloo Paaji', sans-serif;
-  font-size: 1.3em;
-  border:1px solid blue;
-}
 
 .recepies { 
   padding: 40px;
@@ -83,24 +71,50 @@ line-height: 1.4em;
 h1 {
   font-family: 'Baloo Paaji', sans-serif;
   font-size: 600%;
+  color: #4c8d86;
   }
 
 h2 {
   font-family: 'Baloo Paaji', sans-serif;
   font-size: 180%;
   padding: 15px 0;
+  color: #4c8d86;
   }
 
+footer {
+  padding: 20px 0;
+  width: 100%;
+  text-align: center;
+  font-size: 80%;
+  }
+  
+
 /* Columns */
-/* Create two equal columns that floats next to each other */
+/* Container for flexboxes */
 * {
   box-sizing: border-box;
 }
 
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  /* border: 1px solid red; */
+}
+
+/* Create four equal columns */
 .column {
+  flex: 50%;
+  padding: 60px;
+  /* border: 1px solid red; */
+}
+
+/* Create two equal columns that floats next to each other */
+
+
+/* .column {
   float: left;
   width: 50%;
-  padding: 40px;
+  padding: 40px 100px;
   border: 1px solid red;
 }
 
@@ -109,11 +123,30 @@ h2 {
   content: "";
   display: table;
   clear: both;
+} */
+
+/* Style list */
+ol {
+  line-height: 1.4em;
+}
+.custom_decimal li {
+font-family: "quicksand", "helvetica", sans-serif;
+  counter-increment: step-counter;
+  padding: 0 0 0 40px;
+  position: relative;
+}
+.custom_decimal li::before {
+  content: counter(step-counter)".";
+  color: #b0616e;
+  font-family: 'Baloo Paaji', sans-serif;
+  font-size: 1.3em;
+  position: absolute;
+  left:0px;
 }
 
 /* Media */
-@media screen and (max-width: 600px) {
-  .column {
-    width: 100%;
+@media screen and (max-width: 900px) {
+  .row {
+    flex-direction: column;
   }
 }
