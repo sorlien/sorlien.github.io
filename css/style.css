@@ -56,6 +56,8 @@ body, html {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  background-attachment: fixed;
+  z-index: 0;
 }
 
 body {
@@ -83,6 +85,10 @@ body {
     font-family: 'Baloo Paaji', sans-serif;
     font-size: 17vh;
     color: #4c8d86;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     }
   
   h2 {
