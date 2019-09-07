@@ -91,89 +91,108 @@ h1 {
   transform: translate(-50%, -50%);
 }
   
-  h2 {
-    font-family: 'Baloo Paaji', sans-serif;
-    font-size: 6vh;
-    padding: 15px 0;
-    color: #4c8d86;
-    }
+h2 {
+  font-family: 'Baloo Paaji', sans-serif;
+  font-size: 6vh;
+  padding: 15px 0;
+  color: #4c8d86;
+}
   
-  h3 {
-    color: #b0616e;
-    font-family: 'Baloo Paaji', sans-serif;
-    line-height: 1,4em;
-    font-size: 4vh;
-    font-weight: bold;
-    }
+h3 {
+  color: #b0616e;
+  font-family: 'Baloo Paaji', sans-serif;
+  line-height: 1.4em;
+  font-size: 4vh;
+  font-weight: bold;
+}
   
-  footer {
-    padding: 20px 0;
-    width: 100%;
-    text-align: center;
-    font-size: 80%;
-    }
+footer {
+  padding: 20px 0;
+  width: 100%;
+  text-align: center;
+  font-size: 80%;
+}
     
-  /* Style list */
-  ol {
-    line-height: 1.4em;
-  }
-  .custom_decimal li {
+/* Style list */
+ol {
+  line-height: 1.4em;
+}
+
+.custom_decimal li {
   font-family: "quicksand", "helvetica", sans-serif;
-    counter-increment: step-counter;
-    padding: 0 0 0 50px;
-    position: relative;
-    color:#2e2e2e;
+  counter-increment: step-counter;
+  padding: 0 0 0 50px;
+  position: relative;
+  color:#2e2e2e;
+  font-size: 3vh;
+}
+
+.custom_decimal li::before {
+  content: counter(step-counter)".";
+  color: #b0616e;
+  font-family: 'Baloo Paaji', sans-serif;
+  font-size: 4vh;
+  position: absolute;
+  left:0px;
+}
+
+/* Columns */
+/* Container for flexboxes */
+* {
+  box-sizing: border-box;
+}
+  
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid red;
+}
+  
+/* Create four equal columns */
+.column {
+  flex: 50%;
+  padding: 40px 60px;
+  border: 1px solid red;
+}
+  
+/* Style images 3 in a row */
+.rowimages {  
+  margin: 0 40px;
+}
+
+.threecolumn {
+  float: left;
+  width: 33.33%;
+  padding: 0 5px;
+}
+  
+.rowimages::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+  
+/* Media */
+@media screen and (max-width: 1000px) {
+  .row {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .threecolumn {
+    width: 100%;
+  }
+  
+  h1 {
+    font-size: 14vh;
+  }
+      
+  h2 {
+    font-size: 4vh;
+  }
+      
+  h3 {
     font-size: 3vh;
   }
-  .custom_decimal li::before {
-    content: counter(step-counter)".";
-    color: #b0616e;
-    font-family: 'Baloo Paaji', sans-serif;
-    font-size: 4vh;
-    position: absolute;
-    left:0px;
-  }
-
-  /* Columns */
-  /* Container for flexboxes */
-  * {
-    box-sizing: border-box;
-  }
-  
-  .row {
-    display: flex;
-    flex-wrap: wrap;
-    border: 1px solid red;
-  }
-  
-  /* Create four equal columns */
-  .column {
-    flex: 50%;
-    padding: 40px 60px;
-    border: 1px solid red;
-  }
-  
-  /* Style image */
-  .threecolumn {
-    float: left;
-    width: 33.33%;
-    /* padding: 13px; */
-    border: 1px solid green;
-  }
-  
-  .rowimages::after {
-    content: "";
-    clear: both;
-    display: table;
-  }
-  
-  
-  /* Media */
-  @media screen and (max-width: 1000px) {
-    .row {
-      flex-direction: column;
-    }
-    .threecolumn {
-      width: 100%;
-    }
-  }
+}
