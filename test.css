@@ -1,0 +1,421 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: 'Rubik Mono One', 'sans-serif';
+  background-color: rgb(252, 211, 102);
+}
+
+section {
+  padding: 0;
+  
+}
+
+header {
+  background-image: url("https://cdn.pixabay.com/photo/2015/02/18/15/40/pancake-640868_1280.jpg");
+  background-size: 20vw;
+  background-position: center;
+  height: 100vh;
+  background-attachment: fixed;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.title-box {
+  width: 100vw;
+    display: flex;
+  justify-content: center;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  margin-top: 40vh;
+  z-index: 1;
+border: 1px solid;
+}
+
+#title {
+  color: rgb(255, 86, 24);
+  font-size: 14vh;
+}
+
+h2 {
+  position: absolute;
+  margin-top: 15vh;
+  color: black;
+  font-size: 100%;
+  text-align: center;
+}
+
+h3 {
+  font-size: 160%;
+  word-spacing: -6px;
+  margin-bottom: 20px;
+  color: rgb(255, 86, 24);
+}
+
+h4 {
+  font-size: 100%;
+  color: rgb(255, 86, 24);
+  word-spacing: -6px;
+  margin-bottom: 20px;
+}
+
+p {
+  font-family: 'Open Sans', 'sans serif';
+  line-height: 1.6;
+  color: black;
+}
+
+
+/* FACT SECTION */
+
+#tribute-info {
+  height: 100vh;
+  width: 100vw;
+  margin-top: 70vh;
+  margin-bottom: 10vh;
+  display: grid;
+  grid: 1fr 1fr / 1fr 1fr;
+  justify-items: center;
+}
+
+.fact {
+  max-width: 460px;
+  min-width: 200px;
+  margin-bottom: 100px;   
+}
+
+.brief {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  margin: 0 8% 15% 16%;
+}
+
+.list {
+  grid-column: 2 / 3;
+  grid-row: 1 / 3; 
+  margin: 0 16% 0 8%;
+}
+
+.shrove {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3; 
+  margin: 0 8% 0 16%;
+}
+
+.worldwide ul {
+  list-style: none;
+}
+
+ol {
+  font: 'Rubik Mono One', 'sans serif';
+  list-style-position: inside;
+  color: rgb(255, 86, 24);
+}
+
+ol p {
+  font: 'Open Sans', 'sans serif';
+  color: black;
+}
+
+li:not(:last-child) {
+  margin-bottom: 15px;
+}
+
+
+
+/* LINKS */
+
+a:link,
+a:visited {
+  color: black;
+  text-decoration: none;
+  -webkit-transition: 0.2s, color 0.2s;
+  transition: 0.2s, color 0.2s;
+}
+
+a:hover {
+  color: rgb(255, 86, 24);
+}
+
+
+
+/* RECIPE SECTION */
+
+.make-pancakes {
+  max-width: 460px;
+  min-width: 200px;
+  margin-bottom: 50px;  
+}
+
+.recipe-section {
+  height: 100vh;
+  width: 84vw;
+  margin: 0% 8vw 0% 8vw;
+}
+
+.recipe-grid {
+  display: grid;
+  justify-items: center;
+  grid: 1fr / 1fr 1fr 1fr;
+}
+
+.gallery {
+  width: 25vw;
+  height: 25vw;
+  background-color: black;
+}
+
+.recipes:first-child {
+  justify-self: start;
+}
+
+.recipes:last-child {
+  justify-self: end;
+}
+
+.gallery img {
+  width: 25vw;
+  height: 25vw;
+  object-fit: cover;
+  opacity: 0.85;
+  transition: 0.1s opacity 0.1s;
+}
+
+.gallery img:hover {
+  opacity: 1;
+}
+
+.desc {
+  width: 25vw;
+}
+
+#img-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 84vw;
+  margin: 0% 8vw 6vw 8vw;
+}
+
+#image {
+  margin-bottom: 1vw;
+  max-width: 84vw;
+}
+
+#img-caption {
+  align-self: flex-start;
+}
+
+.footer a {
+  font-size: 50%;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+}
+
+/* ---------------------------------------------*/
+/* MEDIA QUERIES */
+/* ---------------------------------------------*/
+
+
+/* ----------- iPhone 6, 6S, 7 and 8 ----------- */
+
+/* Portrait and Landscape */
+@media only screen 
+and (min-device-width: 375px) 
+and (max-device-width: 667px) 
+and (-webkit-min-device-pixel-ratio: 2) {
+      
+    #title {
+        font-size: 7vh;
+  }
+    header {
+        background-size: 299vw;
+  }
+    #tribute-info {
+        margin-top: 54vh;
+        display: flex;
+        flex-direction: column;
+  }
+    .fact {
+        max-width: 70vw;
+        font-size: 2em;
+        margin: auto auto 50px auto;
+  }
+    #img-div {
+        margin: 172% 8vw 10vw 8vw;
+  }
+    #img-caption {
+        font-size: 1.5em;
+  }
+    .make-pancakes {
+        font-size: 2em;
+        max-width: 80vw;
+  }
+    .recipe-grid {
+        display: flex;
+        flex-direction: column;
+  }
+    .recipe-section {
+        margin: auto auto 50px auto;
+        max-width: 70vw;
+  }
+    
+    .desc {
+        font-size: 2em;
+        width: 70vw;
+
+  }
+    .gallery {
+        width: 70vw;
+        height: 39.4vh;
+        margin-bottom: 5vh;
+  }
+    .gallery img {
+        width: 70vw;
+        height: 66vw;
+  }
+    .footer {
+        margin-top: 78vh;
+        font-size: 2em;
+  }        
+}
+  
+/* ----------- iPhone 6+, 7+ and 8+ ----------- */
+
+/* Portrait and Landscape */
+@media only screen 
+and (min-device-width: 414px) 
+and (max-device-width: 736px) 
+and (-webkit-min-device-pixel-ratio: 3) {
+      #title {
+        font-size: 7vh;
+  }
+    header {
+        background-size: 299vw;
+  }
+    #tribute-info {
+        margin-top: 54vh;
+        display: flex;
+        flex-direction: column;
+  }
+    .fact {
+        max-width: 70vw;
+        font-size: 2em;
+        margin: auto auto 50px auto;
+  }
+    #img-div {
+        margin: 170% 8vw 10vw 8vw;
+  }
+    #img-caption {
+        font-size: 1.5em;
+  }
+    .make-pancakes {
+        font-size: 2em;
+        max-width: 80vw;
+  }
+    .recipe-grid {
+        display: flex;
+        flex-direction: column;
+  }
+    .recipe-section {
+        margin: auto auto 50px auto;
+        max-width: 70vw;
+  }
+    
+    .desc {
+        font-size: 2em;
+        width: 70vw;
+
+  }
+    .gallery {
+        width: 70vw;
+        height: 39.4vh;
+        margin-bottom: 5vh;
+  }
+    .gallery img {
+        width: 70vw;
+        height: 70vw;
+  }
+    .footer {
+        margin-top: 73vh;
+        font-size: 2em;
+  }
+}
+
+/* ----------- iPhone X ----------- */
+
+/* Portrait and Landscape */
+@media only screen 
+and (min-device-width: 375px)
+and (max-device-width: 413px) 
+and (-webkit-min-device-pixel-ratio: 3) {
+      #title {
+        font-size: 6vh;
+  }
+    header {
+        background-size: 570vw;
+  }
+    #tribute-info {
+        margin-top: 54vh;
+        display: flex;
+        flex-direction: column;
+  }
+    .fact {
+        max-width: 70vw;
+        font-size: 2em;
+        margin: auto auto 50px auto;
+  }
+    #img-div {
+        margin: 135% 8vw 10vw 8vw;
+  }
+    #img-caption {
+        font-size: 1.5em;
+  }
+    .make-pancakes {
+        font-size: 2em;
+        max-width: 80vw;
+  }
+    .recipe-grid {
+        display: flex;
+        flex-direction: column;
+  }
+    .recipe-section {
+        margin: auto auto 50px auto;
+        max-width: 70vw;
+  }
+    
+    .desc {
+        font-size: 2em;
+        width: 70vw;
+
+  }
+    .gallery {
+        width: 70vw;
+        height: 32.3vh;
+        margin-bottom: 5vh;
+  }
+    .gallery img {
+        width: 70vw;
+        height: 64.5vw;
+  }
+    .footer {
+        margin-top: 44vh;
+        font-size: 2em;
+  }
+}
+
