@@ -77,7 +77,8 @@ margin:-50vh 0 0 0;
   position: sticky;
   top: 0;
   z-index:3;
-  background-Color: #000;
+  background-color: #2e2e2e;
+  transition: 0.6s;
 }
 
 
