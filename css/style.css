@@ -116,17 +116,15 @@ footer {
 }
     
 /* Style list */
-ol {
-  line-height: 1.4em;
-}
 
 .custom_decimal li {
   font-family: "quicksand", "helvetica", sans-serif;
   counter-increment: step-counter;
-  padding: 0 0 0 50px;
+  padding: 0 0 0 2.5em;
   position: relative;
   color:#2e2e2e;
   font-size: 3vh;
+	line-height: 1.4em;
 }
 
 .custom_decimal li::before {
