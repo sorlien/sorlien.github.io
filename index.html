@@ -2,130 +2,106 @@
 <html lang="en">
 
 <head>
-  <title>A tribute to Gelato</title>
+  <title>Amalia Sorlien</title>
   <meta charset="UTF-8" />
-  <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css?family=Baloo+Paaji&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Muli&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap" rel="stylesheet">
+
+
   <link rel="stylesheet" href="css/style.css" />
   <script src="js/index.js" defer></script>
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </head>
 
 <body>
-  <div class="bg"></div>
-  <header class="main-header">
+  <header>
+    <a href="#"><img src="img/logo_test_white_filled.svg" title="AS" alt="AS logo" class="logo" /></a>
+
+    <div id="toggle" class="button_container">
+      <span class="top"></span>
+      <span class="middle"></span>
+      <span class="bottom"></span>
+    </div>
+
+    <div id="overlay" class="overlay">
+      <nav class="overlay-menu">
+        <ul>
+          <li class="overlay-li"><a href="html/about.html">About</a></li>
+          <li><a href="#work">Work</a></li>
+          <li><a href="img/amalia_sorlien_cv2.pdf" target="blank">Resumé</a></li>
+          <li><a href="html/contact.html">Contact</a></li>
+        </ul>
+      </nav>
+
+    </div>
   </header>
   <main>
+    <div class="intro">
+      <h1 class="intro-text">Hi, I'm Amalia Sörlien</h1>
+      <!-- <p class="intro-text delayed">I design products and experiences with users in mind</p> -->
+    </div>
+
+    <div class="scroll-downs">
+      <div class="mousey">
+        <div class="scroller"></div>
+      </div>
+    </div>
+
     <section>
-      <div id="navbar">
-        <h1>GELATO</h1>
+      <div class="container" id="work">
+          <div class="box a" data-aos="zoom-in-up" data-aos-duration="2000" data-aos-offset="0" >
+            <h2>Clima Card</h2>
+            <p>Climate change is impacting human lives and health in a variety of ways. It threatens to undermine decades of progress in global health. From a consumption perspective in Sweden, 80% of the carbon dioxide emissions derives from private consumption and 20% from public consumption. In order to keep track and highlight private climate impact, I have created an app design for a new credit card concept. 
+              </p>
+            <a href="html/clima_card.html" class="work_link">Read more</a>
+          </div>
+          <div class="box b" data-aos="zoom-in-up" data-aos-duration="2000" data-aos-offset="0"><img id="clima-img" src="img/emission_clima_card.png" alt="Clima card app" /></div>
+
+
+        <div class="box c" data-aos="zoom-in-up" data-aos-duration="2000" data-aos-offset="0">
+          <h2>A Tribute to Gelato </h2>
+          <p>To learn more about web design
+            and web development I signed
+            up for a distance course called Dynamic Web Applications from Uppsala University right before
+            the summer year 2019. After the course I created a website to celebrate gelato.</p>
+          <a href="url" class="work_link">Visit website</a>
+        </div>
+        <div class="box d" data-aos="zoom-in-up" data-aos-duration="2000"  data-aos-offset="0"><img id="gelato" src="img/gelato.png" title="mockup" alt="Gelato website on Mac" /></div>
+
+        <div class="box e" data-aos="zoom-in-up" data-aos-duration="2000"  data-aos-offset="0">
+          <h2>Infotainment System</h2>
+          <p>I am currently working as a Human Machine Interface Engineer in an agile development team, developing a
+            in-house Android based service and entertainment system. My main responsibility is to document the view
+            flows for complete functions and to visualise interactions. </p>
+          <a href="html/volvo.html" class="work_link">Read more</a>
+        </div>
+        <div class="box f" data-aos="zoom-in-up" data-aos-duration="2000"   data-aos-offset="0"><img id="truck-img" src="img/volvo-fh-landing-truck-hero.png" alt="Volvo FH truck" /></div>
+
+        <div class="box g" data-aos="zoom-in-up" data-aos-duration="2000"   data-aos-offset="0">
+          <h2>Solar Cell Driven Wireless Sensors </h2>
+          <p>Master thesis within the field of Product Development and Design Engineering.The thesis was conducted on
+            behalf of Epishine in a collaboration with Verisure.</p>
+          <a href="html/epishine_verisure.html" class="work_link">Read more</a>
+        </div>
+        <div class="box h" data-aos="zoom-in-up" data-aos-duration="2000"   data-aos-offset="0"> <img id="solarcell" src="img/solarcell_flipped.png" title="mockup"
+            alt="Solar cell on sensor" /></div>
       </div>
 
-      <div class="row">
-        <div class="column">
-          <h2>WHAT IS GELATO?</h2>
-          <p>
-            Gelato is a popular frozen dessert of Italian origin. Gelato typically has 50% less fat than traditional ice
-            cream, but it tastes much creamier. The creamy
-            texture
-            comes from the way it’s made. Produced in small batches, slow churning instead of rapid beating. This
-            produces a
-            denser product served at -15 instead of -18, </p>
-          <h2>HOW TO IDENTIFY QUALITY GELATO</h2>
-          <h3>Appearance</h3>
-          <p>
-            Gelato should be a slightly milked-down, pastel version of its primary ingredient; it should almost never be
-            bright and vibrant.<br /><br />
-            You should beware of gelaterias that stack their gelato into high piles. Since gelato oxidizes, having a lot
-            of
-            surface area exposed to the air is undesirable.<br /><br />
-            Gelato should also have a matte appearance instead of a shiny one. Shiny gelato is melting gelato. Over
-            time,
-            this gelato will melt and refreeze, damaging its structural integrity and texture.<br /><br /></p>
-          <h3>Consistency</h3>
-          <p>High quality gelato should have a spreadable consistency, unlike the much harder, more brittle ice
-            cream.<br /><br />
-            Another consistency indicator to search for is how quickly it melts. True artisanal gelato should melt
-            relatively quickly once out of the case; if it doesn’t, it was likely been made with too many emulsifiers
-            and
-            thickeners.
-          </p>
-        </div>
-        <div class="column">
-
-          <h2>FUN FACTS ABOUT GELATO</h2>
-          <ol class="custom_decimal">
-            <li>The name of this frozen treat came from the word congelato which means "frozen." </li><br />
-            <li>Eearly italian gelato was closer to sorbet than ice cream</li><br />
-            <li>In 1686, Francesco Procopio dei Coltelli, a Sicilian fisherman and chef from Palermo, made the first
-              gelato
-              machine. He opened a café in Paris, the first gelato café in the world.</li><br />
-            <li>Every other year, international teams compete at the Gelato World Cup (called Coppa del Mondo della
-              Gelateria in Italian.</li><br />
-            <li>Between 2009 and 2014, gelato sales increased dramatically from $11 million to $214 million. More and
-              more
-              Americans are buying gelato, and traditional ice cream companies have jumped on the gelato train. </li>
-            <br />
-            <li>Gelato is similar to ice cream because it contains sugar, milk, and flavorings. The difference? Gelato
-              has
-              less cream and no egg yolks. </li><br />
-            <li>The person selling and filling the gelato cups is called a gelatai. </li><br />
-            <li> While ice cream is served with a rounded scoop, gelato shops generally use paddles. This technique adds
-              to
-              the traditional charm of this dessert.</li><br />
-            <li>When you remove the milk from gelato and use water instead, you end up with a sorbetto which is a
-              southern
-              product.</li><br />
-            <li>When discussing whether certain flavors go together, Italians use the phrase “marries well” – as in, “do
-              these flavors marry well?” In Italian, that’s “questi gusti si sposano bene?”</li><br />
-          </ol>
-        </div>
-      </div>
-      <div class="recepies">
-        <h2>DELICIOUS RECIPES</h2>
-        <p>How do you make gelato at home? You start with the right recipe, of course. Check out the recipes below by
-          clicking on the images.</p>
-      </div>
-      <div class="rowimages">
-        <div class="threecolumn">
-          <a
-            href="https://www.delicious.com.au/recipes/brioche-con-gelato-september-issue/9f2bdb58-7cb7-4258-aa87-bd2b825f31af">
-            <img src="img/brioche_con_gelato_square.jpg" title="Brioche con gelato" alt="Brioche con gelato"
-              style="width:100%" />
-
-            <div class="overlay">
-              <div class="text">Brioche con gelato</div>
-            </div>
-          </a>
-        </div>
-
-
-        <div class="threecolumn">
-          <a
-            href="http://www.foodnetwork.co.uk/recipe/affogato-keyword.html?utm_source=foodnetwork.com&utm_medium=domestic">
-            <img src="img/affogato_square.jpg" title="Affogato" alt="Affogato in a glass" style="width:100%" />
-            <div class="overlay">
-              <div class="text">Affogato</div>
-            </div>
-          </a>
-        </div>
-
-        <div class="threecolumn">
-          <a href="https://www.healthylittlevittles.com/homemade-vegan-blueberry-lavender-lemon-gelato/">
-            <img src="img/lavender_blueberry_square.jpg" title="Lavender blueberry gelato"
-              alt="Gelato with lavender and blueberry flavour" style="width:100%" />
-            <div class="overlay">
-              <div class="text">Lavender bluberry gelato</div>
-            </div>
-          </a>
-        </div>
     </section>
-
-    <footer>
-      <p>Copyright &copy; 2019 Amalia Sörlien</p>
-    </footer>
-
   </main>
+
+
+  <footer>
+    <p>Copyright &copy; 2019 Amalia Sörlien</p>
+  </footer>
 
 </body>
 
