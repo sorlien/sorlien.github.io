@@ -195,46 +195,6 @@ a:hover, a:active {
 }
 
 
-/* Grid for projects */
-
-.box {
-  margin:0 0 1em 0;
-}
-
-.b #clima-img {
-  max-width:70%;
-  height:auto;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 7vh;
-}
-
-.d #gelato {
-  max-width:100%;
-  height:auto;
-  order:1;
-  margin-bottom: 7vh;
-}
-
-.f #truck-img{  
-  max-width:80%;
-  height:auto;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 7vh;
-}
-
-.h #solarcell{  
-  max-width:95%;
-  height:auto;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 7vh;
-}
-
 /* Hamburger menu */
 
 .button_container {
@@ -372,6 +332,53 @@ a:hover, a:active {
   }
 }
 
+/* Grid for projects */
+
+.box {
+  margin:0 0 1em 0;
+}
+
+.b #clima-img {
+  max-width:70%;
+  height:auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 7vh;
+}
+
+.d #gelato {
+  max-width:100%;
+  height:auto;
+  margin-bottom: 7vh;
+}
+
+.f #truck-img{  
+  max-width:80%;
+  height:auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 7vh;
+}
+
+.h #solarcell{  
+  max-width:95%;
+  height:auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 7vh;
+}
+
+.j #vespa{  
+  max-width:70%;
+  height:auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 7vh;
+}
 
 /* Grid system */
 @media only screen and (min-width: 960px) {
@@ -390,6 +397,31 @@ a:hover, a:active {
     grid-gap: 20px;
   }
 
+  .i {
+    order: 1;
+  }
+
+  .j {
+    order: 2;
+  }
+
+  .j #vespa{  
+    max-width:70%;
+    height:auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 7vh;
+  }
+
+  .a {
+    order: 4;
+  }
+
+  .b {
+    order: 3;
+  }
+
   .b #clima-img {
     max-width:70%;
     height:auto;
@@ -400,22 +432,28 @@ a:hover, a:active {
   }
 
   .c {
-    order: 2;
+    order: 5;
+  }
+
+  .d {
+    order: 6;
   }
 
   .d #gelato {
     max-width:100%;
     height:auto;
-    order:1;
     margin:0 0 5em 0;
   }
+
   .e {
-    order: 3;
+    order: 8;
     padding-top:7vh;
   }
-  .f {    
-    order: 4;
+
+  .f {
+    order: 7;
   }
+
   .f #truck-img{  
     max-width:80%;
     height:auto;
@@ -426,11 +464,13 @@ a:hover, a:active {
   }
 
   .g {
-    order: 6;
+    order: 9;
   }
+
   .h {
-    order: 5;
+    order: 10;
   }
+
 
   .h #solarcell{  
     max-width:95%;
@@ -439,4 +479,6 @@ a:hover, a:active {
     margin-left: auto;
     margin-right: auto;
   }
+
+
 }
