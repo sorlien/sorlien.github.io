@@ -380,6 +380,15 @@ a:hover, a:active {
   margin-bottom: 7vh;
 }
 
+.l #visit_fjallen{  
+  max-width:100%;
+  height:auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 7vh;
+}
+
 /* Grid system */
 @media only screen and (min-width: 960px) {
   #intro-text {
@@ -397,12 +406,29 @@ a:hover, a:active {
     grid-gap: 20px;
   }
 
-  .i {
+  .k {
     order: 1;
   }
 
-  .j {
+  .l {
     order: 2;
+  }
+
+  .l #visit_fjallen {
+    max-width:100%;
+    height:auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 7vh;
+  }
+
+  .i {
+    order: 4;
+  }
+
+  .j {
+    order: 3;
   }
 
   .j #vespa{  
@@ -415,11 +441,11 @@ a:hover, a:active {
   }
 
   .a {
-    order: 4;
+    order: 5;
   }
 
   .b {
-    order: 3;
+    order: 6;
   }
 
   .b #clima-img {
@@ -432,11 +458,11 @@ a:hover, a:active {
   }
 
   .c {
-    order: 5;
+    order: 8;
   }
 
   .d {
-    order: 6;
+    order: 7;
   }
 
   .d #gelato {
@@ -446,12 +472,12 @@ a:hover, a:active {
   }
 
   .e {
-    order: 8;
+    order: 9;
     padding-top:7vh;
   }
 
   .f {
-    order: 7;
+    order: 10;
   }
 
   .f #truck-img{  
@@ -464,11 +490,11 @@ a:hover, a:active {
   }
 
   .g {
-    order: 9;
+    order: 12;
   }
 
   .h {
-    order: 10;
+    order: 11;
   }
 
 
