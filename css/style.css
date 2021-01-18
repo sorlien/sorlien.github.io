@@ -389,6 +389,15 @@ a:hover, a:active {
   margin-bottom: 7vh;
 }
 
+.n #sushi {
+  max-width:80%;
+  height:auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 7vh;
+}
+
 /* Grid system */
 @media only screen and (min-width: 960px) {
   #intro-text {
@@ -423,12 +432,30 @@ a:hover, a:active {
     margin-bottom: 7vh;
   }
 
-  .i {
+  .m {
     order: 4;
   }
 
-  .j {
+  .n {
     order: 3;
+  }
+
+  .n #sushi {
+    max-width:80%;
+    height:auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 7vh;
+  }
+
+
+  .i {
+    order: 5;
+  }
+
+  .j {
+    order: 6;
   }
 
   .j #vespa{  
@@ -441,11 +468,11 @@ a:hover, a:active {
   }
 
   .a {
-    order: 5;
+    order: 8;
   }
 
   .b {
-    order: 6;
+    order: 7;
   }
 
   .b #clima-img {
@@ -458,11 +485,11 @@ a:hover, a:active {
   }
 
   .c {
-    order: 8;
+    order: 9;
   }
 
   .d {
-    order: 7;
+    order: 10;
   }
 
   .d #gelato {
@@ -472,12 +499,12 @@ a:hover, a:active {
   }
 
   .e {
-    order: 9;
+    order: 12;
     padding-top:7vh;
   }
 
   .f {
-    order: 10;
+    order: 11;
   }
 
   .f #truck-img{  
@@ -490,11 +517,11 @@ a:hover, a:active {
   }
 
   .g {
-    order: 12;
+    order: 13;
   }
 
   .h {
-    order: 11;
+    order: 14;
   }
 
 
