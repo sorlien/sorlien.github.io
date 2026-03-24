@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Split Payment — Amalia Sörlien</title>
+<script>if(localStorage.getItem('theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/dark-mode.css"><!-- DARK MODE: remove this line to disable -->
+  <link rel="stylesheet" href="../css/case-study.css">
+  <style>
+    .cs-hero {
+      position: relative;
+      height: 100vh;
+      min-height: 832px;
+      overflow: hidden;
+      background-color: var(--color-white);
+    }
+
+    .cs-hero__inner {
+      position: relative;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: calc(var(--nav-height) + 40px);
+      padding-bottom: 40px;
+    }
+
+    .cs-hero__text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .cs-hero__title {
+      font-family: var(--font-display);
+      font-size: var(--text-h1);
+      line-height: 1;
+      color: var(--color-black);
+    }
+
+    .cs-hero__description {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: 24px;
+      color: var(--color-text-body);
+      max-width: 437px;
+      text-align: center;
+    }
+
+    .cs-hero__phones {
+      flex: 1;
+      min-height: 0;
+      margin-top: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .cs-hero__phones img {
+      max-height: 100%;
+      width: auto;
+      max-width: 90%;
+      display: block;
+    }
+
+    .cs-hero__phones.anim-from-below {
+      transform: translateY(80px);
+      transition: opacity 0.9s var(--ease-gentle), transform 1.1s var(--ease-gentle);
+    }
+
+    .cs-hero__phones.is-visible {
+      transform: none !important;
+      opacity: 1 !important;
+    }
+
+    .cs-section {
+      width: 100%;
+      padding: 100px 264px;
+    }
+
+    .cs-section--first { padding-top: 80px; }
+
+    .cs-section__heading {
+      font-family: var(--font-display);
+      font-size: var(--text-h2);
+      line-height: 1;
+      color: var(--color-black);
+      margin-bottom: 48px;
+    }
+
+    .cs-subsection__heading {
+      font-family: var(--font-display);
+      font-size: var(--text-h2);
+      line-height: 1;
+      color: var(--color-black);
+      margin-bottom: 16px;
+    }
+
+    .cs-subheading {
+      font-family: var(--font-display);
+      font-size: var(--text-h3);
+      line-height: 1;
+      color: var(--color-black);
+      margin-bottom: 16px;
+    }
+
+    .cs-subsection + .cs-subsection { margin-top: 128px; }
+
+    /* Reset inside overview — Challenge → My objectives should stay compact */
+    .cs-overview__main .cs-subsection + .cs-subsection { margin-top: 0; }
+
+    /* ── Competitive analysis table ──────────────── */
+    .ca-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 4px;
+      margin-top: 32px;
+    }
+
+    .ca-table th, .ca-table td {
+      padding: 16px;
+      text-align: center;
+      font-family: var(--font-body);
+      font-size: 14px;
+      border-radius: 3px;
+    }
+
+    .ca-table th.ca-func, .ca-table td.ca-func {
+      background-color: #cfe1ff;
+      color: #193767;
+      text-align: center;
+      width: 24%;
+    }
+
+    .ca-table th.ca-company {
+      background-color: var(--color-bg-alt);
+      color: var(--color-text-body);
+      font-family: var(--font-body);
+      font-weight: 600;
+    }
+
+    .ca-table td.ca-cell {
+      background-color: var(--color-bg-alt);
+    }
+
+    .ca-table .ca-tick, .ca-table .ca-cross {
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+    }
+
+    /* ── User snapshot cards ─────────────────────── */
+    .us-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 32px;
+      margin-left: -100px;
+      margin-right: -100px;
+    }
+
+    .us-card {
+      background-color: var(--color-bg-alt);
+      border-radius: 30px;
+      padding: 48px 32px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .us-card__avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-bottom: 16px;
+      background-color: #d0d0d0;
+    }
+
+    .us-card__avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .us-card__name {
+      font-family: var(--font-display);
+      font-size: 20px;
+      line-height: 1;
+      color: var(--color-black);
+      text-align: center;
+    }
+
+    .us-card .us-card__role {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      font-weight: 700;
+      color: #4084f4;
+      text-align: center;
+      margin-top: 4px;
+      margin-bottom: 16px;
+    }
+
+    .us-card__content {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      color: var(--color-text-body);
+      line-height: 24px;
+      width: 100%;
+    }
+
+    .us-card__content p + p { margin-top: 16px; }
+
+    .cs-overview {
+      display: grid;
+      grid-template-columns: 1fr 172px;
+      gap: 42px;
+      align-items: start;
+    }
+
+    .cs-overview__main {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    .cs-subsection {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cs-subsection p,
+    .cs-subsection ul {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: 24px;
+      color: var(--color-text-body);
+    }
+
+    .cs-subsection ul {
+      padding-left: 24px;
+      list-style: disc;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cs-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    .cs-meta__item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cs-meta__label {
+      font-family: var(--font-display);
+      font-size: var(--text-ui);
+      line-height: 1;
+      color: var(--color-black);
+    }
+
+    .cs-meta__value {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: normal;
+      color: var(--color-text-body);
+    }
+
+    /* ── Design process steps ────────────────────── */
+    .cs-process {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 64px;
+    }
+
+    .cs-process__step {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .cs-process__number {
+      font-family: var(--font-display);
+      font-size: var(--text-h3);
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .cs-process__items {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .cs-process__items p {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: 24px;
+      color: var(--color-text-body);
+    }
+
+    .cs-screenshots {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .cs-screenshots img {
+      width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+
+    .cs-other {
+      text-align: center;
+      padding: 80px 264px 100px;
+    }
+
+    .cs-other__heading {
+      font-family: var(--font-display);
+      font-size: var(--text-h3);
+      line-height: 1;
+      color: var(--color-black);
+      margin-bottom: 48px;
+    }
+
+    #otherProjectsGrid {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+    }
+
+    /* ── Results pill bounce ─────────────────────── */
+    @keyframes pillBounce {
+      0%   { transform: scale(0);    opacity: 0; }
+      60%  { transform: scale(1.07); opacity: 1; }
+      80%  { transform: scale(0.97); }
+      100% { transform: scale(1);    opacity: 1; }
+    }
+
+    /* ── Results section dark mode ───────────────── */
+    [data-theme="dark"] #resultsSection .bar-track {
+      background: #1a1a1a !important;
+    }
+
+    #likeBar span {
+      color: #111 !important;
+    }
+
+  </style>
+</head>
+<body>
+
+  <nav class="nav" id="siteNav">
+    <a href="../index.html" class="nav__logo" aria-label="Home">
+      <img src="../assets/images/as-logo.png" alt="AS">
+    </a>
+    <ul class="nav__links">
+      <li><a href="../index.html"    class="nav__link">Home</a></li>
+      <li><a href="../projects.html" class="nav__link nav__link--active">Projects</a></li>
+      <li><a href="../about.html"    class="nav__link">About</a></li>
+      <li class="nav__theme-item"><button class="theme-toggle" aria-label="Toggle dark mode">
+        <svg class="icon-moon" width="26" height="26" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="icon-sun" width="26" height="26" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1"  x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22"   x2="5.64"  y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1"  y1="12" x2="3"  y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22"  y1="19.78" x2="5.64"  y2="18.36"/>
+          <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"/>
+        </svg>
+      </button></li>
+    </ul>
+    <button class="nav__hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <svg class="icon-open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </nav>
+
+  <main data-project-id="split-payment">
+
+    <section class="cs-hero section--white">
+      <div class="page-wrapper cs-hero__inner">
+
+        <div class="cs-hero__text anim-from-below anim-delay-1" id="csTitle">
+          <h1 class="cs-hero__title">Split Payment</h1>
+        </div>
+
+        <div class="cs-hero__text anim-from-below anim-delay-2" id="csDescription">
+          <p class="cs-hero__description">
+            <!-- EDIT: Replace with your project description -->
+            This feature allows bookers to split the cost of a court booking with other participants.
+          </p>
+        </div>
+
+        <div class="cs-hero__phones anim-from-below anim-delay-3" id="csPhones">
+          <img src="../assets/images/projects/split-payment/hero.png"
+               alt="Split Payment screens">
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="cs-section cs-section--first section--gray">
+      <div class="page-wrapper">
+
+        <h2 class="cs-section__heading">Project overview</h2>
+
+        <div class="cs-overview">
+          <div class="cs-overview__main">
+
+            <div class="cs-subsection">
+              <h3 class="cs-subheading">Challenge</h3>
+              <p>At MATCHi, a platform focused on racket sports bookings, we identified the need to offer bookers more flexible payment options to enhance the user experience and reduce financial burden. The challenge was to design a solution that allowed bookers to split the payment for their bookings, ensuring clarity in cost distribution and potential financial responsibility if others did not pay their share. One of the key design challenges was to integrate this functionality seamlessly within the existing design to implement a first version as quickly as possible.</p>
+            </div>
+
+            <div class="cs-subsection">
+              <h3 class="cs-subheading">My objectives</h3>
+              <ul>
+                <li><strong>Enhance user experience</strong> by providing a straightforward payment option for splitting costs in bookings.</li>
+                <li><strong>Foster clarity and transparency</strong> in payment responsibilities through intuitive design.</li>
+                <li>Integrate the split payment feature <strong>seamlessly</strong> into MATCHi's existing interface to support quick deployment and align with business objectives.</li>
+              </ul>
+            </div>
+
+          </div>
+
+          <div class="cs-meta">
+            <div class="cs-meta__item">
+              <p class="cs-meta__label">Company</p>
+              <p class="cs-meta__value">MATCHi</p>
+            </div>
+            <div class="cs-meta__item">
+              <p class="cs-meta__label">Project scope</p>
+              <p class="cs-meta__value">Design of a new in-app feature, from concept to implementation</p>
+            </div>
+            <div class="cs-meta__item">
+              <p class="cs-meta__label">Tools</p>
+              <p class="cs-meta__value">Figma, GitHub, Notion, Pitch</p>
+            </div>
+            <div class="cs-meta__item">
+              <p class="cs-meta__label">When</p>
+              <p class="cs-meta__value">2023</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+
+        <h2 class="cs-section__heading">Design process</h2>
+
+        <!-- Process overview -->
+        <div class="cs-process">
+          <div class="cs-process__step">
+            <p class="cs-process__number" style="color: #4084f4;">1 Research</p>
+            <div class="cs-process__items">
+              <p>Competitive analysis</p>
+              <p>User snapshots</p>
+            </div>
+          </div>
+          <div class="cs-process__step">
+            <p class="cs-process__number" style="color: #32a953;">2 Conceptualization</p>
+            <div class="cs-process__items">
+              <p>Feature statement</p>
+              <p>Low-fidelity</p>
+            </div>
+          </div>
+          <div class="cs-process__step">
+            <p class="cs-process__number" style="color: #fdbb05;">3 Design</p>
+            <div class="cs-process__items">
+              <p>High fidelity</p>
+            </div>
+          </div>
+          <div class="cs-process__step">
+            <p class="cs-process__number" style="color: #e94335;">4 Test</p>
+            <div class="cs-process__items">
+              <p>Usability testing</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 01 Research -->
+        <div class="cs-subsection">
+          <h3 class="cs-subsection__heading">01 Research</h3>
+
+          <!-- Competitive analysis -->
+          <h3 class="cs-subheading">Competitive analysis</h3>
+          <p>To investigate and understand the feature, I conducted a competitive analysis of three companies in the racket sports booking industry. This analysis aimed to identify key functionalities for splitting the booking cost. By examining how competitors approach similar features, I was able to pinpoint opportunities for differentiation and improvement in our platform, ensuring that MATCHi remains competitive and aligned with user needs.</p>
+
+          <table class="ca-table">
+            <thead>
+              <tr>
+                <th class="ca-func">Functionality</th>
+                <th class="ca-company">Company X</th>
+                <th class="ca-company">Company Y</th>
+                <th class="ca-company">Company Z</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="ca-func">Split payment option</td>
+                <td class="ca-cell"><svg class="ca-tick" viewBox="0 0 24 24" fill="#32a953"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4-4 1.41-1.41L10 13.67l6.59-6.59L18 8.5l-8 8z"/></svg></td>
+                <td class="ca-cell"><svg class="ca-tick" viewBox="0 0 24 24" fill="#32a953"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4-4 1.41-1.41L10 13.67l6.59-6.59L18 8.5l-8 8z"/></svg></td>
+                <td class="ca-cell"><svg class="ca-tick" viewBox="0 0 24 24" fill="#32a953"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4-4 1.41-1.41L10 13.67l6.59-6.59L18 8.5l-8 8z"/></svg></td>
+              </tr>
+              <tr>
+                <td class="ca-func">Payment breakdown display</td>
+                <td class="ca-cell"><svg class="ca-tick" viewBox="0 0 24 24" fill="#32a953"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4-4 1.41-1.41L10 13.67l6.59-6.59L18 8.5l-8 8z"/></svg></td>
+                <td class="ca-cell"><svg class="ca-cross" viewBox="0 0 24 24" fill="#e94335"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg></td>
+                <td class="ca-cell"><svg class="ca-cross" viewBox="0 0 24 24" fill="#e94335"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg></td>
+              </tr>
+              <tr>
+                <td class="ca-func">Payment reminders</td>
+                <td class="ca-cell"><svg class="ca-cross" viewBox="0 0 24 24" fill="#e94335"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg></td>
+                <td class="ca-cell"><svg class="ca-cross" viewBox="0 0 24 24" fill="#e94335"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg></td>
+                <td class="ca-cell"><svg class="ca-tick" viewBox="0 0 24 24" fill="#32a953"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4-4 1.41-1.41L10 13.67l6.59-6.59L18 8.5l-8 8z"/></svg></td>
+              </tr>
+              <tr>
+                <td class="ca-func">Payment status tracking</td>
+                <td class="ca-cell"><svg class="ca-tick" viewBox="0 0 24 24" fill="#32a953"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4-4 1.41-1.41L10 13.67l6.59-6.59L18 8.5l-8 8z"/></svg></td>
+                <td class="ca-cell"><svg class="ca-tick" viewBox="0 0 24 24" fill="#32a953"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4-4 1.41-1.41L10 13.67l6.59-6.59L18 8.5l-8 8z"/></svg></td>
+                <td class="ca-cell"><svg class="ca-tick" viewBox="0 0 24 24" fill="#32a953"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4-4 1.41-1.41L10 13.67l6.59-6.59L18 8.5l-8 8z"/></svg></td>
+              </tr>
+              <tr>
+                <td class="ca-func">Visible payment deadline</td>
+                <td class="ca-cell"><svg class="ca-tick" viewBox="0 0 24 24" fill="#32a953"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4-4 1.41-1.41L10 13.67l6.59-6.59L18 8.5l-8 8z"/></svg></td>
+                <td class="ca-cell"><svg class="ca-tick" viewBox="0 0 24 24" fill="#32a953"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4-4 1.41-1.41L10 13.67l6.59-6.59L18 8.5l-8 8z"/></svg></td>
+                <td class="ca-cell"><svg class="ca-tick" viewBox="0 0 24 24" fill="#32a953"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4-4 1.41-1.41L10 13.67l6.59-6.59L18 8.5l-8 8z"/></svg></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- User snapshots -->
+          <h3 class="cs-subheading" style="margin-top: 64px;">User snapshots</h3>
+          <p>To ensure that the split payment feature met real user needs, I engaged in user research and collaborated with colleagues who had deep knowledge of the feature and market insights. I consulted with the commercial team to understand market demand and confirm that the feature would resonate with venues and their needs. Additionally, I spoke with our support team, who regularly collect user feedback, to gain further insight into user pain points and preferences.</p>
+          <p style="margin-top: 16px;">To showcase the range of potential users and their needs, I created user snapshots that represent individuals who would benefit from the split payment feature. These snapshots reflect different motivations, behaviors, and challenges, which informed our design decisions.</p>
+
+          <!-- EDIT: Export avatar images → assets/images/projects/split-payment/snapshot-emma.png etc. -->
+          <div class="us-grid">
+            <div class="us-card">
+              <div class="us-card__avatar">
+                <img src="../assets/images/projects/split-payment/snapshot-emma.png" alt="Emma">
+              </div>
+              <p class="us-card__name">Emma</p>
+              <p class="us-card__role">The Occasional Organizer</p>
+              <div class="us-card__content">
+                <p><strong>Demographics</strong><br>52 years old, teacher, plays tennis recreationally.</p>
+                <p><strong>Behavior</strong><br>Books courts regularly to play with a close group of friends.</p>
+                <p><strong>Needs</strong><br>A streamlined booking system that allows her to share payment responsibilities without handling all costs upfront.</p>
+                <p><strong>Pain Points</strong><br>Finds it tedious to remind her playing partners to reimburse her after a booking.</p>
+                <p><strong>Motivation</strong><br>Loves organizing games but wants it to be straightforward without financial stress.</p>
+              </div>
+            </div>
+            <div class="us-card">
+              <div class="us-card__avatar">
+                <img src="../assets/images/projects/split-payment/snapshot-johan.png" alt="Johan">
+              </div>
+              <p class="us-card__name">Johan</p>
+              <p class="us-card__role">The Competitive Regular</p>
+              <div class="us-card__content">
+                <p><strong>Demographics</strong><br>35 years old, software engineer, part of a weekly badminton club.</p>
+                <p><strong>Behavior</strong><br>Regularly books courts and often plays in mixed-level games, enjoys tracking player skill levels.</p>
+                <p><strong>Needs</strong><br>A reliable way to split costs among club members with minimal coordination effort.</p>
+                <p><strong>Pain Points</strong><br>Keeping track of payments between club members and chasing people for their share.</p>
+                <p><strong>Motivation</strong><br>Wants to focus on playing rather than worrying about logistics.</p>
+              </div>
+            </div>
+            <div class="us-card">
+              <div class="us-card__avatar">
+                <img src="../assets/images/projects/split-payment/snapshot-lina.png" alt="Lina">
+              </div>
+              <p class="us-card__name">Lina</p>
+              <p class="us-card__role">The New Enthusiast</p>
+              <div class="us-card__content">
+                <p><strong>Demographics</strong><br>22 years old, university student, recently picked up padel.</p>
+                <p><strong>Behavior</strong><br>Books courts with different friends as she explores the sport, sensitive to budget constraints.</p>
+                <p><strong>Needs</strong><br>An easy way to split payments during booking.</p>
+                <p><strong>Pain Points</strong><br>Worries about others paying her back after booking.</p>
+                <p><strong>Motivation</strong><br>Wants to play without financial uncertainty and values simple, fair solutions.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+
+        <div class="cs-subsection">
+          <h3 class="cs-subsection__heading">02 Conceptualization</h3>
+
+          <h3 class="cs-subheading">Feature statement</h3>
+          <p>In the conceptualization phase, I worked closely with the tech lead, product manager, and a commercial representative to create a Feature Statement for the split payment feature. The purpose of this collaborative effort was to clearly define the scope and core functionality, ensuring that everyone was aligned on what needed to be achieved for the MVP.</p>
+          <p style="margin-top: 16px;">By creating the feature statement, we ensured that:</p>
+          <ul style="margin-top: 12px;">
+            <li><strong>The core functionality was well-defined:</strong> It outlined how users could choose between paying the full amount or splitting the costs, and how payment amounts would be calculated and displayed.</li>
+            <li><strong>The MVP constraints were clarified:</strong> We identified key limitations, such as the feature being available only on mobile devices.</li>
+            <li><strong>The business rules were set:</strong> We included important rules, such as the service fee structure, cancellation policies, and the handling of promo codes.</li>
+          </ul>
+
+          <h3 class="cs-subheading" style="margin-top: 64px;">Low-fidelity</h3>
+          <p>In this phase, I worked within the constraints of the existing design to ensure the new split payment feature would fit with the current look and feel of the app. This was a request to expedite the technical implementation, meaning I had to align with existing components and minimize changes to the design system, focusing on delivering the MVP as quickly as possible.</p>
+          <p style="margin-top: 16px;">To guide the design, I had the user snapshots in mind, which highlighted the varying needs, pain points, and motivations of different user types. This allowed me to ensure the design would be user-centered while maintaining a streamlined technical approach.</p>
+
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section--white">
+      <img src="../assets/images/projects/split-payment/low-fidelity.png"
+           alt="Low-fidelity wireframes"
+           style="width: 100%; height: auto; display: block;">
+    </section>
+
+
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+
+        <div class="cs-subsection">
+          <h3 class="cs-subsection__heading">03 Design</h3>
+
+          <h3 class="cs-subheading">High fidelity</h3>
+          <p>After iterating on the low-fidelity designs, I moved on to developing the high-fidelity concepts. I took the constraints and technical requirements into account, integrating the split payment feature into the app's design system to maintain consistency and ensure a smooth user experience.</p>
+          <p style="margin-top: 16px;">I further refined the design by breaking it down into different user flows to ensure clarity and a seamless experience for all types of users. The design was divided into three distinct flows:</p>
+
+          <ol style="margin-top: 16px; padding-left: 24px; display: flex; flex-direction: column; gap: 12px;">
+            <li><strong>Booker's flow</strong> – This flow outlines the experience from the booker's perspective, showing how they can initiate the split payment and manage the process.</li>
+            <li><strong>Added players' flow</strong> – This flow represents what players added by the booker will see. It focuses on their part of the interaction, ensuring that they understand their share of the payment and how they can claim their spot in the booking.</li>
+            <li><strong>Invited players' flow</strong> – For invited players, the flow illustrates how they can join the booking and complete the payment process to confirm their participation.</li>
+          </ol>
+
+          <p style="margin-top: 16px;">By dividing the user flows this way, I ensured that the design accounted for the different experiences each user type would have when interacting with the split payment feature. This breakdown also helped me identify potential areas of friction for each flow, ensuring the final design met both user needs and business goals.</p>
+          <p style="margin-top: 16px;">The following section will <strong>provide an overview</strong> of how these flows were organized and handed over to the development team. The final design is presented in a separate section.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="cs-section section--gray">
+      <div class="page-wrapper">
+        <img src="../assets/images/projects/split-payment/high-fidelity.png"
+             alt="High-fidelity design flows"
+             style="width: calc(100% + 200px); max-width: calc(100% + 200px); margin-left: -100px; margin-right: -100px; height: auto; display: block; border-radius: 4px;">
+      </div>
+    </section>
+
+
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+
+        <div class="cs-subsection">
+          <h3 class="cs-subsection__heading">04 Test &amp; Release</h3>
+
+          <h3 class="cs-subheading">Usability testing</h3>
+          <p>Due to the nature of the split payment feature, where the functionality requires all users involved in a booking to have access to it, we were unable to conduct usability testing with a limited user group through feature flagging. As a result, the testing had to be conducted internally, with team members acting as both bookers and players.</p>
+          <p style="margin-top: 16px;">This approach allowed us to simulate real user interactions within the app and identify any issues with the user flow, functionality, and overall experience. Internal feedback helped us ensure that the feature was intuitive, and we were able to make any necessary adjustments before the final release.</p>
+
+          <img src="../assets/images/projects/split-payment/test_groups.png"
+               alt="Test groups"
+               style="width: 100%; height: auto; display: block; margin-top: 48px; border-radius: 4px;">
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+
+        <div class="cs-subsection">
+          <h3 class="cs-subsection__heading">The final design</h3>
+          <p>Following internal testing, the designs were iterated upon based on feedback received, leading to a more refined and effective final solution. The challenge was to incorporate the new split payment feature seamlessly within the current app structure, ensuring a consistent and user-friendly experience.</p>
+
+          <img src="../assets/images/projects/split-payment/old-new.png"
+               alt="Old vs New design comparison"
+               style="width: 100%; height: auto; display: block; margin-top: 48px;">
+
+          <p style="margin-top: 48px;"><strong>Some key design enhancements:</strong></p>
+          <ul style="margin-top: 12px;">
+            <li>Bigger player photos for a more social vibe</li>
+            <li>Payment status shown as a pill for quick clarity</li>
+            <li>Payment card updated to include the split payment deadline for better transparency</li>
+          </ul>
+
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section--white">
+      <img src="../assets/images/projects/split-payment/mockup.png"
+           alt="Final design mockup"
+           style="width: 100%; height: auto; display: block;">
+    </section>
+
+
+    <section class="cs-section section--gray">
+      <div class="page-wrapper">
+
+        <h2 class="cs-section__heading">Final thoughts &amp; next steps</h2>
+
+        <div class="cs-subsection">
+          <h3 class="cs-subheading">Final thoughts</h3>
+          <p>This project presented a challenge in fitting new content and requirements within the constraints of an existing design. While I saw several opportunities to enhance the user experience beyond the initial requirements, I worked within the scope of the MVP to ensure a swift integration of the split payment feature.</p>
+          <p style="margin-top: 16px;">One of the most rewarding aspects of this project was the level of collaboration across departments. The input and support from tech, product, finance, commercial, marketing, and customer support teams were invaluable in shaping the feature.</p>
+
+          <h3 class="cs-subheading" style="margin-top: 48px;">Next steps</h3>
+          <p>Although there are no ongoing plans to improve the feature at this time, I have identified several areas for refinement. These improvements aim to make the feature clearer for users and reduce support-related errands by addressing common misunderstandings.</p>
+          <p style="margin-top: 16px;">I've documented these suggestions, so they're ready to be explored once any team has the bandwidth to focus on further iterations.</p>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- What happened after? -->
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+
+        <h2 class="cs-section__heading">What happened after?</h2>
+
+        <div class="cs-subsection">
+          <p>Even after split payment launched, I wasn't satisfied with the experience. The new functionality had been layered onto the existing checkout flow, which was functional, but not as clear or intentional as it could be. Rather than waiting for it to be prioritized, I took the initiative myself, pitching the improvements internally until it was picked up as what we call a <strong>Small win,</strong> a short, focused project outside of our main roadmap work.</p>
+
+          <p style="margin-top: 16px;">My goals were:</p>
+          <ul style="margin-top: 8px;">
+            <li>Give users active control over choosing split payment or paying in full, rather than split payment being selected per default</li>
+            <li>Remove steps from the checkout that added friction without adding value</li>
+            <li>Make the experience cleaner, easier to read, and quicker to understand</li>
+          </ul>
+
+          <h3 class="cs-subheading" style="margin-top: 64px;">The redesign</h3>
+          <p>The new design introduces a step-by-step flow where users actively choose their payment method upfront. This removes ambiguity, prevents accidental selections, and sets clear expectations before the payment is made. The goal with this change was to reduce support cases related to payment confusion.</p>
+          <p style="margin-top: 16px;">A key insight from the original split payment project was that users don't like to read so less is more. Therefore, I went with the approach: start with the essentials and only add extra details if users clearly need them, rather than cluttering the design from the start.</p>
+
+          <div style="display: flex; gap: 24px; margin-top: 32px;">
+            <figure style="flex: 1; margin: 0;">
+              <img src="../assets/images/projects/split-payment/before.png" alt="Before" style="width: 100%; display: block;">
+              <figcaption style="margin-top: 12px; font-size: 14px; color: var(--color-text-muted);"><!-- EDIT: Before caption -->The “old” checkout, where the user has to scroll to see all information. A lot of information is presented in a limited area making it hard to overview.</figcaption>
+            </figure>
+            <figure style="flex: 1; margin: 0;">
+              <img src="../assets/images/projects/split-payment/after.png" alt="After" style="width: 100%; display: block;">
+              <figcaption style="margin-top: 12px; font-size: 14px; color: var(--color-text-muted);"><!-- EDIT: After caption -->The new checkout. Nothing is selected per default, forcing the user to make a decision before moving to the next step. If one of the options are pressed, we expand the box and show more information. </figcaption>
+            </figure>
+          </div>
+
+          <h3 class="cs-subheading" style="margin-top: 64px;">Validating the changes</h3>
+          <p>To measure whether the simplified approach was working, we introduced an in-app feedback prompt in the new checkout. Since I deliberately stripped back information, this feedback loop was essential.</p>
+          <img src="../assets/images/projects/split-payment/checkout_feedback.png"
+               alt="Checkout feedback"
+               style="width: calc(50% - 12px); display: block; margin: 32px auto 0;">
+          <p style="margin-top: 32px;">We rolled out gradually, starting at 15% of users before increasing incrementally after we receiving positive feedback.</p>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- Results stat section -->
+    <section id="resultsSection" style="
+      width: 100%;
+      background-color: var(--color-bg-alt);
+      padding: 100px 24px;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    ">
+      <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+
+        <!-- Cart icon -->
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none"
+             stroke="var(--color-black)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+             style="margin: 0 auto 24px; display: block; opacity: 0; transform: translateY(16px) rotate(-180deg); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.34, 1.3, 0.64, 1);"
+             id="resIcon">
+          <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        </svg>
+
+        <!-- Title -->
+        <h2 id="resTitle" style="
+          font-family: var(--font-display);
+          font-size: var(--text-h2);
+          color: var(--color-black);
+          line-height: 1;
+          opacity: 0;
+          transform: translateY(16px);
+          transition: opacity 0.5s ease 0.15s, transform 0.5s ease 0.15s;
+        ">New checkout feedback</h2>
+
+        <!-- Subtitle -->
+        <p id="resSubtitle" style="
+          font-family: var(--font-body);
+          font-size: var(--text-body);
+          color: var(--color-text-muted);
+          margin-top: 12px;
+          opacity: 0;
+          transform: translateY(16px);
+          transition: opacity 0.5s ease 0.3s, transform 0.5s ease 0.3s;
+"><span id="totalCount">0</span> users shared their feedback</p>
+
+        <!-- Bars -->
+        <div style="margin-top: 56px; text-align: left; display: flex; flex-direction: column; gap: 40px;">
+
+          <!-- Likes row -->
+          <div id="resLikesRow" style="opacity: 0; transform: translateY(12px); transition: opacity 0.7s ease 1.0s, transform 0.7s ease 1.0s;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                     stroke="var(--color-black)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/>
+                  <path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                </svg>
+                <span style="font-family: var(--font-body); font-size: var(--text-body); color: var(--color-black);">Likes</span>
+              </div>
+              <span id="likePct" style="font-family: var(--font-body); font-size: var(--text-body); color: var(--color-black);">0%</span>
+            </div>
+            <div class="bar-track" style="background: #d8dde3; border-radius: 100px; height: 44px; overflow: hidden; position: relative;">
+              <div id="likeBar" style="
+                height: 100%; width: 0%; background: #C3EACB;
+                border-radius: 100px;
+                display: flex; align-items: center; justify-content: flex-end; padding-right: 16px;
+                transition: width 3s cubic-bezier(0.22, 1, 0.36, 1);
+                white-space: nowrap; overflow: hidden;
+              ">
+                <span style="font-family: var(--font-body); font-size: 14px; color: var(--color-text-body);">49,065 users</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dislikes row -->
+          <div id="resDislikesRow" style="opacity: 0; transform: translateY(12px); transition: opacity 0.7s ease 1.3s, transform 0.7s ease 1.3s;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                     stroke="var(--color-black)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"/>
+                  <path d="M17 2h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/>
+                </svg>
+                <span style="font-family: var(--font-body); font-size: var(--text-body); color: var(--color-black);">Dislikes</span>
+              </div>
+              <span id="dislikePct" style="font-family: var(--font-body); font-size: var(--text-body); color: var(--color-black);">0%</span>
+            </div>
+            <div class="bar-track" style="background: #d8dde3; border-radius: 100px; height: 44px; display: flex; align-items: center; position: relative;">
+              <div id="dislikeBar" style="
+                height: 100%; width: 0%; background: #FFB8B8;
+                border-radius: 100px;
+                flex-shrink: 0;
+                transition: width 3s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
+              "></div>
+              <span style="font-family: var(--font-body); font-size: 14px; color: var(--color-black); margin-left: 12px; white-space: nowrap;">3,532 users</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Pill -->
+        <div id="resPill" style="
+          display: inline-block;
+          margin-top: 56px;
+          padding: 14px 32px;
+          border: 1.5px solid var(--color-black);
+          border-radius: 100px;
+          font-family: var(--font-body);
+          font-size: var(--text-body);
+          color: var(--color-black);
+          opacity: 0;
+        ">Overwhelmingly positive response! 🎉</div>
+
+      </div>
+    </section>
+
+    <script>
+      (function () {
+        var section = document.getElementById('resultsSection');
+        var triggered = false;
+
+        function countUp(el, target, decimals, duration, delay) {
+          setTimeout(function () {
+            var start = performance.now();
+            function step(now) {
+              var p = Math.min((now - start) / duration, 1);
+              var ease = 1 - Math.pow(1 - p, 3);
+              el.textContent = (ease * target).toFixed(decimals) + '%';
+              if (p < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+          }, delay);
+        }
+
+        function countUpInt(el, target, duration, delay) {
+          setTimeout(function () {
+            var start = performance.now();
+            function step(now) {
+              var p = Math.min((now - start) / duration, 1);
+              var ease = 1 - Math.pow(1 - p, 3);
+              el.textContent = Math.round(ease * target).toLocaleString('en-US');
+              if (p < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+          }, delay);
+        }
+
+        function animate() {
+          if (triggered) return;
+          triggered = true;
+
+          section.style.opacity = '1';
+
+          var icon = document.getElementById('resIcon');
+          icon.style.opacity = '1';
+          icon.style.transform = 'translateY(0) rotate(0deg)';
+
+          ['resTitle','resSubtitle','resLikesRow','resDislikesRow'].forEach(function(id) {
+            var el = document.getElementById(id);
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+          });
+
+          countUpInt(document.getElementById('totalCount'), 52597, 2000, 300);
+
+          setTimeout(function () {
+            document.getElementById('likeBar').style.width = '93.3%';
+            countUp(document.getElementById('likePct'), 93.3, 1, 3000, 0);
+          }, 1100);
+
+          setTimeout(function () {
+            document.getElementById('dislikeBar').style.width = '6.7%';
+            countUp(document.getElementById('dislikePct'), 6.7, 1, 3000, 0);
+          }, 1400);
+
+          setTimeout(function () {
+            var pill = document.getElementById('resPill');
+            pill.style.animation = 'pillBounce 0.9s ease forwards';
+          }, 4600);
+        }
+
+        var observer = new IntersectionObserver(function (entries) {
+          if (entries[0].isIntersecting) animate();
+        }, { threshold: 0.1, rootMargin: '0px 0px -120px 0px' });
+
+        observer.observe(section);
+      })();
+    </script>
+
+
+    <section class="cs-other section--white">
+      <div class="page-wrapper">
+        <h2 class="cs-other__heading">View other projects</h2>
+        <div id="otherProjectsGrid">
+          <!-- Injected by case-study.js -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="../js/dark-mode.js"></script><!-- DARK MODE: remove this line to disable -->
+  <script src="../js/nav-indicator.js"></script>
+  <script src="../js/nav-mobile.js"></script>
+  <script src="../js/projects-data.js"></script>
+  <script src="../js/case-study.js"></script>
+  <script src="../js/reveal.js"></script>
+</body>
+</html>

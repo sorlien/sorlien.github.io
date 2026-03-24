@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Montah — Amalia Sörlien</title>
+<script>if(localStorage.getItem('theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/dark-mode.css"><!-- DARK MODE: remove this line to disable -->
+  <link rel="stylesheet" href="../css/case-study.css">
+  <style>
+    .cs-hero {
+      position: relative;
+      height: 100vh;
+      min-height: 832px;
+      overflow: hidden;
+      background-color: var(--color-white);
+    }
+
+    .cs-hero__inner {
+      position: relative;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: calc(var(--nav-height) + 40px);
+      padding-bottom: 40px;
+    }
+
+    .cs-hero__text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .cs-hero__title {
+      font-family: var(--font-display);
+      font-size: var(--text-h1);
+      line-height: 1;
+      color: var(--color-black);
+    }
+
+    .cs-hero__description {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: 24px;
+      color: var(--color-text-body);
+      max-width: 437px;
+      text-align: center;
+    }
+
+    .cs-hero__phones {
+      flex: 1;
+      min-height: 0;
+      margin-top: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .cs-hero__phones img {
+      max-height: 100%;
+      width: auto;
+      max-width: 90%;
+      display: block;
+    }
+
+    .cs-hero__phones.anim-from-below {
+      transform: translateY(80px);
+      transition: opacity 0.9s var(--ease-gentle), transform 1.1s var(--ease-gentle);
+    }
+
+    .cs-hero__phones.is-visible {
+      transform: none !important;
+      opacity: 1 !important;
+    }
+
+    .cs-section {
+      width: 100%;
+      padding: 100px 264px;
+    }
+
+    .cs-section--first { padding-top: 80px; }
+
+    .cs-section__heading {
+      font-family: var(--font-display);
+      font-size: var(--text-h2);
+      line-height: 1;
+      color: var(--color-black);
+      margin-bottom: 48px;
+    }
+
+    .cs-subsection__heading {
+      font-family: var(--font-display);
+      font-size: var(--text-h2);
+      line-height: 1;
+      color: var(--color-black);
+      margin-bottom: 16px;
+    }
+
+    .cs-subheading {
+      font-family: var(--font-display);
+      font-size: var(--text-h3);
+      line-height: 1;
+      color: var(--color-black);
+      margin-bottom: 16px;
+    }
+
+    .cs-subsection + .cs-subsection { margin-top: 128px; }
+    .cs-overview__main .cs-subsection + .cs-subsection { margin-top: 0; }
+
+    .cs-overview {
+      display: grid;
+      grid-template-columns: 1fr 172px;
+      gap: 42px;
+      align-items: start;
+    }
+
+    .cs-overview__main {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    .cs-subsection {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cs-subsection p,
+    .cs-subsection ul {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: 24px;
+      color: var(--color-text-body);
+    }
+
+    .cs-subsection ul {
+      padding-left: 24px;
+      list-style: disc;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cs-subsection ol {
+      padding-left: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+      counter-reset: journey-counter;
+    }
+
+    .cs-subsection ol li {
+      counter-increment: journey-counter;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cs-subsection ol li .cs-subheading::before {
+      content: counter(journey-counter) ". ";
+    }
+
+    .cs-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    .cs-meta__item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cs-meta__label {
+      font-family: var(--font-display);
+      font-size: var(--text-ui);
+      line-height: 1;
+      color: var(--color-black);
+    }
+
+    .cs-meta__value {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: normal;
+      color: var(--color-text-body);
+    }
+
+    .cs-other {
+      text-align: center;
+      padding: 80px 264px 100px;
+    }
+
+    .cs-other__heading {
+      font-family: var(--font-display);
+      font-size: var(--text-h3);
+      line-height: 1;
+      color: var(--color-black);
+      margin-bottom: 48px;
+    }
+
+    #otherProjectsGrid {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+    }
+  </style>
+</head>
+<body class="page-montah">
+
+  <nav class="nav" id="siteNav">
+    <a href="../index.html" class="nav__logo" aria-label="Home">
+      <img src="../assets/images/as-logo.png" alt="AS">
+    </a>
+    <ul class="nav__links">
+      <li><a href="../index.html"    class="nav__link">Home</a></li>
+      <li><a href="../projects.html" class="nav__link nav__link--active">Projects</a></li>
+      <li><a href="../about.html"    class="nav__link">About</a></li>
+      <li class="nav__theme-item"><button class="theme-toggle" aria-label="Toggle dark mode">
+        <svg class="icon-moon" width="26" height="26" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="icon-sun" width="26" height="26" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1"  x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22"   x2="5.64"  y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1"  y1="12" x2="3"  y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22"  y1="19.78" x2="5.64"  y2="18.36"/>
+          <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"/>
+        </svg>
+      </button></li>
+    </ul>
+    <button class="nav__hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <svg class="icon-open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </nav>
+
+  <main data-project-id="montah">
+
+    <section class="cs-hero section--white">
+      <div class="page-wrapper cs-hero__inner">
+
+        <div class="cs-hero__text anim-from-below anim-delay-1" id="csTitle">
+          <h1 class="cs-hero__title">Montah</h1>
+        </div>
+
+        <div class="cs-hero__text anim-from-below anim-delay-2" id="csDescription">
+          <p class="cs-hero__description">
+            <!-- EDIT: Replace with your project description -->
+            What happens when a designer with no coding background decides to build a product using only AI tools? This is that story.
+          </p>
+        </div>
+
+        <div class="cs-hero__phones anim-from-below anim-delay-3" id="csPhones">
+          <img src="../assets/images/projects/montah/hero.png"
+               alt="Montah screens">
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="cs-section cs-section--first section--gray">
+      <div class="page-wrapper">
+
+        <h2 class="cs-section__heading">Project overview</h2>
+
+        <div class="cs-overview">
+          <div class="cs-overview__main">
+
+            <div class="cs-subsection">
+              <h3 class="cs-subheading">Challenge</h3>
+              <!-- EDIT -->
+              <p>As a designer without a development background, bringing a product idea to life independently has traditionally required coding skills. With Montah, I wanted to challenge that assumption, exploring how far AI tools could take a non-developer from idea to a fully functioning product, without sacrificing creative control.</p>
+            </div>
+
+            <div class="cs-subsection">
+              <h3 class="cs-subheading">My objectives</h3>
+              <ul>
+                <!-- EDIT -->
+                <li>Explore and evaluate AI-powered tools for end-to-end product development</li>
+                <li>Maintain design quality and control throughout the building process</li>
+                <li>Build a functional bead pattern generator that produces usable outputs</li>
+              </ul>
+            </div>
+
+          </div>
+
+          <div class="cs-meta">
+            <div class="cs-meta__item">
+              <p class="cs-meta__label">Project type</p>
+              <p class="cs-meta__value"><!-- EDIT -->Personal project</p>
+            </div>
+            <div class="cs-meta__item">
+              <p class="cs-meta__label">Project scope</p>
+              <p class="cs-meta__value"><!-- EDIT -->Website</p>
+            </div>
+            <div class="cs-meta__item">
+              <p class="cs-meta__label">Tools</p>
+              <p class="cs-meta__value"><!-- EDIT -->Figma, Lovable, Nano banana, Claude Code, Affinity</p>
+            </div>
+            <div class="cs-meta__item">
+              <p class="cs-meta__label">When</p>
+              <p class="cs-meta__value"><!-- EDIT -->2026</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+
+        <div class="cs-subsection">
+          <h2 class="cs-section__heading">The Idea</h2>
+          <p><!-- EDIT -->Montah started as an experiment, I wanted to explore what AI could actually build, and bead patterns turned out to be a perfect use case. A clear input, a visual output, and a tangible end product.
+Montah is a web-based tool that transforms any image into a bead pattern. Upload a photo, generate a pattern, adjust the colours manually if needed. The idea, if I take it all the way, is that users should be able to buy a kit with the pattern and all the beads needed to recreate their image. </p>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+
+        <div class="cs-subsection">
+          <h2 class="cs-section__heading"><!-- EDIT: Section title -->The Journey</h2>
+          <ol>
+            <li>
+              <h3 class="cs-subheading">Starting with Lovable</h3>
+              <p>Lovable made it easy to get started quickly, but it came with a catch. The tool suggested its own design direction, making it difficult to achieve a result that felt personal and truly mine. I had a product, but not one I felt in control of.</p>
+            </li>
+            <li>
+              <h3 class="cs-subheading">Moving to Figma</h3>
+              <p>Stepping back into Figma gave me back that control. Using Figma Design and Figma Make, I could shape the product exactly as I envisioned it, the typography, the layout, the feel. This was where Montah started to look like itself.</p>
+            </li>
+            <li>
+              <h3 class="cs-subheading">Trying Figma Sites</h3>
+              <p>Publishing directly from Figma felt like the natural next step. But in practice, swapping images was cumbersome, animations didn't behave as expected, and adding more complex components hit a wall. Another dead end, but a useful one.</p>
+            </li>
+            <li>
+              <h3 class="cs-subheading">Back to Lovable</h3>
+              <p>The breakthrough came from combining both worlds. By importing my Figma designs as images into a fresh Lovable project, I finally had both speed and creative control. The full circle moment.</p>
+            </li>
+          </ol>
+
+          <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg"
+               role="img" aria-label="The Journey diagram"
+               style="width: 100%; max-width: 640px; display: block; margin: 32px auto 0;">
+            <defs>
+              <marker id="journey-arrow" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
+                <polygon points="0 0, 6 2.5, 0 5" class="journey-arrowhead"/>
+              </marker>
+            </defs>
+            <style>
+              .journey-arrowhead { fill: var(--color-text-body); }
+              .journey-group {
+                animation: journey-spin 25s linear infinite;
+                transform-origin: 300px 300px;
+              }
+              @keyframes journey-spin {
+                from { transform: rotate(0deg); }
+                to   { transform: rotate(360deg); }
+              }
+              .journey-arc {
+                fill: none;
+                stroke: var(--color-text-body);
+                stroke-width: 1;
+              }
+              .journey-label {
+                font-family: var(--font-body);
+                font-size: 13px;
+                fill: var(--color-black);
+                text-anchor: middle;
+              }
+              .journey-center {
+                font-family: var(--font-body);
+                font-size: 12px;
+                fill: var(--color-text-body);
+                text-anchor: middle;
+                letter-spacing: 0.08em;
+              }
+            </style>
+
+            <!-- Center label — stays fixed while group rotates -->
+            <text class="journey-center" x="300" y="296">THE</text>
+            <text class="journey-center" x="300" y="312">JOURNEY</text>
+
+            <!-- orbit radius: 190, logo: 56×56, label y: -38 -->
+            <g class="journey-group">
+              <!-- Arcs (clockwise, endpoints 10° inside each node) -->
+              <path class="journey-arc" d="M 333,113 A 190,190 0 0,1 487,267" marker-end="url(#journey-arrow)"/>
+              <path class="journey-arc" d="M 487,333 A 190,190 0 0,1 333,487" marker-end="url(#journey-arrow)"/>
+              <path class="journey-arc" d="M 267,487 A 190,190 0 0,1 113,333" marker-end="url(#journey-arrow)"/>
+              <path class="journey-arc" d="M 113,267 A 190,190 0 0,1 267,113" marker-end="url(#journey-arrow)"/>
+
+              <!-- Node 1: Lovable (top, R=0°) -->
+              <g transform="translate(300, 110) rotate(0)">
+                <text class="journey-label" x="0" y="-38">Lovable</text>
+                <image href="../assets/images/projects/montah/logo-lovable.png" x="-28" y="-28" width="56" height="56" preserveAspectRatio="xMidYMid meet"/>
+              </g>
+
+              <!-- Node 2: Figma Design (right, R=90°) -->
+              <g transform="translate(490, 300) rotate(90)">
+                <text class="journey-label" x="0" y="-38">Figma Design</text>
+                <image href="../assets/images/projects/montah/logo-figma-design.png" x="-28" y="-28" width="56" height="56" preserveAspectRatio="xMidYMid meet"/>
+              </g>
+
+              <!-- Node 3: Figma Make (bottom, R=180°) -->
+              <g transform="translate(300, 490) rotate(180)">
+                <text class="journey-label" x="0" y="-38">Figma Make</text>
+                <image href="../assets/images/projects/montah/logo-figma-make.png" x="-28" y="-28" width="56" height="56" preserveAspectRatio="xMidYMid meet"/>
+              </g>
+
+              <!-- Node 4: Figma Sites (left, R=270°) -->
+              <g transform="translate(110, 300) rotate(270)">
+                <text class="journey-label" x="0" y="-38">Figma Sites</text>
+                <image href="../assets/images/projects/montah/logo-figma-sites.png" x="-28" y="-28" width="56" height="56" preserveAspectRatio="xMidYMid meet"/>
+              </g>
+            </g>
+          </svg>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="cs-section section--white" style="padding-top: 48px; padding-bottom: 48px;">
+      <div class="page-wrapper">
+
+        <h2 class="cs-section__heading">Assets</h2>
+
+        <div class="cs-subsection">
+          <p>From the beginning, I had a vision of a "bead rain" hero experience, beads floating and falling through space as you enter the site. A parallax scroll felt like the cleanest and most elegant way to bring that to life. The question was whether it was actually achievable. I wasn't sure if AI could generate realistic-looking beads, but I'd heard good things about Nano Banana and decided to try it.</p>
+          <p style="margin-top: 16px;">It took some trial and error to get it right but I was seriously impressed by the results from Nano banana! The beads were generated in various angles, orientations and in colours I sent in as hex code. I used the generated image and brought them into Affinity where each one was isolated and manually rearranged to build three distinct layers for the parallax effect:</p>
+          <ul style="margin-top: 16px;">
+            <li><strong>Foreground</strong> — large beads, slightly blurred, creating depth</li>
+            <li><strong>Midground</strong> — the focal layer, sharp and in full focus</li>
+            <li><strong>Background</strong> — smaller beads, more blurred, receding into the distance</li>
+          </ul>
+          <p style="margin-top: 16px;">The result is a hero experience that feels alive and dimensional, built entirely through AI generation without a single 3D modeling tool.</p>
+          <img src="../assets/images/projects/montah/beads.png"
+               alt="Beads" style="width: 100%; display: block; margin-top: 32px;">
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="cs-section section--white" style="padding-bottom: 48px;">
+      <div class="page-wrapper">
+
+        <h2 class="cs-section__heading">The Pattern Generator</h2>
+
+        <div class="cs-subsection">
+          <p>The original bead pattern script produced results that didn't feel accurate enough, the colour mapping was off and the patterns lost too much detail from the original image.</p>
+          <p style="margin-top: 16px;">Rather than accepting the limitation, I worked with Claude Code to improve the algorithm. The solution: instead of relying on a single script, three different pattern generation scripts now run simultaneously, each using a slightly different approach to colour mapping and detail rendering. The user is then presented with all three results and picks the one that looks best.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="cs-section section--white" style="padding-top: 0; padding-bottom: 48px;">
+      <div class="page-wrapper">
+        <img src="../assets/images/projects/montah/select_pattern.png"
+             alt="Select pattern" style="width: 100%; display: block;">
+      </div>
+    </section>
+
+    <section class="cs-section section--white" style="padding-top: 48px; padding-bottom: 48px;">
+      <div class="page-wrapper">
+
+        <div class="cs-subsection">
+          <p>Through the process I realised that no matter how much I refined the scripts, creating an algorithm that works well for every type of image is genuinely hard, especially within a 30x30 bead grid that leaves little room for detail. So rather than chasing perfection in the code, I added a manual editing step where users can repaint individual beads to fine-tune the pattern until they're happy with the result.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="cs-section section--white" style="padding-top: 0;">
+      <div class="page-wrapper">
+        <img src="../assets/images/projects/montah/change_color.png"
+             alt="Change colour" style="width: 100%; display: block;">
+      </div>
+    </section>
+
+
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+
+        <h2 class="cs-section__heading">The Result</h2>
+
+        <div class="cs-subsection">
+          <p><!-- EDIT -->Montah is still a work in progress, the core generator works, but I'm continuing to refine the details and exploring how to package it as a real product.</p>
+            <br>
+          <p>Upload any image, choose between three generated bead patterns, and fine-tune the colours manually. Once happy with the result, users get a full breakdown of exactly how many beads they need per colour.
+The vision going forward is to let users order a ready-packed kit with everything included, the pattern and all the beads needed, delivered to their door. The process of building it taught me as much as the product itself, and the vision is still evolving.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="cs-section section--white" style="padding-top: 0;">
+      <div class="page-wrapper">
+        <video src="../assets/images/projects/montah/montah-video.mov"
+               autoplay loop muted playsinline
+               style="width: 100%; display: block;">
+        </video>
+      </div>
+    </section>
+
+
+    <section class="cs-section section--gray">
+      <div class="page-wrapper">
+
+        <h2 class="cs-section__heading">Final thoughts</h2>
+
+        <div class="cs-subsection">
+          <!-- EDIT -->
+          <p>What surprised me most was how smooth the creation process actually is, the barrier to building has never been lower. But that ease comes with a catch: when anyone can build, the results risk becoming generic. More than ever, having a strong personal style and distinct branding is what separates something memorable from something forgettable.</p>
+          <br>
+          <p>The project also reminded me that a straight path isn't always the best one. The wrong turns, the dead ends, the full circle moment, that's where the real learning happened.</p>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="cs-other section--white">
+      <div class="page-wrapper">
+        <h2 class="cs-other__heading">View other projects</h2>
+        <div id="otherProjectsGrid">
+          <!-- Injected by case-study.js -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="../js/dark-mode.js"></script><!-- DARK MODE: remove this line to disable -->
+  <script src="../js/nav-indicator.js"></script>
+  <script src="../js/nav-mobile.js"></script>
+  <script src="../js/projects-data.js"></script>
+  <script src="../js/case-study.js"></script>
+  <script src="../js/reveal.js"></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+/**
+ * dark-mode.css
+ *
+ * Self-contained dark mode styles.
+ *
+ * TO REMOVE DARK MODE COMPLETELY:
+ *   1. Delete this file
+ *   2. Delete js/dark-mode.js
+ *   3. In each HTML file, remove:
+ *        <link rel="stylesheet" href="css/dark-mode.css">
+ *        <script src="js/dark-mode.js"></script>
+ *        <button class="theme-toggle" ...>
+ *
+ * Nothing in main.css needs to change.
+ */
+
+/* ── Dark theme color overrides ─────────────────── */
+[data-theme="dark"] {
+  --color-white:      #111111;
+  --color-black:      #f0f0f0;
+  --color-bg-alt:     #1c1c1c;
+  --color-text-body:  #d0d0d0;
+  --color-text-muted: #888888;
+  --color-watermark:  rgba(193, 197, 213, 0.08);
+}
+
+/* Product trio circles — switch from multiply to screen on dark backgrounds */
+[data-theme="dark"] .cs-trio__circle {
+  mix-blend-mode: screen;
+  opacity: 0.9;
+}
+
+/* Nav background in dark mode */
+[data-theme="dark"] .nav {
+  background-color: rgba(17, 17, 17, 0.7);
+  border-bottom-color: rgba(17, 17, 17, 0.3);
+}
+
+/* ── Toggle button ───────────────────────────────── */
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0 6px 0;
+  margin-left: 24px;
+  color: var(--color-black);
+  transition: color var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  color: var(--color-primary);
+}
+
+.theme-toggle:hover svg {
+  fill: var(--color-primary);
+}
+
+/* Sun icon is white in dark mode */
+[data-theme="dark"] .theme-toggle {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .nav__logo img {
+  filter: invert(1);
+}
+
+/* Show sun in dark mode, moon in light mode */
+.theme-toggle .icon-moon { display: block; }
+.theme-toggle .icon-sun  { display: none;  }
+
+[data-theme="dark"] .theme-toggle .icon-moon { display: none;  }
+[data-theme="dark"] .theme-toggle .icon-sun  { display: block; }

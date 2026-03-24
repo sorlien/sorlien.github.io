@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Amalia Sörlien</title>
+<script>if(localStorage.getItem('theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/dark-mode.css"><!-- DARK MODE: remove this line to disable -->
+  <script>if (sessionStorage.getItem('anim-about-done')) document.documentElement.classList.add('js-skip-intro');</script>
+  <style>
+    /* Skip intro on return visits — matches how home page handles it */
+    .js-skip-intro .about__photo,
+    .js-skip-intro .about__content {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+    /* On mobile the layout is static, so these are always visible */
+    @media (max-width: 767px) {
+      body { overflow-x: hidden; overflow-y: auto; }
+    }
+  </style>
+  <style id="page-style">
+    /* ── About page layout ──────────────────────── */
+    @media (min-width: 768px) {
+      body { overflow: hidden; }
+    }
+
+    .about {
+      position: relative;
+      height: 100vh;
+      background-color: var(--color-white);
+      /* No overflow: hidden — lets photo and content animate in from screen edges */
+    }
+
+    .about__inner {
+      position: relative;
+      height: 100%;
+      overflow: visible; /* Override page-wrapper's overflow-x: hidden */
+    }
+
+    /* Large faint "ABOUT ME" watermark */
+    .about__watermark {
+      position: absolute;
+      top: 27%;
+      left: 0;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* Photo — left side, with green background baked into the image */
+    .about__photo {
+      position: absolute;
+      bottom: 0;
+      left: 16px;
+      width: 48%;
+      max-width: 614px;
+      transform: translateX(-100vw);
+      opacity: 0;
+      transition:
+        transform 1.1s var(--ease-gentle),
+        opacity   0.9s var(--ease-gentle);
+    }
+
+    .about__photo img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+
+    /* Text content — right side */
+    .about__content {
+      position: absolute;
+      top: 310px;
+      left: calc(50% + 15px);
+      width: 552px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      transform: translateX(100vw);
+      opacity: 0;
+      transition:
+        transform 1.1s var(--ease-gentle),
+        opacity   0.9s var(--ease-gentle);
+    }
+
+    .about__headline {
+      font-family: var(--font-display);
+      font-size: var(--text-h1);
+      line-height: 1;
+      color: var(--color-black);
+    }
+
+    .about__bio {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      width: 100%;
+    }
+
+    .about__bio p {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: 24px;
+      color: var(--color-text-body);
+    }
+
+    .about__bio p + p {
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navigation ──────────────────────────────── -->
+  <nav class="nav" id="siteNav">
+    <a href="index.html" class="nav__logo" aria-label="Home">
+      <img src="assets/images/as-logo.png" alt="AS">
+    </a>
+    <ul class="nav__links">
+      <li><a href="index.html"    class="nav__link">Home</a></li>
+      <li><a href="projects.html" class="nav__link">Projects</a></li>
+      <li><a href="about.html"    class="nav__link nav__link--active">About</a></li>
+      <li class="nav__theme-item"><button class="theme-toggle" aria-label="Toggle dark mode">
+        <svg class="icon-moon" width="26" height="26" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="icon-sun" width="26" height="26" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1"  x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22"   x2="5.64"  y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1"  y1="12" x2="3"  y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22"  y1="19.78" x2="5.64"  y2="18.36"/>
+          <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"/>
+        </svg>
+      </button></li>
+    </ul>
+    <button class="nav__hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <svg class="icon-open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- ── About ────────────────────────────────────── -->
+  <main>
+    <section class="about">
+      <div class="page-wrapper about__inner">
+
+        <!-- Watermark: fades in -->
+        <span class="watermark about__watermark anim-scale-up"
+              id="aboutWatermark">
+          ABOUT ME
+        </span>
+
+        <!-- Photo: slides in from the left -->
+        <div class="about__photo"
+             id="aboutPhoto">
+          <!--
+            Export your about photo (with green background) from Figma and save to:
+            assets/images/about-photo.png
+          -->
+          <img src="assets/images/about-photo.png" alt="Amalia Sörlien">
+        </div>
+
+        <!-- Text content: slides in from the right -->
+        <div class="about__content"
+             id="aboutContent">
+          <h1 class="about__headline">Curious creator</h1>
+          <div class="about__bio">
+            <p>I'm a designer who loves creating thoughtful, user-focused experiences. With an engineering background, I'm all about solving problems and finding practical ways to bring technology and design together. I enjoy working in that sweet spot where creativity meets functionality, always making sure the user comes first.</p>
+            <p>I enjoy trying new things and picking up new skills. Recently, I started crocheting and made my first balaclava to tackle the windy Gothenburg weather. In my youth, I participated in numerous sports and my passion for sports runs deep. However, I feel like I missed out as a kid on dancing when everyone else was learning. So during the fall I took my first dance lessons! Luckily, beginner courses for adults exist, and it's never too late to try something new 🤠</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <script src="js/dark-mode.js"></script><!-- DARK MODE: remove this line to disable -->
+  <script src="js/nav-indicator.js"></script>
+  <script src="js/nav-mobile.js"></script>
+  <script src="js/hero-animation.js"></script>
+  <script src="js/projects-data.js"></script>
+  <script src="js/projects.js"></script>
+  <script src="js/about-animation.js"></script>
+  <script src="js/router.js"></script>
+
+</body>
+</html>

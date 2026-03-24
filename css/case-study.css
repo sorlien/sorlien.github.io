@@ -1,0 +1,222 @@
+/* ============================================
+   CASE STUDY — Responsive overrides
+   Loaded after each case study page's inline <style> block.
+   Uses !important where needed to override inline padding values.
+   ============================================ */
+
+/* ── Clip any horizontal overflow within case study content ──
+   Keeps the layout viewport at screen width so the fixed nav
+   (width: 100%) doesn't expand beyond the visible area.       */
+main {
+  overflow-x: hidden;
+}
+
+/* ── Heading hierarchy ────────────────────── */
+/* cs-section__heading (h2) stays at var(--text-h2) = clamp(32px, 5vw, 64px)  */
+/* cs-subsection__heading was also var(--text-h2) — reduce to var(--text-h3)   */
+/* cs-subheading was 32px — reduce to 22px                                      */
+.cs-subsection__heading { font-size: var(--text-h3) !important; }
+.cs-subheading          { font-size: 22px !important; }
+.cs-process__number     { font-size: 22px !important; }
+
+/* ── Section padding ──────────────────────── */
+@media (max-width: 1199px) {
+  .cs-section { padding: 80px 48px !important; }
+  .cs-subsection + .cs-subsection { margin-top: 80px !important; }
+}
+
+@media (max-width: 767px) {
+  .cs-section { padding: 48px 20px !important; }
+  .cs-subsection + .cs-subsection { margin-top: 64px !important; }
+  /* Keep Challenge → My objectives compact inside the overview grid */
+  .cs-overview__main .cs-subsection + .cs-subsection { margin-top: 24px !important; }
+}
+
+/* ── Overview grid (Challenge + sidebar) ──── */
+@media (max-width: 1199px) {
+  .cs-overview { grid-template-columns: 1fr !important; }
+  .cs-meta { display: flex; flex-wrap: wrap; gap: 32px; }
+}
+
+@media (max-width: 767px) {
+  .cs-meta {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 16px;
+  }
+}
+
+/* ── Screenshots grid ─────────────────────── */
+@media (max-width: 1199px) {
+  .cs-screenshots { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+@media (max-width: 767px) {
+  .cs-screenshots { grid-template-columns: 1fr !important; }
+}
+
+/* ── Case study hero ──────────────────────── */
+@media (max-width: 1199px) {
+  .cs-hero { height: 100vh; }
+  .cs-hero__inner {
+    justify-content: center;
+    padding-top: var(--nav-height) !important;
+    padding-bottom: 40px;
+  }
+  /* Remove flex-grow so justify-content: center actually works */
+  .cs-hero__phones {
+    flex: none !important;
+    max-height: 55vh;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .cs-hero { height: auto !important; min-height: 100svh !important; }
+  .cs-hero__inner {
+    height: auto !important;
+    min-height: 100svh;
+    justify-content: center;
+    padding-top: var(--nav-height) !important;
+    padding-bottom: 32px;
+  }
+  /* Remove flex-grow so the phones div shrinks to its content,
+     letting justify-content: center actually work */
+  .cs-hero__phones { flex: none !important; max-height: 50vh; width: 100%; }
+  .page-montah .cs-hero__phones { max-height: 65vh; }
+  /* Remove Montah's extra padding-top on mobile — it shifts content too high */
+  .page-montah .cs-hero__inner { padding-top: var(--nav-height) !important; }
+}
+
+/* ── Stack all horizontal flex layouts that overflow on mobile ── */
+@media (max-width: 767px) {
+  /* Inline-style flex rows (split-payment before/after) */
+  .cs-subsection div[style*="display: flex"] { flex-direction: column !important; }
+
+  /* Product trio: text + diagram side-by-side */
+  .cs-trio-intro {
+    flex-direction: column !important;
+    gap: 32px !important;
+  }
+  .cs-trio {
+    width: 100% !important;
+    max-width: 268px;
+    margin: 0 auto;
+  }
+
+  /* Functional description: text + doc image side-by-side */
+  .cs-funcdesc {
+    flex-direction: column !important;
+    gap: 24px !important;
+  }
+  .cs-funcdesc__image {
+    width: 100% !important;
+  }
+
+  /* Design process steps — 2-column grid */
+  .cs-process {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px !important;
+  }
+}
+
+/* ── Comparison tables (scroll on mobile) ── */
+@media (max-width: 767px) {
+  .cs-table,
+  .ca-table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ── User snapshot cards (split-payment) ─── */
+@media (max-width: 1199px) {
+  .us-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+@media (max-width: 767px) {
+  .us-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── Negative-margin bleed images ────────── */
+/* High-fidelity image uses width: calc(100% + 200px) and margin: 0 -100px
+   to bleed past section padding — reset this on tablet/mobile              */
+@media (max-width: 1199px) {
+  img[style*="margin-left: -100px"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+/* ── "View other projects" cards ─────────── */
+@media (max-width: 1199px) {
+  .cs-other { padding: 80px 48px 100px !important; }
+  #otherProjectsGrid {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .project-card { width: 280px; }
+}
+
+@media (max-width: 767px) {
+  .cs-other { padding: 48px 20px 64px !important; }
+  #otherProjectsGrid { flex-direction: column; align-items: center; }
+  .project-card { width: 100%; max-width: 340px; }
+}
+
+/* ── Clima Card: rationale diagram ──────────*/
+@media (max-width: 767px) {
+  .rationale-diagram {
+    display: flex !important;
+    flex-direction: column;
+  }
+  .rationale-relevance                              { order: 1; } /* 01 first  */
+  .rationale-diagram > .rationale-label:first-child { order: 2; } /* 02 second */
+  .rationale-diagram__circles                       { order: 3; } /* circles   */
+  .rationale-importance                             { order: 4; } /* 03 last   */
+}
+
+/* ── Clima Card: stat callouts ───────────── */
+@media (max-width: 767px) {
+  .cs-stats { gap: 48px !important; }
+  .cs-stat .cs-stat__number { font-size: 48px !important; }
+}
+
+/* ── Clima Card: color palette circles ───── */
+/* Override the generic flex-column stacking rule — keep row layout, wrap to 3+2 */
+@media (max-width: 767px) {
+  .cs-subsection div.color-palette {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 16px;
+    max-width: 340px; /* fits 3 × 100px circles + 2 × 16px gaps (332px) with a little room */
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  /* Remove desktop overlap margins — gap handles spacing instead */
+  .cs-subsection div.color-palette > div {
+    margin-left: 0 !important;
+  }
+  /* Scale circles down from 120px to 100px */
+  .cs-subsection div.color-palette > div > div:first-child {
+    width: 100px !important;
+    height: 100px !important;
+  }
+}
+
+/* ── Montah spinning SVG ──────────────────── */
+@media (max-width: 767px) {
+  svg[aria-label="The Journey diagram"] {
+    max-width: 90vw !important;
+  }
+}

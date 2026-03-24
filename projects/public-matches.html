@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Public Matches — Amalia Sörlien</title>
+<script>if(localStorage.getItem('theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/dark-mode.css"><!-- DARK MODE: remove this line to disable -->
+  <link rel="stylesheet" href="../css/case-study.css">
+  <style>
+    /* ════════════════════════════════════════════
+       HERO
+       ════════════════════════════════════════════ */
+    .cs-hero {
+      position: relative;
+      height: 100vh;
+      min-height: 832px;
+      overflow: hidden;
+      background-color: var(--color-white);
+    }
+
+    .cs-hero__inner {
+      position: relative;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: calc(var(--nav-height) + 40px);
+      padding-bottom: 40px;
+    }
+
+    /* Title + description — centered, rise from below */
+    .cs-hero__text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .cs-hero__title {
+      font-family: var(--font-display);
+      font-size: var(--text-h1);
+      line-height: 1;
+      color: var(--color-black);
+    }
+
+    .cs-hero__description {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: 24px;
+      color: var(--color-text-body);
+      max-width: 437px;
+      text-align: center;
+    }
+
+    /* Hero image — fills remaining space below the text */
+    .cs-hero__phones {
+      flex: 1;
+      min-height: 0;
+      margin-top: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+    }
+
+    .cs-hero__phones img {
+      max-height: 100%;
+      width: auto;
+      max-width: 100%;
+      display: block;
+    }
+
+
+    /* Override anim-from-below with ease-gentle bounce */
+    .cs-hero__phones.anim-from-below {
+      transform: translateY(80px);
+      transition:
+        opacity   0.9s var(--ease-gentle),
+        transform 1.1s var(--ease-gentle);
+    }
+
+    .cs-hero__phones.is-visible {
+      transform: none !important;
+      opacity: 1 !important;
+    }
+
+
+    /* ════════════════════════════════════════════
+       CONTENT SECTIONS
+       ════════════════════════════════════════════ */
+
+    /* Shared section padding */
+    .cs-section {
+      width: 100%;
+      padding: 100px 264px;
+    }
+
+    /* First content section sits right below the hero */
+    .cs-section--first {
+      padding-top: 80px;
+    }
+
+    /* Section heading (64px) */
+    .cs-section__heading {
+      font-family: var(--font-display);
+      font-size: var(--text-h2);
+      line-height: 1;
+      color: var(--color-black);
+      margin-bottom: 48px;
+    }
+
+    /* Subsection heading */
+    .cs-subsection__heading {
+      font-family: var(--font-display);
+      font-size: var(--text-h2);
+      line-height: 1;
+      color: var(--color-black);
+      margin-bottom: 16px;
+    }
+
+    /* Sub-subheading — smaller than section headings */
+    .cs-subheading {
+      font-family: var(--font-display);
+      font-size: 32px;
+      line-height: 1;
+      color: var(--color-black);
+      margin-bottom: 16px;
+    }
+
+    /* Tighten gap when a subheading directly follows a subsection heading */
+    .cs-subsection__heading + .cs-subheading {
+      margin-top: 16px;
+    }
+
+
+    /* ── Project overview: two-column grid ───────── */
+    .cs-overview {
+      display: grid;
+      grid-template-columns: 1fr 172px;
+      gap: 42px;
+      align-items: start;
+    }
+
+    .cs-overview__main {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    .cs-subsection {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Space above each major subsection (01 Research, Key screens, etc.) */
+    .cs-process + .cs-subsection,
+    .cs-subsection + .cs-subsection {
+      margin-top: 128px;
+    }
+
+    /* Reset inside overview — Challenge → My objectives should stay compact */
+    .cs-overview__main .cs-subsection + .cs-subsection {
+      margin-top: 0;
+    }
+
+    .cs-subsection p,
+    .cs-subsection ul {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: 24px;
+      color: var(--color-text-body);
+    }
+
+    .cs-subsection ul {
+      padding-left: 24px;
+      list-style: disc;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* Metadata sidebar */
+    .cs-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    .cs-meta__item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cs-meta__label {
+      font-family: var(--font-display);
+      font-size: var(--text-ui);
+      line-height: 1;
+      color: var(--color-black);
+    }
+
+    .cs-meta__value {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: normal;
+      color: var(--color-text-body);
+    }
+
+
+    /* ── Screenshot grid ─────────────────────────── */
+    .cs-screenshots {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .cs-screenshots img {
+      width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+
+
+    /* ── Prototype / video embed ─────────────────── */
+    .cs-video {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+      border-radius: 4px;
+      margin-top: 32px;
+      background-color: var(--color-bg-alt);
+    }
+
+
+    /* ════════════════════════════════════════════
+       VIEW OTHER PROJECTS
+       ════════════════════════════════════════════ */
+    .cs-other {
+      text-align: center;
+      padding: 80px var(--content-indent) 100px;
+    }
+
+    .cs-other__heading {
+      font-family: var(--font-display);
+      font-size: var(--text-h3);
+      line-height: 1;
+      color: var(--color-black);
+      margin-bottom: 48px;
+    }
+
+    #otherProjectsGrid {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+    }
+
+
+    /* ── Comparison table ────────────────────────── */
+    .cs-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 6px;
+      margin-top: 32px;
+    }
+
+    .cs-table th,
+    .cs-table td {
+      padding: 16px;
+      text-align: center;
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: 24px;
+      border-radius: 4px;
+    }
+
+    .cs-table th {
+      font-weight: 600;
+      color: var(--color-black);
+      background-color: var(--color-bg-alt);
+    }
+
+    .cs-table th.cs-table__feature-header {
+      background-color: #cfe1ff;
+      color: #193767;
+    }
+
+    .cs-table td.cs-table__feature {
+      background-color: #cfe1ff;
+      color: #193767;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .cs-table td.cs-table__cell {
+      background-color: var(--color-bg-alt);
+    }
+
+    .cs-table svg {
+      display: block;
+      margin: 0 auto;
+    }
+
+
+    /* ── Design process steps ────────────────────── */
+    .cs-process {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 64px;
+    }
+
+    .cs-process__step {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .cs-process__number {
+      font-family: var(--font-display);
+      font-size: var(--text-h3);
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .cs-process__items {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .cs-process__items p {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: 24px;
+      color: var(--color-text-body);
+    }
+
+
+    /* ── Product trio (overlapping circles) ─────── */
+    .cs-trio-intro {
+      display: flex;
+      gap: 64px;
+      align-items: flex-start;
+      margin-top: 48px;
+    }
+
+    .cs-trio {
+      position: relative;
+      width: 268px;
+      height: 252px;
+      flex-shrink: 0;
+    }
+
+    .cs-trio__circle {
+      position: absolute;
+      width: 148px;
+      height: 148px;
+      border-radius: 50%;
+      opacity: 0.75;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      mix-blend-mode: multiply;
+    }
+
+    /* Equilateral triangle layout — center-to-center distance: 120px each */
+    .cs-trio__circle--feasibility  { background: #32a953; top:   0px; left: 60px; } /* top center   */
+    .cs-trio__circle--desirability { background: #4084f4; top: 104px; left:  0px; } /* bottom-left  */
+    .cs-trio__circle--viability    { background: #fdbb05; top: 104px; left: 120px; } /* bottom-right */
+
+    .cs-trio__role,
+    .cs-trio__label {
+      font-family: var(--font-body);
+      font-size: 11px;
+      color: white;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .cs-trio__label { font-weight: 700; }
+
+    .cs-trio__glow {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: white;
+      top: 137px;
+      left: 128px;
+      box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.6);
+      animation: trio-pulse 4s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    @keyframes trio-pulse {
+      0%, 100% { box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.6); }
+      50%       { box-shadow: 0 0 16px 8px rgba(255, 255, 255, 0.9); }
+    }
+
+    /* Functional description: text + doc image side by side */
+    .cs-funcdesc {
+      display: flex;
+      gap: 78px;
+      align-items: flex-start;
+      margin-top: 48px;
+    }
+
+    .cs-funcdesc__image {
+      width: 281px;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .cs-funcdesc__image img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+
+    /* ── Screens on grey background ─────────────── */
+    .cs-screens-bg {
+      background-color: var(--color-bg-alt);
+      border-radius: 8px;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .cs-screens-bg img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Full-width variant — no padding, image fills the container edge to edge */
+    .cs-screens-bg--full {
+      padding: 0;
+      overflow: hidden;
+    }
+
+
+  </style>
+</head>
+<body>
+
+  <!-- ── Navigation ──────────────────────────────── -->
+  <nav class="nav" id="siteNav">
+    <a href="../index.html" class="nav__logo" aria-label="Home">
+      <img src="../assets/images/as-logo.png" alt="AS">
+    </a>
+    <ul class="nav__links">
+      <li><a href="../index.html"    class="nav__link">Home</a></li>
+      <li><a href="../projects.html" class="nav__link nav__link--active">Projects</a></li>
+      <li><a href="../about.html"    class="nav__link">About</a></li>
+      <li class="nav__theme-item"><button class="theme-toggle" aria-label="Toggle dark mode">
+        <svg class="icon-moon" width="26" height="26" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="icon-sun" width="26" height="26" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1"  x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22"   x2="5.64"  y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1"  y1="12" x2="3"  y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22"  y1="19.78" x2="5.64"  y2="18.36"/>
+          <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"/>
+        </svg>
+      </button></li>
+    </ul>
+    <button class="nav__hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <svg class="icon-open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- data-project-id tells case-study.js which project this is -->
+  <main data-project-id="public-matches">
+
+    <!-- ════════════════════════════════════════════
+         HERO
+         ════════════════════════════════════════════ -->
+    <section class="cs-hero section--white">
+      <div class="page-wrapper cs-hero__inner">
+
+        <!-- Title + description rise from below -->
+        <div class="cs-hero__text anim-from-below anim-delay-1" id="csTitle">
+          <h1 class="cs-hero__title">Public Matches</h1>
+        </div>
+
+        <div class="cs-hero__text anim-from-below anim-delay-2" id="csDescription">
+          <p class="cs-hero__description">
+            This feature enables bookers to find players to fill empty spots
+            in racket sport bookings.
+          </p>
+        </div>
+
+        <!-- Hero image rises from below -->
+        <div class="cs-hero__phones anim-from-below anim-delay-3" id="csPhones">
+          <img src="../assets/images/projects/public-matches/hero_image.png"
+               alt="Public Matches screens"
+               style="width: 100%;">
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ════════════════════════════════════════════
+         PROJECT OVERVIEW
+         ════════════════════════════════════════════ -->
+    <section class="cs-section cs-section--first section--gray">
+      <div class="page-wrapper">
+
+        <h2 class="cs-section__heading">Project overview</h2>
+
+        <div class="cs-overview">
+
+          <!-- Left column: Challenge + Objectives -->
+          <div class="cs-overview__main">
+
+            <div class="cs-subsection">
+              <h3 class="cs-subheading">Challenge</h3>
+              <p>
+                <!-- EDIT: Replace with your challenge description -->
+                At MATCHi, a platform dedicated to racket sports where players can book courts at various venues, one of the key objectives was to help players find others to complete their bookings or join existing matches. To achieve this, we needed to create a public space within the existing app where players could easily share and discover available matches.I worked on this feature with four developers and a product manager,  I will refer to them as my team. 
+              </p>
+            </div>
+
+            <div class="cs-subsection">
+              <h3 class="cs-subheading">My objectives</h3>
+              <ul>
+                <!-- EDIT: Replace with your actual objectives -->
+                <li><strong>Boost user experience</strong> with an easy-to-use interface for sharing and joining public matches</li>
+                <li><strong>Encourage player interaction</strong> through a public space for discovering and joining matches</li>
+                <li><strong>Drive venue occupancy</strong> by designing a feature that fits seamlessly into MATCHi’s platform and supports the business goals.</li>
+              </ul>
+            </div>
+
+          </div>
+
+          <!-- Right column: Metadata -->
+          <div class="cs-meta">
+            <div class="cs-meta__item">
+              <p class="cs-meta__label">Company</p>
+              <!-- EDIT -->
+              <p class="cs-meta__value">MATCHi</p>
+            </div>
+            <div class="cs-meta__item">
+              <p class="cs-meta__label">Project scope</p>
+              <!-- EDIT -->
+              <p class="cs-meta__value">Feature design</p>
+            </div>
+            <div class="cs-meta__item">
+              <p class="cs-meta__label">Tools</p>
+              <!-- EDIT -->
+              <p class="cs-meta__value">Figma</p>
+            </div>
+            <div class="cs-meta__item">
+              <p class="cs-meta__label">When</p>
+              <!-- EDIT -->
+              <p class="cs-meta__value">2024</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ════════════════════════════════════════════
+         DESIGN & PROTOTYPE
+         Add, remove or reorder subsections as needed.
+         ════════════════════════════════════════════ -->
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+
+        <h2 class="cs-section__heading">Design process</h2>
+
+        <!-- Process overview -->
+        <div class="cs-process">
+          <div class="cs-process__step">
+            <p class="cs-process__number" style="color: #4084f4;">1 Research</p>
+            <div class="cs-process__items">
+              <p>Competitive analysis</p>
+              <p>User research</p>
+            </div>
+          </div>
+          <div class="cs-process__step">
+            <p class="cs-process__number" style="color: #32a953;">2 Strategy</p>
+            <div class="cs-process__items">
+              <p>Functional description</p>
+              <p>Product Roadmap</p>
+              <p>Application map</p>
+            </div>
+          </div>
+          <div class="cs-process__step">
+            <p class="cs-process__number" style="color: #fdbb05;">3 Design</p>
+            <div class="cs-process__items">
+              <p>Ideation workshop</p>
+              <p>Wireframes</p>
+              <p>High-fidelity wireframes</p>
+            </div>
+          </div>
+          <div class="cs-process__step">
+            <p class="cs-process__number" style="color: #e94335;">4 Build and test</p>
+            <div class="cs-process__items">
+              <p>Prototype</p>
+              <p>Usability testings</p>
+              <p>Final design</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Subsection: Research -->
+        <div class="cs-subsection">
+          <h3 class="cs-subsection__heading">01 Research</h3>
+
+          <!-- Competitive analysis -->
+          <h3 class="cs-subheading">Competitive analysis</h3>
+          <p>To investigate and understand the feature, I conducted a competitive analysis of three companies in the racket sports booking industry. This analysis aimed to identify key functionalities. By examining how competitors approach similar features, I was able to pinpoint opportunities for differentiation and improvement in our platform, ensuring that MATCHi remains competitive and aligned with user needs.</p>
+
+          <table class="cs-table">
+            <thead>
+              <tr>
+                <th class="cs-table__feature-header">Functionality</th>
+                <th>Company X</th>
+                <th>Company Y</th>
+                <th>Company Z</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="cs-table__feature">Create public match w/o booking</td>
+                <td class="cs-table__cell"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#22c55e"/><path d="M7 12.5l3.5 3.5 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></td>
+                <td class="cs-table__cell"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#ef4444"/><path d="M8 8l8 8M16 8l-8 8" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></td>
+                <td class="cs-table__cell"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#22c55e"/><path d="M7 12.5l3.5 3.5 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></td>
+              </tr>
+              <tr>
+                <td class="cs-table__feature">Result reporting</td>
+                <td class="cs-table__cell"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#ef4444"/><path d="M8 8l8 8M16 8l-8 8" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></td>
+                <td class="cs-table__cell"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#22c55e"/><path d="M7 12.5l3.5 3.5 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></td>
+                <td class="cs-table__cell"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#ef4444"/><path d="M8 8l8 8M16 8l-8 8" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></td>
+              </tr>
+              <tr>
+                <td class="cs-table__feature">Levels</td>
+                <td class="cs-table__cell"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#22c55e"/><path d="M7 12.5l3.5 3.5 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></td>
+                <td class="cs-table__cell"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#ef4444"/><path d="M8 8l8 8M16 8l-8 8" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></td>
+                <td class="cs-table__cell"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#22c55e"/><path d="M7 12.5l3.5 3.5 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></td>
+              </tr>
+              <tr>
+                <td class="cs-table__feature">Messaging</td>
+                <td class="cs-table__cell"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#22c55e"/><path d="M7 12.5l3.5 3.5 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></td>
+                <td class="cs-table__cell"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#22c55e"/><path d="M7 12.5l3.5 3.5 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></td>
+                <td class="cs-table__cell"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#ef4444"/><path d="M8 8l8 8M16 8l-8 8" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></td>
+              </tr>
+              <tr>
+                <td class="cs-table__feature">Auto-cancellation</td>
+                <td class="cs-table__cell"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#ef4444"/><path d="M8 8l8 8M16 8l-8 8" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></td>
+                <td class="cs-table__cell"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#ef4444"/><path d="M8 8l8 8M16 8l-8 8" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></td>
+                <td class="cs-table__cell"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#22c55e"/><path d="M7 12.5l3.5 3.5 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- User research -->
+          <h3 class="cs-subheading" style="margin-top: 64px;">User research</h3>
+          <p>To ensure the feature addressed real market needs, I conducted user research by engaging colleagues who had both a deep understanding of the feature and insights into the commercial landscape. Additionally, I consulted with the commercial team to better understand the market demand, validating that the feature would resonate with our venues and meet their needs. This combined approach ensured that we were building a solution aligned with both user expectations and business goals.</p>
+        </div>
+
+        <!-- Subsection: 02 Strategy -->
+        <div class="cs-subsection">
+          <h3 class="cs-subsection__heading">02 Strategy</h3>
+
+          <!-- Product trio: overlapping circles + intro text -->
+          <div class="cs-trio-intro">
+            <div class="cs-trio" aria-hidden="true">
+              <div class="cs-trio__glow"></div>
+              <div class="cs-trio__circle cs-trio__circle--feasibility">
+                <span class="cs-trio__role">Tech lead</span>
+                <span class="cs-trio__label">Feasibility</span>
+              </div>
+              <div class="cs-trio__circle cs-trio__circle--desirability">
+                <span class="cs-trio__role">Designer</span>
+                <span class="cs-trio__label">Desirability</span>
+              </div>
+              <div class="cs-trio__circle cs-trio__circle--viability">
+                <span class="cs-trio__role">Product manager</span>
+                <span class="cs-trio__label">Viability</span>
+              </div>
+            </div>
+            <p>This intersect of feasibility, desirability, and viability is where the team believe <strong>the best product decisions</strong> are made.<br><br>During the strategy phase, I collaborated closely in a product trio to ensure every decision was well-rounded and aligned with our goals. By planning together from the beginning, we ensured that user needs, technical constraints, and business objectives were all considered.</p>
+          </div>
+
+          <!-- Functional description -->
+          <div class="cs-funcdesc" style="margin-top: 64px;">
+            <div>
+              <h3 class="cs-subheading">Functional description</h3>
+              <p>The product manager and I created a functional requirement for the first version of Public Matches to establish a clear and shared understanding of the core functionality. This document served as a blueprint, aligning the team on what needed to be built and why. The tech lead used it as a way to shape the technical build specification. Additionally, it laid a solid foundation for the future design work.</p>
+            </div>
+            <!-- EDIT: Export functional description screenshot → assets/images/projects/public-matches/func-desc.png -->
+            <div class="cs-funcdesc__image">
+              <img src="../assets/images/projects/public-matches/func-desc.png" alt="Functional description document">
+            </div>
+          </div>
+
+          <!-- Product roadmap -->
+          <div style="margin-top: 48px;">
+            <h3 class="cs-subheading">Product roadmap</h3>
+            <p>We used the functional requirements to create a product roadmap. By breaking down the key features and priorities outlined in the requirements, we were able to visualize the journey ahead. This gave us a clear picture of what to tackle first and how each piece fits into the bigger picture. It also helped us set realistic timelines and identify dependencies, ensuring that our team was focused and aligned on our goals.</p>
+          </div>
+
+          <!-- Application map -->
+          <div style="margin-top: 48px;">
+            <h3 class="cs-subheading">Application map</h3>
+            <p>I used an application map to explore the hierarchy of the current app. This helped me understand where to integrate Public Matches and identify the key touchpoints for users. By mapping out the existing structure, I could plan how to introduce the new feature without disrupting the overall user flow, ensuring a cohesive experience.</p>
+            <!-- EDIT: Export application map → assets/images/projects/public-matches/app-map.png -->
+            <img src="../assets/images/projects/public-matches/app-map.png"
+                 alt="Application map"
+                 style="width: 100%; margin-top: 32px; border-radius: 4px;">
+          </div>
+
+        </div>
+
+        <!-- Subsection: 03 Design -->
+        <div class="cs-subsection">
+          <h3 class="cs-subsection__heading">03 Design</h3>
+
+          <!-- Ideation workshop -->
+          <h3 class="cs-subheading">Ideation workshop</h3>
+          <p>I facilitated two collaborative ideation sessions, one with my team and another with a group of designers and product managers. These sessions were designed to generate ideas and explore new possibilities. During the session, we focused on generating a broad set of ideas without judgment or evaluation. This approach encouraged open thinking and allowed innovative solutions to emerge. The focus was on quantity rather than quality and the goal was for me to gather ideas which I could use when designing public matches.</p>
+
+          <p style="margin-top: 16px;">Many participants were not used to collaborating in this type of workshop, so I chose a variety of ideation techniques. This allowed me to learn, as a facilitator, what worked best for future sessions.</p>
+
+          <p style="margin-top: 16px;">We started off with reviewing the problem statement and some How-Might-We Questions to frame the ideation in this workshop session. After that we continued with the different ideation techniques:</p>
+
+          <ul style="margin-top: 8px;">
+            <li>Method 6-3-5</li>
+            <li>Crazy 8</li>
+            <li>The thief</li>
+            <li>Flip the problem</li>
+          </ul>
+
+          <p style="margin-top: 16px;"><strong>Lessons learned</strong> from the workshop:</p>
+          <ul style="margin-top: 8px;">
+            <li>Some non-designers found it challenging to generate rapid ideas by visualizing them. I'll keep this in mind for future sessions and consider alternative methods for those less familiar with visual ideation.</li>
+            <li>It's essential to be very precise and maintain a narrow focus to avoid exploring solutions outside the scope of the feature.</li>
+            <li>Many of the ideas generated were great but more suitable for future enhancements rather than the MVP.</li>
+            <li>It was fascinating to observe how participants from different professions approached problem-solving, bringing diverse perspectives to the ideation process.</li>
+            <li>While a structured workshop was important, I found that being flexible with the agenda allowed for better collaboration and creativity, especially when the group needed more time to explore a promising idea.</li>
+            <li>Some team members were quieter than others. I discovered that prompting quieter participants with direct but open-ended questions helped draw out more diverse ideas and perspectives.</li>
+          </ul>
+
+          <!-- EDIT: Export workshop photo → assets/images/projects/public-matches/ideation-workshop.png -->
+          <div class="cs-screens-bg" style="margin-top: 32px;">
+            <img src="../assets/images/projects/public-matches/ideation-workshop.png" alt="Ideation workshop">
+          </div>
+
+          <!-- Wireframes -->
+          <div style="margin-top: 48px;">
+            <h3 class="cs-subheading">Wireframes</h3>
+            <p>Using the functional requirements and outcomes from the ideation workshop, I created wireframes for the feature. I focused on key screens to get a clear overview of the functionality. Once I had a visual direction for the layout, I started adding more details. This step allowed me to concentrate on visual consistency and hierarchy before moving on to styling.</p>
+            <p style="margin-top: 16px;">One key insight from creating wireframes was the need for a more flexible booking details screen, allowing for additional functionality to be added in a scalable way.</p>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- Wireframes — full-viewport-width grey background -->
+    <section style="background-color: var(--color-bg-alt);">
+      <!-- EDIT: Export wireframe screens as a single image → assets/images/projects/public-matches/wireframes.png -->
+      <img src="../assets/images/projects/public-matches/wireframes.png"
+           alt="Wireframes"
+           style="width: 100%; display: block;">
+    </section>
+
+
+    <!-- High-fidelity section (part of 03 Design — no reveal animation) -->
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+        <div>
+          <h3 class="cs-subheading">High-fidelity</h3>
+          <p>In the high-fidelity phase, I refined the wireframes into polished, interactive designs, ensuring that the visual details were fully aligned with the brand identity. This step involved applying final styles, colors, and typography while maintaining consistency in the layout and user flow. With a focus on delivering an intuitive and visually engaging experience, I used this phase to validate interactions and fine-tune any micro-interactions, ensuring the design was ready for development.</p>
+        </div>
+
+        <div style="margin-top: 48px;">
+          <p><strong>Core flows</strong></p>
+          <p>The core flows cover the two primary payment scenarios a booker may encounter when making a match public.
+The first flow shows a split payment booking, where the cost is divided between players, requiring additional steps to handle payment distribution when new players join.</p>
+          <br>
+          <p>The second flow shows a fully paid booking, where the booker has already covered the full cost, making the process of joining simpler and more straightforward for other players.</p>
+          <!-- EDIT: save image as assets/images/projects/public-matches/hifi-core-flows.png -->
+          <img src="../assets/images/projects/public-matches/hifi-core-flows.png"
+               alt="Core flows"
+               style="width: 100%; display: block; margin-top: 16px;">
+        </div>
+
+        <div style="margin-top: 48px;">
+          <p><strong>Supporting flows</strong></p>
+          <p>The supporting flows cover additional scenarios that extend the core experience.</p>
+          <br>
+          <p>The first row shows how a booker can invite players directly via their friends list, covering both split payment and fully paid bookings.</p>
+          <br>
+          <p>The second row covers removal scenarios, how a booker can remove a player who has requested to join, and how to remove a player who was directly invited. These edge cases ensure the booker always has full control over who participates in their match.</p>
+          <!-- EDIT: save image as assets/images/projects/public-matches/hifi-supporting-flows.png -->
+          <img src="../assets/images/projects/public-matches/hifi-supporting-flows.png"
+               alt="Supporting flows"
+               style="width: 100%; display: block; margin-top: 16px;">
+        </div>
+
+        <div style="margin-top: 48px;">
+          <p><strong>Screen details</strong></p>
+          <p>A snapshot of the full scope of the project, covering all screen states, edge cases, and interaction details that went into the final design.</p>
+          <!-- EDIT: save image as assets/images/projects/public-matches/hifi-key-screens.png -->
+          <img src="../assets/images/projects/public-matches/hifi-key-screens.png"
+               alt="Key screens"
+               style="width: 100%; display: block; margin-top: 16px;">
+        </div>
+
+      </div>
+    </section>
+
+
+
+
+    <!-- ════════════════════════════════════════════
+         04 BUILD AND TEST
+         ════════════════════════════════════════════ -->
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+        <div class="cs-subsection">
+          <h3 class="cs-subsection__heading">04 Build and test</h3>
+
+          <!-- Prototype -->
+          <h3 class="cs-subheading">Prototype</h3>
+          <p>To align stakeholders and make the development process smoother, I created a prototype of the core user flow. This allowed everyone involved to get a hands-on feel for the interaction and functionality early on. It was also used by the commercial team to communicate to coming feature for some customers excited about this feature.</p>
+          <p style="margin-top: 16px;">By visualizing the design in action, we could gather feedback, make adjustments, and ensure the solution was intuitive before moving forward to the development phase. The prototype also served as a valuable reference for developers, clarifying how different elements should behave and interact.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prototype — full-viewport-width -->
+    <!-- EDIT: Export prototype flow screenshot → assets/images/projects/public-matches/prototype.png -->
+    <section>
+      <img src="../assets/images/projects/public-matches/prototype.png"
+           alt="Prototype flow"
+           style="width: 100%; display: block;">
+    </section>
+
+    <!-- Company test -->
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+        <div class="cs-subsection">
+          <h3 class="cs-subheading">Company test</h3>
+          <p>Following internal test sessions with the team, I organized a company-wide test to ensure the feature was ready for release. Participants were encouraged to freely explore the feature without any specific instructions, clicking around, creating and joining public matches, and interacting with various elements to get a feel for how everything worked. The primary goal was to confirm that the version was stable enough for the initial beta release.</p>
+          <p style="margin-top: 16px;">This session brought up some high-priority issues and bugs that the trio felt needed to be addressed before the release. I added the urgent tickets to our GitHub board and also converted the rest of the feedback into tickets to track everything.</p>
+          <!-- EDIT: Export GitHub issues list → assets/images/projects/public-matches/company-test-issues.png -->
+          <img src="../assets/images/projects/public-matches/company-test-issues.png"
+               alt="Company test GitHub issues"
+               style="width: 100%; display: block; margin-top: 48px;">
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ════════════════════════════════════════════
+         THE FINAL DESIGN
+         ════════════════════════════════════════════ -->
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+        <div class="cs-subsection">
+          <h3 class="cs-subsection__heading">The final design</h3>
+          <p>In the final design, we addressed the need for a more scalable way to present information on the booking details screen. This involved reorganizing key elements to make important details more visible and intuitive for users. By focusing on scalability, the design can easily accommodate future updates and additional functionality, allowing the screen to evolve as new features are introduced.</p>
+
+          <!-- Old vs New comparison -->
+          <!-- EDIT: Export old/new comparison → assets/images/projects/public-matches/old-new.png -->
+          <img src="../assets/images/projects/public-matches/old-new.png"
+               alt="Old vs new booking details screen"
+               style="width: 100%; display: block; margin-top: 48px;">
+
+          <!-- Improvements list -->
+          <p style="margin-top: 48px;"><strong>Some of the improvements in the new booking details screen include:</strong></p>
+          <ul style="margin-top: 8px;">
+            <li>The ability to highlight information in new, more effective ways</li>
+            <li>Easier access to the venue access code</li>
+            <li>Greater focus on players, enhancing the social experience</li>
+            <li>New sport images for all racket sports, with the option for venues to set custom images for their activities</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3-phone angled mockup — full-viewport-width -->
+    <!-- EDIT: Export 3-phone angled mockup → assets/images/projects/public-matches/mockup-3phones.png -->
+    <section style="background-color: var(--color-bg-alt);">
+      <img src="../assets/images/projects/public-matches/mockup-3phones.png"
+           alt="App screens mockup"
+           style="width: 100%; display: block;">
+    </section>
+
+    <!-- 6-phone scattered mockup — full-viewport-width -->
+    <!-- EDIT: Export 6-phone scattered mockup → assets/images/projects/public-matches/mockup-6phones.png -->
+    <section>
+      <img src="../assets/images/projects/public-matches/mockup-6phones.png"
+           alt="App screens mockup"
+           style="width: 100%; display: block;">
+    </section>
+
+
+    <!-- ════════════════════════════════════════════
+         THE RELEASE
+         ════════════════════════════════════════════ -->
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+        <div class="cs-subsection">
+          <h3 class="cs-subsection__heading">The release</h3>
+
+          <!-- Company awareness -->
+          <h3 class="cs-subheading">Company awareness</h3>
+          <p>To ensure a smooth rollout of the new feature, I organized a walkthrough session with our customer support and commercial teams. It was important for the customer support team to understand the functionality, as they are the first line of contact for incoming support inquiries.</p>
+          <p style="margin-top: 16px;">I also worked closely with the commercial team, providing them with the necessary insights to explain the feature to our existing venues and to effectively pitch it to new customers. This walkthrough session ensured that we were aligned on the feature's value, helping us deliver a cohesive message across the company and to external partners.</p>
+
+          <!-- Rollout -->
+          <h3 class="cs-subheading" style="margin-top: 48px;">Rollout</h3>
+          <p>To gather valuable feedback before a broader release, we decided to launch a beta version of the feature in Gothenburg. This initial rollout allowed us to test the functionality in a real-world environment, identify any potential issues, and gather insights directly from users. By focusing on a smaller market first, we were able to make necessary adjustments based on feedback, ensuring a smoother experience before gradually expanding the rollout to other regions. This approach helped us refine the feature and optimize it for a larger audience.</p>
+
+          <!-- External communication -->
+          <h3 class="cs-subheading" style="margin-top: 48px;">External communication</h3>
+          <p>To support the beta release, we prepared a targeted newsletter for venues in the Gothenburg area. The newsletter highlighted the key benefits of the new feature and how it would enhance their operations. I was asked by the marketing team to demo the feature for the Help Center, as they thought it would be fun to include someone who had been directly involved in its development. A link to the demo was featured in the newsletter, giving recipients the chance to explore and familiarize themselves with the feature before the official rollout.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Release communication — full-viewport-width -->
+    <!-- EDIT: Export release communication image → assets/images/projects/public-matches/release.png -->
+    <section>
+      <img src="../assets/images/projects/public-matches/release.png"
+           alt="Release communication"
+           style="width: 100%; display: block;">
+    </section>
+
+
+    <!-- ════════════════════════════════════════════
+         FINAL THOUGHTS
+         ════════════════════════════════════════════ -->
+    <section class="cs-section section--gray">
+      <div class="page-wrapper">
+
+        <h2 class="cs-section__heading">Final thoughts &amp; next steps</h2>
+
+        <div class="cs-subsection">
+
+          <h3 class="cs-subheading">Final thoughts</h3>
+          <p>When making design changes to the booking details screen, some developers also wanted to improve it from a technical perspective. While these technical improvements were a good idea, they introduced several bugs in previously stable functionality, causing delays to the public matches timeline. In hindsight, I wish I had been more decisive and pushed for reverting to the original logic when we saw the delays mounting. Taking that step would have kept the project on schedule, with the technical improvements saved for a separate, future project.</p>
+          <p style="margin-top: 16px;">If I had more time, I would have liked to dedicate some effort to nice-to-have features. These enhancements could have elevated the overall user experience, making it even more engaging and intuitive for the users.</p>
+
+          <h3 class="cs-subheading" style="margin-top: 48px;">Next steps</h3>
+          <p>After the beta release in Gothenburg, we will evaluate the progress while addressing medium to low-priority issues. Following this, we plan to roll the feature out in another city before expanding to a broader release across the entire country. From there, we will continue to release it country by country.</p>
+          <p style="margin-top: 16px;">Once the feature is available to all players and venues, the team will focus on shaping and building new enhancements to further improve the experience of public matches 🚀</p>
+          <p style="margin-top: 16px;"><em>Update: The feature has since continued its rollout and is now live in all markets, with learnings from each release shaping ongoing improvements.</em></p>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ════════════════════════════════════════════
+         VIEW OTHER PROJECTS
+         Cards are injected automatically by case-study.js
+         based on the circular order in projects-data.js.
+         ════════════════════════════════════════════ -->
+    <section class="cs-other section--white">
+      <div class="page-wrapper">
+        <h2 class="cs-other__heading">View other projects</h2>
+        <div id="otherProjectsGrid">
+          <!-- Injected by case-study.js -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="../js/dark-mode.js"></script><!-- DARK MODE: remove this line to disable -->
+  <script src="../js/nav-indicator.js"></script>
+  <script src="../js/nav-mobile.js"></script>
+  <script src="../js/projects-data.js"></script>
+  <script src="../js/case-study.js"></script>
+  <script src="../js/reveal.js"></script>
+</body>
+</html>

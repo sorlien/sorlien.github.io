@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rent a Scooter — Amalia Sörlien</title>
+<script>if(localStorage.getItem('theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/dark-mode.css"><!-- DARK MODE: remove this line to disable -->
+  <style>
+    /* ════════════════════════════════════════════
+       HERO
+       ════════════════════════════════════════════ */
+    .cs-hero {
+      position: relative;
+      height: 100vh;
+      min-height: 832px;
+      overflow: hidden;
+      background-color: var(--color-white);
+    }
+
+    .cs-hero__inner {
+      position: relative;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: calc(var(--nav-height) + 40px);
+      padding-bottom: 40px;
+    }
+
+    .cs-hero__text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .cs-hero__title {
+      font-family: var(--font-display);
+      font-size: var(--text-h1);
+      line-height: 1;
+      color: var(--color-black);
+    }
+
+    .cs-hero__description {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: 24px;
+      color: var(--color-text-body);
+      max-width: 437px;
+      text-align: center;
+    }
+
+    .cs-hero__phones {
+      position: absolute;
+      bottom: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: flex-end;
+      width: 600px;
+    }
+
+    .cs-hero__phones img {
+      width: 50%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .cs-hero__phones.anim-from-below {
+      transform: translateX(-50%) translateY(120px);
+    }
+
+    .cs-hero__phones.is-visible {
+      transform: translateX(-50%) translateY(0) !important;
+      opacity: 1 !important;
+    }
+
+    /* ════════════════════════════════════════════
+       CONTENT SECTIONS
+       ════════════════════════════════════════════ */
+    .cs-section {
+      width: 100%;
+      padding: 100px 264px;
+    }
+
+    .cs-section--first { padding-top: 80px; }
+
+    .cs-section__heading {
+      font-family: var(--font-display);
+      font-size: var(--text-h2);
+      line-height: 1;
+      color: var(--color-black);
+      margin-bottom: 48px;
+    }
+
+    .cs-subsection__heading {
+      font-family: var(--font-display);
+      font-size: var(--text-h3);
+      line-height: 1;
+      color: var(--color-black);
+      margin-bottom: 16px;
+    }
+
+    .cs-overview {
+      display: grid;
+      grid-template-columns: 1fr 172px;
+      gap: 42px;
+      align-items: start;
+    }
+
+    .cs-overview__main {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    .cs-subsection {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cs-subsection p,
+    .cs-subsection ul {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: 24px;
+      color: var(--color-text-body);
+    }
+
+    .cs-subsection ul {
+      padding-left: 24px;
+      list-style: disc;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cs-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    .cs-meta__item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cs-meta__label {
+      font-family: var(--font-display);
+      font-size: var(--text-ui);
+      line-height: 1;
+      color: var(--color-black);
+    }
+
+    .cs-meta__value {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: normal;
+      color: var(--color-text-body);
+    }
+
+    .cs-screenshots {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .cs-screenshots img {
+      width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+
+    /* Color swatches */
+    .cs-swatches {
+      display: flex;
+      gap: 24px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+
+    .cs-swatch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cs-swatch__circle {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+    }
+
+    .cs-swatch__label {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: 24px;
+      color: var(--color-text-body);
+    }
+
+    .cs-video {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+      border-radius: 4px;
+      margin-top: 32px;
+      background-color: var(--color-bg-alt);
+    }
+
+    /* ════════════════════════════════════════════
+       VIEW OTHER PROJECTS
+       ════════════════════════════════════════════ */
+    .cs-other {
+      text-align: center;
+      padding: 80px 264px 100px;
+    }
+
+    .cs-other__heading {
+      font-family: var(--font-display);
+      font-size: var(--text-h3);
+      line-height: 1;
+      color: var(--color-black);
+      margin-bottom: 48px;
+    }
+
+    #otherProjectsGrid {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+    }
+
+    .scroll-reveal {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navigation ──────────────────────────────── -->
+  <nav class="nav">
+    <a href="../index.html" class="nav__logo" aria-label="Home">
+      <img src="../assets/images/as-logo.png" alt="AS">
+    </a>
+    <ul class="nav__links">
+      <li><a href="../index.html"    class="nav__link">Home</a></li>
+      <li><a href="../projects.html" class="nav__link nav__link--active">Projects</a></li>
+      <li><a href="../about.html"    class="nav__link">About</a></li>
+    </ul>
+    <!-- DARK MODE: remove this button to disable -->
+    <button class="theme-toggle" aria-label="Toggle dark mode">
+      <svg class="icon-moon" width="26" height="26" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <svg class="icon-sun" width="26" height="26" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1"  x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22"   x2="5.64"  y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1"  y1="12" x2="3"  y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22"  y1="19.78" x2="5.64"  y2="18.36"/>
+        <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+  </nav>
+
+  <main data-project-id="rent-a-scooter">
+
+    <!-- ════════════════════════════════════════════
+         HERO
+         ════════════════════════════════════════════ -->
+    <section class="cs-hero section--white">
+      <div class="page-wrapper cs-hero__inner">
+
+        <div class="cs-hero__text anim-from-below anim-delay-1" id="csTitle">
+          <h1 class="cs-hero__title">Rent a Scooter</h1>
+        </div>
+
+        <div class="cs-hero__text anim-from-below anim-delay-2" id="csDescription">
+          <p class="cs-hero__description">
+            Scooter rental prototype where users can browse, book and earn points.
+          </p>
+        </div>
+
+        <div class="cs-hero__phones anim-from-below anim-delay-3" id="csPhones">
+          <!--
+            Export your two hero phone mockups from Figma and save to:
+            ../assets/images/projects/rent-a-scooter/hero-phone-left.png
+            ../assets/images/projects/rent-a-scooter/hero-phone-right.png
+          -->
+          <img src="../assets/images/projects/rent-a-scooter/hero-phone-left.png"
+               alt="Rent a Scooter screen">
+          <img src="../assets/images/projects/rent-a-scooter/hero-phone-right.png"
+               alt="Rent a Scooter screen">
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ════════════════════════════════════════════
+         PROJECT OVERVIEW
+         ════════════════════════════════════════════ -->
+    <section class="cs-section cs-section--first section--gray">
+      <div class="page-wrapper">
+
+        <h2 class="cs-section__heading">Project overview</h2>
+
+        <div class="cs-overview">
+          <div class="cs-overview__main">
+
+            <div class="cs-subsection">
+              <h3 class="cs-subsection__heading">Challenge</h3>
+              <p>The challenge was to dive into InVision to gain an understanding of its prototyping
+              capabilities. I aimed to create a dynamic and interactive prototype that not only
+              demonstrated functionality but also allowed me to refine my skills in using this tool.</p>
+              <br>
+              <p>The idea of this project came from a similar app, but for car rentals. Since the focus
+              was more on mastering the program itself rather than designing the user experience,
+              I won't be adding a detailed design process for this project.</p>
+            </div>
+
+            <div class="cs-subsection">
+              <h3 class="cs-subsection__heading">My objectives</h3>
+              <ul>
+                <li>Gain a thorough understanding of how to use <strong>InVision's</strong> interactive
+                features to create dynamic prototypes.</li>
+                <li>Build a prototype that effectively demonstrates the user journey, from browsing
+                to booking, with <strong>smooth transitions and interactions</strong>.</li>
+              </ul>
+            </div>
+
+          </div>
+
+          <div class="cs-meta">
+            <div class="cs-meta__item">
+              <p class="cs-meta__label">Project type</p>
+              <p class="cs-meta__value">Personal project</p>
+            </div>
+            <div class="cs-meta__item">
+              <p class="cs-meta__label">Project scope</p>
+              <p class="cs-meta__value">App concept</p>
+            </div>
+            <div class="cs-meta__item">
+              <p class="cs-meta__label">Tools</p>
+              <p class="cs-meta__value">InVision</p>
+            </div>
+            <div class="cs-meta__item">
+              <p class="cs-meta__label">When</p>
+              <p class="cs-meta__value">2020</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ════════════════════════════════════════════
+         DESIGN & PROTOTYPE
+         ════════════════════════════════════════════ -->
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+
+        <h2 class="cs-section__heading">Design and prototype</h2>
+
+        <!-- Style -->
+        <div class="cs-subsection">
+          <h3 class="cs-subsection__heading">Style</h3>
+          <p>To help improve visual ergonomics by reducing eye strain, I decided to use a dark theme
+          for the application. For the theme colors, I selected less saturated colors that don't
+          visually vibrate against a dark background.</p>
+          <!-- Color swatches from Figma -->
+          <div class="cs-swatches">
+            <div class="cs-swatch">
+              <div class="cs-swatch__circle" style="background-color: #1E1E1E; border: 1px solid #e0e0e0;"></div>
+              <span class="cs-swatch__label">#1E1E1E</span>
+            </div>
+            <div class="cs-swatch">
+              <div class="cs-swatch__circle" style="background-color: #FCE261;"></div>
+              <span class="cs-swatch__label">#FCE261</span>
+            </div>
+            <div class="cs-swatch">
+              <div class="cs-swatch__circle" style="background-color: #AD29FF;"></div>
+              <span class="cs-swatch__label">#AD29FF</span>
+            </div>
+            <div class="cs-swatch">
+              <div class="cs-swatch__circle" style="background-color: #78B3FD;"></div>
+              <span class="cs-swatch__label">#78B3FD</span>
+            </div>
+            <div class="cs-swatch">
+              <div class="cs-swatch__circle" style="background-color: #D7D7D7;"></div>
+              <span class="cs-swatch__label">#D7D7D7</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- High-fidelity -->
+        <div class="cs-subsection" style="margin-top: 64px;">
+          <h3 class="cs-subsection__heading">High-fidelity</h3>
+          <p>For this project, I designed a series of high-fidelity screens. These screens were
+          created with the goal of bringing the user journey to life in a prototype, demonstrating
+          the key steps involved in renting a scooter. While my main focus was on testing the
+          prototype capabilities, I still made an effort to ensure the design was visually appealing.</p>
+          <!--
+            Export screens from Figma and save to:
+            ../assets/images/projects/rent-a-scooter/screen-01.png etc.
+          -->
+          <div class="cs-screenshots">
+            <img src="../assets/images/projects/rent-a-scooter/screen-01.png" alt="Screen 01">
+            <img src="../assets/images/projects/rent-a-scooter/screen-02.png" alt="Screen 02">
+            <img src="../assets/images/projects/rent-a-scooter/screen-03.png" alt="Screen 03">
+            <img src="../assets/images/projects/rent-a-scooter/screen-04.png" alt="Screen 04">
+            <img src="../assets/images/projects/rent-a-scooter/screen-05.png" alt="Screen 05">
+            <img src="../assets/images/projects/rent-a-scooter/screen-06.png" alt="Screen 06">
+            <img src="../assets/images/projects/rent-a-scooter/screen-07.png" alt="Screen 07">
+            <img src="../assets/images/projects/rent-a-scooter/screen-08.png" alt="Screen 08">
+            <img src="../assets/images/projects/rent-a-scooter/screen-09.png" alt="Screen 09">
+          </div>
+        </div>
+
+        <!-- Prototype -->
+        <div class="cs-subsection" style="margin-top: 64px;">
+          <h3 class="cs-subsection__heading">Prototype</h3>
+          <p>Using the high-fidelity screens I designed, I created an interactive prototype to
+          simulate the scooter rental process. Below, I've captured the interactions in a brief video:</p>
+          <!--
+            Option A — embed a video file:
+            <video class="cs-video" controls>
+              <source src="../assets/images/projects/rent-a-scooter/prototype.mp4" type="video/mp4">
+            </video>
+
+            Option B — embed a YouTube/Vimeo iframe:
+            <iframe class="cs-video"
+                    src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+                    allowfullscreen>
+            </iframe>
+          -->
+          <div class="cs-video" style="display:flex; align-items:center; justify-content:center;">
+            <!-- EDIT: Replace this div with your video embed (see options above) -->
+            <p style="color: var(--color-text-muted); font-family: var(--font-body);">Video placeholder</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ════════════════════════════════════════════
+         FINAL THOUGHTS
+         ════════════════════════════════════════════ -->
+    <section class="cs-section section--gray">
+      <div class="page-wrapper">
+
+        <h2 class="cs-section__heading">Final thoughts</h2>
+
+        <div class="cs-subsection">
+          <p>This project was an enjoyable experience, especially as it allowed me to focus on
+          creating a smooth and seamless prototype using a new tool. It was fun to experiment with
+          interactions and refine the flow, ensuring the prototype felt fluid and intuitive.</p>
+          <br>
+          <p>If you're curious about my design process, I invite you to check out one of my
+          other projects below 👇</p>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ════════════════════════════════════════════
+         VIEW OTHER PROJECTS
+         ════════════════════════════════════════════ -->
+    <section class="cs-other section--white">
+      <div class="page-wrapper">
+        <h2 class="cs-other__heading">View other projects</h2>
+        <div id="otherProjectsGrid">
+          <!-- Injected by case-study.js -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="../js/dark-mode.js"></script><!-- DARK MODE: remove this line to disable -->
+  <script src="../js/nav-indicator.js"></script>
+  <script src="../js/projects-data.js"></script>
+  <script src="../js/case-study.js"></script>
+  <script src="../js/reveal.js"></script>
+</body>
+</html>

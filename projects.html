@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects — Amalia Sörlien</title>
+<script>if(localStorage.getItem('theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/dark-mode.css"><!-- DARK MODE: remove this line to disable -->
+  <script>if (sessionStorage.getItem('anim-projects-done')) document.documentElement.classList.add('js-skip-intro');</script>
+  <style id="page-style">
+    /* ── Projects page layout ───────────────────── */
+    .projects-view {
+      position: relative;
+      height: 100vh;
+      min-height: 832px;
+      overflow: hidden;
+      background-color: var(--color-white);
+    }
+
+    .projects-view__inner {
+      position: relative;
+      height: 100%;
+    }
+
+    /* Large faint "PROJECTS" watermark */
+    .projects-view__watermark {
+      position: absolute;
+      top: 27%;
+      left: 0;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* ── Spinning wheel carousel (left side) ─────── */
+    .carousel {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 55%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: translateX(-80px);
+    }
+
+    .carousel__item {
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      width: 72%;
+      opacity: 0; /* hidden until data-pos is set */
+      transition:
+        transform 1.0s var(--ease-spring),
+        filter    1.0s ease,
+        opacity   1.0s ease;
+    }
+
+    .carousel__item img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ── Carousel position states ────────────────── */
+    .carousel__item[data-pos="active"] {
+      transform: translateX(60px) translateY(50px) scale(1.0);
+      filter: blur(0px);
+      opacity: 1;
+      z-index: 3;
+    }
+
+    /* Clean exit — sweeps counter-clockwise off screen upper-left, fully invisible */
+    .carousel__item[data-pos="prev"] {
+      transform: translateX(-480px) translateY(-380px) scale(0.22);
+      filter: blur(12px);
+      opacity: 0;
+      z-index: 1;
+    }
+
+    /* Ghost preview — subtle bottom-left hint of the incoming project */
+    .carousel__item[data-pos="next"] {
+      transform: translateX(-200px) translateY(290px) scale(0.32);
+      filter: blur(14px);
+      opacity: 0.35;
+      z-index: 2;
+    }
+
+    /* Staging: invisible, beyond the exit arc */
+    .carousel__item[data-pos="exit-left"] {
+      transform: translateX(-700px) translateY(-500px) scale(0.15);
+      filter: blur(12px);
+      opacity: 0;
+      z-index: 1;
+    }
+
+    /* Staging: invisible, bottom-left — arcs into ghost position during navigateNext */
+    .carousel__item[data-pos="exit-right"] {
+      transform: translateX(-400px) translateY(580px) scale(0.12);
+      filter: blur(12px);
+      opacity: 0;
+      z-index: 1;
+    }
+
+    /* ── Project info (right side) ───────────────── */
+    .project-info-wrap {
+      position: absolute;
+      top: calc(50% - 80px);
+      left: calc(50% + 15px);
+    }
+
+    .project-info {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 437px;
+    }
+
+    .project-info__meta {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .project-info__number {
+      font-family: var(--font-ui);
+      font-weight: 600; /* Inter SemiBold */
+      font-size: 16px;
+      color: var(--color-black);
+    }
+
+    .project-info__title {
+      font-family: var(--font-display);
+      font-size: var(--text-h1);
+      font-weight: 700; /* Thunder Bold */
+      line-height: 1;
+      color: var(--color-black);
+      white-space: nowrap;
+    }
+
+    .project-info__body {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .project-info__description {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      font-weight: 400;
+      line-height: 24px;
+      color: var(--color-text-body);
+      width: 385px;
+    }
+
+    /* ── Title roll ──────────────────────────────── */
+    .project-title__wrap {
+      display: block;
+      overflow: hidden;
+      height: 1em; /* matches line-height: 1 on .project-info__title */
+      position: relative;
+    }
+    .project-title__digit {
+      position: absolute;
+      top: 0;
+      left: 0;
+      white-space: nowrap;
+      line-height: 1;
+    }
+
+    /* ── Number odometer ─────────────────────────── */
+    .project-number__wrap {
+      display: inline-block;
+      overflow: hidden;
+      height: 1em;
+      min-width: 2.2ch;
+      vertical-align: text-top;
+      position: relative;
+      top: 3px;
+    }
+    .project-number__digit {
+      position: absolute;
+      top: 0;
+      left: 0;
+      line-height: 1;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navigation ──────────────────────────────── -->
+  <nav class="nav" id="siteNav">
+    <a href="index.html" class="nav__logo" aria-label="Home">
+      <img src="assets/images/as-logo.png" alt="AS">
+    </a>
+    <ul class="nav__links">
+      <li><a href="index.html"    class="nav__link">Home</a></li>
+      <li><a href="projects.html" class="nav__link nav__link--active">Projects</a></li>
+      <li><a href="about.html"    class="nav__link">About</a></li>
+      <li class="nav__theme-item"><button class="theme-toggle" aria-label="Toggle dark mode">
+        <svg class="icon-moon" width="26" height="26" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="icon-sun" width="26" height="26" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1"  x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22"   x2="5.64"  y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1"  y1="12" x2="3"  y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22"  y1="19.78" x2="5.64"  y2="18.36"/>
+          <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"/>
+        </svg>
+      </button></li>
+    </ul>
+    <button class="nav__hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <svg class="icon-open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- ── Projects view ───────────────────────────── -->
+  <main>
+    <section class="projects-view">
+      <div class="page-wrapper projects-view__inner">
+
+        <!-- Watermark -->
+        <span class="watermark projects-view__watermark anim-scale-up"
+              id="projectsWatermark">
+          PROJECTS
+        </span>
+
+        <!-- Spinning wheel carousel — images injected by projects.js -->
+        <div class="carousel" id="projectCarousel">
+          <div class="carousel__item" id="carouselA"><img id="carouselImgA" src="" alt=""></div>
+          <div class="carousel__item" id="carouselB"><img id="carouselImgB" src="" alt=""></div>
+          <div class="carousel__item" id="carouselC"><img id="carouselImgC" src="" alt=""></div>
+        </div>
+
+        <!-- Project info — content injected by projects.js -->
+        <div class="project-info-wrap">
+        <div class="project-info anim-from-right"
+             id="projectInfo">
+          <div class="project-info__meta">
+            <p class="project-info__number" id="projectNumber">Project&nbsp;<span class="project-number__wrap"><span class="project-number__digit" id="projectNumberA"></span><span class="project-number__digit" id="projectNumberB"></span></span></p>
+            <h1 class="project-info__title" id="projectTitle"><span class="project-title__wrap"><span class="project-title__digit" id="projectTitleA"></span><span class="project-title__digit" id="projectTitleB"></span></span></h1>
+          </div>
+          <div class="project-info__body">
+            <p class="project-info__description" id="projectDescription"></p>
+            <a class="btn btn--primary" id="readMoreBtn" href="#" style="align-self: flex-start;">READ MORE</a>
+          </div>
+        </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Load data first, then the logic that depends on it -->
+  <script src="js/dark-mode.js"></script><!-- DARK MODE: remove this line to disable -->
+  <script src="js/nav-indicator.js"></script>
+  <script src="js/nav-mobile.js"></script>
+  <script src="js/hero-animation.js"></script>
+  <script src="js/projects-data.js"></script>
+  <script src="js/projects.js"></script>
+  <script src="js/about-animation.js"></script>
+  <script src="js/router.js"></script>
+</body>
+</html>
