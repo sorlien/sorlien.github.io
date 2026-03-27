@@ -4,11 +4,76 @@
    Uses !important where needed to override inline padding values.
    ============================================ */
 
+/* ============================================
+   CALLOUT COMPONENT
+   ============================================ */
+
+.cs-callout {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-top: 32px;
+  /* Variant 1 — purple top-left, orange top-right, cyan bottom-left, pink bottom-right */
+  background:
+    radial-gradient(ellipse 80% 80% at 15% 20%,  rgba(123, 97,  255, 0.10) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 70% at 85% 15%,  rgba(255, 107, 53,  0.10) 0%, transparent 70%),
+    radial-gradient(ellipse 75% 75% at 20% 85%,  rgba(0,   212, 255, 0.10) 0%, transparent 70%),
+    radial-gradient(ellipse 65% 65% at 80% 80%,  rgba(255, 61,  138, 0.10) 0%, transparent 70%);
+}
+
+/* Variant 2 — shifted: orange dominant top-left, purple top-right */
+.cs-callout[data-variant="2"] {
+  background:
+    radial-gradient(ellipse 75% 75% at 10% 30%,  rgba(255, 107, 53,  0.10) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 80% at 80% 10%,  rgba(123, 97,  255, 0.10) 0%, transparent 70%),
+    radial-gradient(ellipse 65% 65% at 30% 90%,  rgba(255, 61,  138, 0.10) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 70% at 85% 75%,  rgba(0,   212, 255, 0.10) 0%, transparent 70%);
+}
+
+/* Variant 3 — shifted: cyan top-left, pink center-right, purple bottom */
+.cs-callout[data-variant="3"] {
+  background:
+    radial-gradient(ellipse 70% 70% at 20% 15%,  rgba(0,   212, 255, 0.10) 0%, transparent 70%),
+    radial-gradient(ellipse 75% 75% at 90% 40%,  rgba(255, 61,  138, 0.10) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 80% at 50% 90%,  rgba(123, 97,  255, 0.10) 0%, transparent 70%),
+    radial-gradient(ellipse 65% 65% at 10% 70%,  rgba(255, 107, 53,  0.10) 0%, transparent 70%);
+}
+
+.cs-callout__icon {
+  font-size: 18px;
+  line-height: 24px;
+  flex-shrink: 0;
+}
+
+.cs-callout__content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cs-callout__label {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  font-weight: 700;
+  color: var(--color-text-body);
+}
+
+.cs-callout .cs-callout__body {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 24px;
+  color: var(--color-text-body);
+}
+
 /* ── Clip any horizontal overflow within case study content ──
    Keeps the layout viewport at screen width so the fixed nav
    (width: 100%) doesn't expand beyond the visible area.       */
 main {
-  overflow-x: hidden;
+  /* overflow:clip (both axes) clips overflow without creating a scroll
+     container, so window scroll events still fire and sticky still works */
+  overflow: clip;
 }
 
 /* ── Heading hierarchy ────────────────────── */
@@ -219,4 +284,129 @@ main {
   svg[aria-label="The Journey diagram"] {
     max-width: 90vw !important;
   }
+}
+
+/* ============================================
+   TIMELINE COMPONENT
+   ============================================ */
+
+
+.cs-timeline {
+  position: relative;
+  max-width: 700px;
+  margin: 48px auto 0;
+}
+
+.cs-timeline__line {
+  position: absolute;
+  top: 0;
+  left: 5px;
+  width: 2px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.cs-timeline__line::before,
+.cs-timeline__line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 48px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.cs-timeline__line::before {
+  top: 0;
+  background: linear-gradient(to bottom, var(--color-white), transparent);
+}
+
+.cs-timeline__line::after {
+  bottom: 0;
+  background: linear-gradient(to top, var(--color-white), transparent);
+}
+
+.cs-timeline__line-fill {
+  width: 100%;
+  height: 100%;
+  background: var(--color-text-body);
+  transform: scaleY(0);
+  transform-origin: top center;
+  opacity: 0.35;
+}
+
+.cs-timeline__items {
+  padding-left: 0;
+  padding-top: 64px;
+}
+
+.cs-timeline__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  padding-bottom: 40px;
+}
+
+.cs-timeline__item:last-child {
+  padding-bottom: 0;
+}
+
+.cs-timeline__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-text-body);
+  flex-shrink: 0;
+  margin-top: 8px;
+  /* JS drives scale directly — no CSS transition */
+  transform: scale(0);
+}
+
+.cs-timeline__card {
+  flex: 1;
+  border-radius: 10px;
+  padding: 16px 20px;
+  /* JS drives opacity and transform directly — no CSS transition */
+  opacity: 0;
+  transform: scale(0) rotate(6deg);
+  transform-origin: center center;
+}
+
+
+.cs-timeline__card--blue   { background: rgba(123, 97,  255, 0.10); }
+.cs-timeline__card--green  { background: rgba(255, 107, 53,  0.10); }
+.cs-timeline__card--yellow { background: rgba(0,   212, 255, 0.10); }
+.cs-timeline__card--red    { background: rgba(255, 61,  138, 0.10); }
+
+.cs-timeline__pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.cs-timeline__pill--blue   { background: rgba(123, 97,  255, 0.15); color: #7B61FF; }
+.cs-timeline__pill--green  { background: rgba(255, 107, 53,  0.15); color: #FF6B35; }
+.cs-timeline__pill--yellow { background: rgba(0,   212, 255, 0.15); color: #0099BB; }
+.cs-timeline__pill--red    { background: rgba(255, 61,  138, 0.15); color: #FF3D8A; }
+
+.cs-timeline__title {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  font-weight: 700;
+  color: var(--color-text-body);
+  margin-bottom: 6px;
+}
+
+.cs-timeline__card .cs-timeline__body {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 24px;
+  color: var(--color-text-body);
 }

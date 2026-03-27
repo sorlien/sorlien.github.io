@@ -51,7 +51,7 @@
   --font-ui: 'Inter', sans-serif;
 
   /* Colors */
-  --color-primary:    #C3EACB;
+  --color-primary:    #7B61FF;
   --color-white:      #ffffff;
   --color-black:      #000000;
   --color-bg-alt:     #f2f3f5;
@@ -242,7 +242,7 @@ p {
 .nav__indicator {
   position: absolute;
   height: 3px;
-  background-color: var(--color-black);
+  background-color: var(--color-primary);
   pointer-events: none;
   transform: translateY(0);
   transition: left 0.35s ease;
@@ -290,7 +290,7 @@ p {
 
 .btn--primary:hover {
   background-color: var(--color-primary);
-  color: var(--color-black);
+  color: #ffffff;
 }
 
 /* Outlined button (Back / Next) */
@@ -302,7 +302,7 @@ p {
 
 .btn--outline:hover {
   background-color: var(--color-primary);
-  color: var(--color-black);
+  color: #ffffff;
   border-color: var(--color-primary);
 }
 
@@ -377,6 +377,46 @@ p {
 
 [data-project-id="clima-card"] .project-card__image {
   max-height: 220px !important;
+}
+
+/* ── Per-project aurora mesh gradients ───────────────────────────────────
+   Each project gets a dedicated mesh where its brand color leads,
+   supported by the other three aurora accent colors.                       */
+
+/* Public Matches — purple-led */
+[data-project-id="public-matches"] .project-card__circle {
+  background:
+    radial-gradient(ellipse 70% 70% at 30% 40%, rgba(123, 97,  255, 0.50) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 60% at 80% 20%, rgba(255, 107, 53,  0.22) 0%, transparent 65%),
+    radial-gradient(ellipse 65% 65% at 70% 80%, rgba(0,   212, 255, 0.18) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 55% at 10% 75%, rgba(255, 61,  138, 0.22) 0%, transparent 65%);
+}
+
+/* Montah — orange-led */
+[data-project-id="montah"] .project-card__circle {
+  background:
+    radial-gradient(ellipse 70% 70% at 70% 35%, rgba(255, 107, 53,  0.50) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 60% at 20% 20%, rgba(123, 97,  255, 0.22) 0%, transparent 65%),
+    radial-gradient(ellipse 65% 65% at 80% 80%, rgba(255, 61,  138, 0.25) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 55% at 15% 80%, rgba(0,   212, 255, 0.18) 0%, transparent 65%);
+}
+
+/* Split Payment — cyan-led */
+[data-project-id="split-payment"] .project-card__circle {
+  background:
+    radial-gradient(ellipse 70% 70% at 50% 65%, rgba(0,   212, 255, 0.50) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 60% at 15% 25%, rgba(123, 97,  255, 0.22) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 60% at 85% 20%, rgba(255, 107, 53,  0.22) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 55% at 80% 75%, rgba(255, 61,  138, 0.20) 0%, transparent 65%);
+}
+
+/* Clima Card — pink-led */
+[data-project-id="clima-card"] .project-card__circle {
+  background:
+    radial-gradient(ellipse 70% 70% at 55% 50%, rgba(255, 61,  138, 0.50) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 60% at 15% 20%, rgba(123, 97,  255, 0.22) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 60% at 80% 15%, rgba(255, 107, 53,  0.22) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 55% at 20% 80%, rgba(0,   212, 255, 0.18) 0%, transparent 65%);
 }
 
 /* Hover: circle shrinks, image grows */

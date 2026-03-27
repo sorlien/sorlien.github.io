@@ -174,6 +174,10 @@
       color: var(--color-text-body);
     }
 
+    .cs-subsection p + p {
+      margin-top: 16px;
+    }
+
     .cs-subsection ul {
       padding-left: 24px;
       list-style: disc;
@@ -270,7 +274,7 @@
     .cs-table th,
     .cs-table td {
       padding: 16px;
-      text-align: center;
+      text-align: left;
       font-family: var(--font-body);
       font-size: var(--text-body);
       line-height: 24px;
@@ -284,14 +288,14 @@
     }
 
     .cs-table th.cs-table__feature-header {
-      background-color: #cfe1ff;
-      color: #193767;
+      background-color: rgba(123, 97, 255, 0.25);
+      color: #7B61FF;
     }
 
     .cs-table td.cs-table__feature {
-      background-color: #cfe1ff;
-      color: #193767;
-      text-align: center;
+      background-color: rgba(123, 97, 255, 0.25);
+      color: #7B61FF;
+      text-align: left;
       font-size: 14px;
     }
 
@@ -370,9 +374,9 @@
     }
 
     /* Equilateral triangle layout — center-to-center distance: 120px each */
-    .cs-trio__circle--feasibility  { background: #32a953; top:   0px; left: 60px; } /* top center   */
-    .cs-trio__circle--desirability { background: #4084f4; top: 104px; left:  0px; } /* bottom-left  */
-    .cs-trio__circle--viability    { background: #fdbb05; top: 104px; left: 120px; } /* bottom-right */
+    .cs-trio__circle--feasibility  { background: #FF6B35; top:   0px; left: 60px; } /* top center   */
+    .cs-trio__circle--desirability { background: #7B61FF; top: 104px; left:  0px; } /* bottom-left  */
+    .cs-trio__circle--viability    { background: #00D4FF; top: 104px; left: 120px; } /* bottom-right */
 
     .cs-trio__role,
     .cs-trio__label {
@@ -539,8 +543,13 @@
             <div class="cs-subsection">
               <h3 class="cs-subheading">Challenge</h3>
               <p>
-                <!-- EDIT: Replace with your challenge description -->
-                At MATCHi, a platform dedicated to racket sports where players can book courts at various venues, one of the key objectives was to help players find others to complete their bookings or join existing matches. To achieve this, we needed to create a public space within the existing app where players could easily share and discover available matches.I worked on this feature with four developers and a product manager,  I will refer to them as my team. 
+                At MATCHi, a platform dedicated to racket sports where players can book courts at various venues, a recurring pain point was clear: players wanted to play, but finding enough people to fill a court was a real barrier. Whether a teammate cancelled last minute or a player simply didn't have a full group to begin with, there was no way to connect with others looking for the same thing.
+              </p>
+              <p>
+                Without a solution, players either had to cancel their booking and risk losing money, or avoid booking altogether. This represented both a user problem and a business opportunity as competitors were already operating with a public marketplace feature, and certain markets were pushing for it commercially.
+              </p>
+              <p>
+                As the sole designer on this project, I worked within a product trio alongside a tech lead and product manager, with influence over both the design direction and product decisions.
               </p>
             </div>
 
@@ -597,14 +606,14 @@
         <!-- Process overview -->
         <div class="cs-process">
           <div class="cs-process__step">
-            <p class="cs-process__number" style="color: #4084f4;">1 Research</p>
+            <p class="cs-process__number" style="color: #7B61FF;">1 Research</p>
             <div class="cs-process__items">
               <p>Competitive analysis</p>
               <p>User research</p>
             </div>
           </div>
           <div class="cs-process__step">
-            <p class="cs-process__number" style="color: #32a953;">2 Strategy</p>
+            <p class="cs-process__number" style="color: #FF6B35;">2 Strategy</p>
             <div class="cs-process__items">
               <p>Functional description</p>
               <p>Product Roadmap</p>
@@ -612,7 +621,7 @@
             </div>
           </div>
           <div class="cs-process__step">
-            <p class="cs-process__number" style="color: #fdbb05;">3 Design</p>
+            <p class="cs-process__number" style="color: #00D4FF;">3 Design</p>
             <div class="cs-process__items">
               <p>Ideation workshop</p>
               <p>Wireframes</p>
@@ -620,7 +629,7 @@
             </div>
           </div>
           <div class="cs-process__step">
-            <p class="cs-process__number" style="color: #e94335;">4 Build and test</p>
+            <p class="cs-process__number" style="color: #FF3D8A;">4 Build and test</p>
             <div class="cs-process__items">
               <p>Prototype</p>
               <p>Usability testings</p>
@@ -679,6 +688,14 @@
               </tr>
             </tbody>
           </table>
+
+          <div class="cs-callout">
+            <span class="cs-callout__icon">💡</span>
+            <div class="cs-callout__content">
+              <span class="cs-callout__label">Key insight</span>
+              <p class="cs-callout__body">Owning both the booking platform and the marketplace creates a natural advantage where players never need to leave the app. One competitor had already validated this model, confirming the opportunity for MATCHi to build a more integrated and seamless version.</p>
+            </div>
+          </div>
 
           <!-- User research -->
           <h3 class="cs-subheading" style="margin-top: 64px;">User research</h3>
@@ -768,6 +785,14 @@
             <li>Some team members were quieter than others. I discovered that prompting quieter participants with direct but open-ended questions helped draw out more diverse ideas and perspectives.</li>
           </ul>
 
+          <div class="cs-callout" data-variant="2">
+            <span class="cs-callout__icon">💡</span>
+            <div class="cs-callout__content">
+              <span class="cs-callout__label">Workshop output</span>
+              <p class="cs-callout__body">While most ideas were scoped out of the MVP, one clear theme emerged: player levels needed to be prominently visible alongside player information. This directly influenced the design, ensuring players could quickly assess whether a match was the right fit for them.</p>
+            </div>
+          </div>
+
           <!-- EDIT: Export workshop photo → assets/images/projects/public-matches/ideation-workshop.png -->
           <div class="cs-screens-bg" style="margin-top: 32px;">
             <img src="../assets/images/projects/public-matches/ideation-workshop.png" alt="Ideation workshop">
@@ -778,6 +803,15 @@
             <h3 class="cs-subheading">Wireframes</h3>
             <p>Using the functional requirements and outcomes from the ideation workshop, I created wireframes for the feature. I focused on key screens to get a clear overview of the functionality. Once I had a visual direction for the layout, I started adding more details. This step allowed me to concentrate on visual consistency and hierarchy before moving on to styling.</p>
             <p style="margin-top: 16px;">One key insight from creating wireframes was the need for a more flexible booking details screen, allowing for additional functionality to be added in a scalable way.</p>
+            <p style="margin-top: 16px;">One of the most important discussions during this phase was around where to surface Public Matches in the app. One idea I had was to feature it on a new home screen for maximum visibility, but this would have required a significant redesign out of scope for this project. I mapped out the different placement options, evaluating each against impact, development effort and disruption to existing flows. I brought these options to the product trio and together we decided on placing it as a card within the existing Play tab.</p>
+
+            <div class="cs-callout" data-variant="3">
+              <span class="cs-callout__icon">💡</span>
+              <div class="cs-callout__content">
+                <span class="cs-callout__label">Design decision</span>
+                <p class="cs-callout__body">The Play tab placement wasn't the most prominent option, but it was the right call for v1. It allowed us to ship without restructuring the navigation, while keeping a more prominent entry point as a clear next step for future iterations.</p>
+              </div>
+            </div>
 
           </div>
 
@@ -803,6 +837,52 @@
           <h3 class="cs-subheading">High-fidelity</h3>
           <p>In the high-fidelity phase, I refined the wireframes into polished, interactive designs, ensuring that the visual details were fully aligned with the brand identity. This step involved applying final styles, colors, and typography while maintaining consistency in the layout and user flow. With a focus on delivering an intuitive and visually engaging experience, I used this phase to validate interactions and fine-tune any micro-interactions, ensuring the design was ready for development.</p>
         </div>
+
+        <div class="cs-timeline">
+          <div class="cs-timeline__line">
+            <div class="cs-timeline__line-fill"></div>
+          </div>
+          <div class="cs-timeline__items">
+
+            <div class="cs-timeline__item">
+              <div class="cs-timeline__dot"></div>
+              <div class="cs-timeline__card cs-timeline__card--blue">
+                <span class="cs-timeline__pill cs-timeline__pill--blue">Testing</span>
+                <p class="cs-timeline__title">Testing the flow</p>
+                <p class="cs-timeline__body">I went through the complete requester journey end to end, from finding a public match to sending a request to join. This was the first time the flow had been tested as a connected experience rather than individual screens.</p>
+              </div>
+            </div>
+
+            <div class="cs-timeline__item">
+              <div class="cs-timeline__dot"></div>
+              <div class="cs-timeline__card cs-timeline__card--green">
+                <span class="cs-timeline__pill cs-timeline__pill--green">Discovery</span>
+                <p class="cs-timeline__title">Identifying the gap</p>
+                <p class="cs-timeline__body">After sending a request, there was no indication of what would happen next or what was expected from the user. For someone requesting to join a booking, this uncertainty felt like a missing piece in the experience.</p>
+              </div>
+            </div>
+
+            <div class="cs-timeline__item">
+              <div class="cs-timeline__dot"></div>
+              <div class="cs-timeline__card cs-timeline__card--yellow">
+                <span class="cs-timeline__pill cs-timeline__pill--yellow">Solution</span>
+                <p class="cs-timeline__title">Designing the timeline</p>
+                <p class="cs-timeline__body">I designed a status timeline showing the requester where they were in the process and what steps remained. The active step was highlighted, with upcoming steps visible but muted, giving users clarity on what to expect.</p>
+              </div>
+            </div>
+
+            <div class="cs-timeline__item">
+              <div class="cs-timeline__dot"></div>
+              <div class="cs-timeline__card cs-timeline__card--red">
+                <span class="cs-timeline__pill cs-timeline__pill--red">Refinement</span>
+                <p class="cs-timeline__title">Simplifying for v1</p>
+                <p class="cs-timeline__body">I simplified the component to its core function, balancing design quality with development effort and keeping the implementation straightforward.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
 
         <div style="margin-top: 48px;">
           <p><strong>Core flows</strong></p>
@@ -1008,5 +1088,6 @@ The first flow shows a split payment booking, where the cost is divided between 
   <script src="../js/projects-data.js"></script>
   <script src="../js/case-study.js"></script>
   <script src="../js/reveal.js"></script>
+  <script src="../js/timeline.js"></script>
 </body>
 </html>

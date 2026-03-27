@@ -33,7 +33,7 @@ const projects = [
     readMoreLink: 'projects/public-matches.html',
     image:        'assets/images/projects/public-matches/public_matches_carousel.png',
     cardImage:        'assets/images/projects/public-matches/hero_image.png',
-    cardCircleColor:  '#FFB8B8',
+    cardCircleColor:  'rgba(123, 97, 255, 0.00)',
     cardSubtitle:     'Adding a feature',
   },
   // Hidden — preserved for later use
@@ -56,7 +56,7 @@ const projects = [
     readMoreLink: 'projects/montah.html',
     image:        'assets/images/projects/montah/carousel.png',
     cardImage:        'assets/images/projects/montah/hero.png',
-    cardCircleColor:  '#C1DDFF',
+    cardCircleColor:  'rgba(255, 107, 53, 0.00)',
     cardSubtitle:     'Private project',
   },
   {
@@ -67,7 +67,7 @@ const projects = [
     readMoreLink: 'projects/split-payment.html',
     image:        'assets/images/projects/split-payment/split_payment_carousel.png',
     cardImage:        'assets/images/projects/split-payment/hero.png',
-    cardCircleColor:  '#C3EACB',
+    cardCircleColor:  'rgba(0, 212, 255, 0.00)',
     cardSubtitle:     'Adding a feature',
   },
   {
@@ -78,7 +78,7 @@ const projects = [
     readMoreLink: 'projects/clima-card.html',
     image:        'assets/images/projects/clima-card/clima_card_carousel.png',
     cardImage:        'assets/images/projects/clima-card/hero.png',
-    cardCircleColor:  '#D7E0FF',
+    cardCircleColor:  'rgba(255, 61, 138, 0.00)',
     cardSubtitle:     'Private project',
   },
 ];

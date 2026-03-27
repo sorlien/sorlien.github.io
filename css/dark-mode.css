@@ -76,3 +76,33 @@
 
 [data-theme="dark"] .theme-toggle .icon-moon { display: none;  }
 [data-theme="dark"] .theme-toggle .icon-sun  { display: block; }
+
+/* Callout component — dark mode: same gradient positions, higher opacity */
+[data-theme="dark"] .cs-callout {
+  background:
+    radial-gradient(ellipse 80% 80% at 15% 20%,  rgba(123, 97,  255, 0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 70% at 85% 15%,  rgba(255, 107, 53,  0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 75% 75% at 20% 85%,  rgba(0,   212, 255, 0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 65% 65% at 80% 80%,  rgba(255, 61,  138, 0.18) 0%, transparent 70%);
+}
+
+[data-theme="dark"] .cs-callout[data-variant="2"] {
+  background:
+    radial-gradient(ellipse 75% 75% at 10% 30%,  rgba(255, 107, 53,  0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 80% at 80% 10%,  rgba(123, 97,  255, 0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 65% 65% at 30% 90%,  rgba(255, 61,  138, 0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 70% at 85% 75%,  rgba(0,   212, 255, 0.18) 0%, transparent 70%);
+}
+
+[data-theme="dark"] .cs-callout[data-variant="3"] {
+  background:
+    radial-gradient(ellipse 70% 70% at 20% 15%,  rgba(0,   212, 255, 0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 75% 75% at 90% 40%,  rgba(255, 61,  138, 0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 80% at 50% 90%,  rgba(123, 97,  255, 0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 65% 65% at 10% 70%,  rgba(255, 107, 53,  0.18) 0%, transparent 70%);
+}
+
+[data-theme="dark"] .cs-callout__label,
+[data-theme="dark"] .cs-callout .cs-callout__body {
+  color: #ffffff;
+}

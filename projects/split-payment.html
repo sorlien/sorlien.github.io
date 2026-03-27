@@ -124,16 +124,16 @@
 
     .ca-table th, .ca-table td {
       padding: 16px;
-      text-align: center;
+      text-align: left;
       font-family: var(--font-body);
       font-size: 14px;
       border-radius: 3px;
     }
 
     .ca-table th.ca-func, .ca-table td.ca-func {
-      background-color: #cfe1ff;
-      color: #193767;
-      text-align: center;
+      background-color: rgba(123, 97, 255, 0.25);
+      color: #7B61FF;
+      text-align: left;
       width: 24%;
     }
 
@@ -216,6 +216,49 @@
     }
 
     .us-card__content p + p { margin-top: 16px; }
+
+    /* ── User snapshot depth reveal — desktop only ────────────────────── */
+    @media (min-width: 1200px) {
+      .us-card { position: relative; }
+
+      /* Left card: starts translated right so it sits visually behind middle */
+      .us-card:nth-child(1) {
+        transform: translateX(calc(100% + 20px)) scale(0.85);
+        opacity: 0;
+        z-index: 1;
+        transition:
+          transform 700ms cubic-bezier(0.34, 1.56, 0.64, 1),
+          opacity   350ms ease;
+      }
+
+      /* Middle card: highest z-index during animation, equalized once done */
+      .us-card:nth-child(2) {
+        z-index: 2;
+        transition: z-index 0s 700ms;
+      }
+
+      /* Right card: starts translated left so it sits visually behind middle */
+      .us-card:nth-child(3) {
+        transform: translateX(calc(-100% - 20px)) scale(0.85);
+        opacity: 0;
+        z-index: 1;
+        transition:
+          transform 700ms cubic-bezier(0.34, 1.56, 0.64, 1),
+          opacity   350ms ease;
+      }
+
+      /* Revealed: side cards slide to their natural positions */
+      .us-grid--revealed .us-card:nth-child(1),
+      .us-grid--revealed .us-card:nth-child(3) {
+        transform: translateX(0) scale(1);
+        opacity: 1;
+      }
+
+      /* After 700ms the middle card drops to equal z-index */
+      .us-grid--revealed .us-card:nth-child(2) {
+        z-index: 1;
+      }
+    }
 
     .cs-overview {
       display: grid;
@@ -485,27 +528,27 @@
         <!-- Process overview -->
         <div class="cs-process">
           <div class="cs-process__step">
-            <p class="cs-process__number" style="color: #4084f4;">1 Research</p>
+            <p class="cs-process__number" style="color: #7B61FF;">1 Research</p>
             <div class="cs-process__items">
               <p>Competitive analysis</p>
               <p>User snapshots</p>
             </div>
           </div>
           <div class="cs-process__step">
-            <p class="cs-process__number" style="color: #32a953;">2 Conceptualization</p>
+            <p class="cs-process__number" style="color: #FF6B35;">2 Conceptualization</p>
             <div class="cs-process__items">
               <p>Feature statement</p>
               <p>Low-fidelity</p>
             </div>
           </div>
           <div class="cs-process__step">
-            <p class="cs-process__number" style="color: #fdbb05;">3 Design</p>
+            <p class="cs-process__number" style="color: #00D4FF;">3 Design</p>
             <div class="cs-process__items">
               <p>High fidelity</p>
             </div>
           </div>
           <div class="cs-process__step">
-            <p class="cs-process__number" style="color: #e94335;">4 Test</p>
+            <p class="cs-process__number" style="color: #FF3D8A;">4 Test</p>
             <div class="cs-process__items">
               <p>Usability testing</p>
             </div>
@@ -996,5 +1039,25 @@
   <script src="../js/projects-data.js"></script>
   <script src="../js/case-study.js"></script>
   <script src="../js/reveal.js"></script>
+  <script>
+    (function () {
+      // Only runs on desktop — mobile/tablet use a stacked layout with no animation
+      if (window.innerWidth < 1200) return;
+
+      var grid = document.querySelector('.us-grid');
+      if (!grid) return;
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            grid.classList.add('us-grid--revealed');
+            observer.unobserve(grid);
+          }
+        });
+      }, { threshold: 0.25 });
+
+      observer.observe(grid);
+    }());
+  </script>
 </body>
 </html>
