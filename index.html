@@ -15,17 +15,15 @@
       height: 100vh;
       min-height: 832px;
       background-color: var(--color-white);
-      /* No overflow: hidden — lets name and photo animate in from screen edges.
-         Body has overflow-x: hidden to prevent scrollbar. */
     }
 
     .hero__inner {
       position: relative;
       height: 100%;
-      overflow: visible; /* Override page-wrapper's overflow-x: hidden */
+      overflow: visible;
     }
 
-    /* Nav — slides down from top using 'top' so translateX(-50%) centering is preserved */
+    /* Nav — slides down from top */
     .nav--animate {
       top: calc(-1 * var(--nav-height));
       opacity: 0;
@@ -34,7 +32,6 @@
         opacity 0.4s ease;
     }
 
-    /* Applied by JS instead of .is-visible, to avoid transform: none conflict */
     .nav--visible {
       top: 0 !important;
       opacity: 1 !important;
@@ -47,46 +44,52 @@
       left: 0;
       width: 100%;
       text-align: center;
+      z-index: 0;
     }
 
-    /* "Amalia SÖRLIEN" — starts from left screen edge, glides in */
-    .hero__name {
+    /* Unicorn Studio embed — fills hero, sits above watermark, below nav */
+    .hero__embed {
       position: absolute;
-      top: 54%;
-      left: var(--content-indent);
-      font-family: var(--font-display);
-      font-size: var(--text-h1);
-      font-weight: 400;
-      line-height: 1;
-      color: var(--color-black);
-      z-index: 1;
-      transform: translateX(-100vw); /* Start fully off left edge */
-      opacity: 0;
-      transition:
-        transform 1.1s var(--ease-gentle),
-        opacity   0.9s var(--ease-gentle);
-    }
-
-    /* Photo — starts from right screen edge, glides in */
-    .hero__photo {
-      position: absolute;
-      top: 139px;
-      bottom: 0;
-      right: 0;
-      width: 52%;
-      max-width: 666px;
-      transform: translateX(100vw); /* Start fully off right edge */
-      opacity: 0;
-      transition:
-        transform 1.1s var(--ease-gentle),
-        opacity   0.9s var(--ease-gentle);
-    }
-
-    .hero__photo img {
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      object-position: top center;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .hero__embed.is-visible {
+      opacity: 1;
+    }
+
+    .hero__embed > div {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    /* Pill — fixed so it's always above Unicorn Studio's stacking context */
+    .hero__pill {
+      position: fixed;
+      bottom: 19px;
+      left: calc(50% - 160px);
+      transform: translateX(-50%);
+      z-index: 9999;
+      font-family: var(--font-ui);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--color-white);
+      background-color: var(--color-black);
+      border-radius: 40px;
+      padding: 16px 64px;
+      white-space: nowrap;
+      cursor: pointer;
+      border: none;
+      visibility: hidden;
+    }
+
+    .hero__pill.is-visible {
+      visibility: visible;
     }
   </style>
 </head>
@@ -95,10 +98,6 @@
   <!-- ── Navigation ──────────────────────────────── -->
   <nav class="nav" id="siteNav">
     <a href="index.html" class="nav__logo" aria-label="Home">
-      <!--
-        Export your AS monogram from Figma as a PNG or SVG and save it to:
-        assets/images/as-logo.png
-      -->
       <img src="assets/images/as-logo.png" alt="AS">
     </a>
     <ul class="nav__links">
@@ -144,25 +143,22 @@
     <section class="hero">
       <div class="page-wrapper hero__inner">
 
-        <!-- Watermark: grows from small -->
+        <!-- Watermark: grows from small, sits furthest back -->
         <span class="watermark hero__watermark anim-scale-up"
               id="heroWatermark">
           PORTFOLIO
         </span>
 
-        <!-- Name: glides in from left edge -->
-        <h1 class="hero__name"
-            id="heroName">  
-          Amalia Sörlien
-        </h1>
-
-        <!-- Photo: glides in from right edge -->
-        <div class="hero__photo"
-             id="heroPhoto">
-          <img src="assets/images/hero-photo.png" alt="Amalia Sörlien">
+        <!-- Unicorn Studio embed: middle layer -->
+        <div class="hero__embed">
+          <div style="width: 1440px; height: 900px" data-us-project="MCIob6439l2kinAOJYdG"></div>
         </div>
 
       </div>
+
+      <!-- Pill: fixed so it's always above Unicorn Studio's stacking context -->
+      <button class="hero__pill" id="scrollDownBtn">By Amalia Sörlien</button>
+
     </section>
   </main>
 
@@ -174,5 +170,6 @@
   <script src="js/projects.js"></script>
   <script src="js/about-animation.js"></script>
   <script src="js/router.js"></script>
+  <script type="text/javascript">!function(){var u=window.UnicornStudio;if(u&&u.init){if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",function(){u.init()})}else{u.init()}}else{window.UnicornStudio={isInitialized:!1};var i=document.createElement("script");i.src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.1.5/dist/unicornStudio.umd.js",i.onload=function(){if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",function(){UnicornStudio.init()})}else{UnicornStudio.init()}},(document.head||document.body).appendChild(i)}}();</script>
 </body>
 </html>

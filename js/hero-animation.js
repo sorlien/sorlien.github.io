@@ -4,24 +4,19 @@
  * Home page entrance animation sequence.
  * Plays once per session — subsequent visits show content immediately.
  *
- * To adjust timing, change the constants below.
- * WATERMARK_DURATION must match the CSS transition on .anim-scale-up.
- *
  * Timing:
- *   t=0ms                                            Nav slides down       — 700ms, ease-back
- *   t=WATERMARK_DELAY                                Watermark grows       — WATERMARK_DURATION, ease-back
- *   t=WATERMARK_DELAY+WATERMARK_DURATION+CONTENT_GAP Name + photo glide in — 1100ms, gentle
+ *   t=0ms               Nav slides down    — 700ms, ease-back
+ *   t=WATERMARK_DELAY   Watermark grows    — WATERMARK_DURATION, ease-back
  */
 
 const WATERMARK_DELAY    = 600;   // ms — when watermark starts
 const WATERMARK_DURATION = 1000;  // ms — must match CSS transition on .anim-scale-up
-const CONTENT_GAP        = 100;   // ms — pause after watermark finishes before name+photo
 
 window.initHome = function () {
   const nav       = document.getElementById('siteNav');
   const watermark = document.getElementById('heroWatermark');
-  const name      = document.getElementById('heroName');
-  const photo     = document.getElementById('heroPhoto');
+  const embed     = document.querySelector('.hero__embed');
+  const pill      = document.querySelector('.hero__pill');
 
   if (!watermark) return; // not on home page
 
@@ -39,32 +34,86 @@ window.initHome = function () {
     const main = document.querySelector('main');
     if (main) main.classList.add('skip-transitions');
     watermark.classList.add('is-visible');
-    name.classList.add('is-visible');
-    photo.classList.add('is-visible');
     requestAnimationFrame(() => {
       if (main) main.classList.remove('skip-transitions');
       document.documentElement.classList.remove('js-skip-intro');
     });
+
+    // Pill appears instantly on return visits
+    if (pill) pill.classList.add('is-visible');
+
+    if (embed) {
+      let shown = false;
+      const showEmbed = () => {
+        if (shown) return;
+        shown = true;
+        embed.classList.add('is-visible');
+      };
+
+      // Re-initialize Unicorn Studio now that main.innerHTML has been replaced
+      if (window.UnicornStudio && typeof window.UnicornStudio.init === 'function') {
+        window.UnicornStudio.init();
+      }
+
+      // Watch for UnicornStudio to inject its canvas — show as soon as it's ready
+      const observer = new MutationObserver(() => {
+        if (embed.querySelector('canvas, iframe')) {
+          observer.disconnect();
+          showEmbed();
+        }
+      });
+      observer.observe(embed, { childList: true, subtree: true });
+
+      // Fallback: show after 800ms so it never stays hidden too long
+      setTimeout(() => { observer.disconnect(); showEmbed(); }, 800);
+    }
     return;
   }
 
-  // First visit this session — play animation and mark as done
   sessionStorage.setItem('anim-home-done', '1');
 
-  // On mobile the layout is static (flex column) — skip horizontal slide,
-  // just fade up so the CSS position:static layout isn't disrupted
-  if (window.innerWidth < 768) {
-    name.style.transition  = 'opacity 0.9s var(--ease-gentle), transform 1.1s var(--ease-gentle)';
-    photo.style.transition = 'opacity 0.9s var(--ease-gentle), transform 1.1s var(--ease-gentle)';
-    name.style.transform   = 'translateY(40px)';
-    photo.style.transform  = 'translateY(40px)';
+  setTimeout(() => watermark.classList.add('is-visible'), WATERMARK_DELAY);
+
+  if (embed) {
+    let timerDone  = false;
+    let canvasDone = false;
+
+    const showEmbed = () => {
+      if (!timerDone || !canvasDone) return;
+      embed.classList.add('is-visible');
+      if (pill) pill.classList.add('is-visible');
+    };
+
+    // Timer gate: wait until after watermark animation completes
+    setTimeout(() => { timerDone = true; showEmbed(); }, WATERMARK_DELAY + WATERMARK_DURATION + 200);
+
+    // Canvas gate: wait until Unicorn Studio has injected its canvas
+    const observer = new MutationObserver(() => {
+      if (embed.querySelector('canvas, iframe')) {
+        observer.disconnect();
+        canvasDone = true;
+        showEmbed();
+      }
+    });
+    observer.observe(embed, { childList: true, subtree: true });
+
+    // Fallback: if canvas never appears, show after 6s regardless
+    setTimeout(() => { observer.disconnect(); canvasDone = true; showEmbed(); }, 6000);
   }
 
-  setTimeout(() => watermark.classList.add('is-visible'), WATERMARK_DELAY);
-  setTimeout(() => {
-    name.classList.add('is-visible');
-    photo.classList.add('is-visible');
-  }, WATERMARK_DELAY + WATERMARK_DURATION + CONTENT_GAP);
 };
 
 document.addEventListener('DOMContentLoaded', window.initHome);
+
+// Block clicks on the Unicorn Studio badge regardless of how their handler is attached.
+// Runs in capture phase so it fires before any listener they registered.
+document.addEventListener('click', function (e) {
+  var badge = document.querySelector('a[href*="unicorn.studio"], a[href*="unicornstudio"]');
+  if (!badge) return;
+  var rect = badge.getBoundingClientRect();
+  if (e.clientX >= rect.left && e.clientX <= rect.right &&
+      e.clientY >= rect.top  && e.clientY <= rect.bottom) {
+    e.stopPropagation();
+    e.preventDefault();
+  }
+}, true);
