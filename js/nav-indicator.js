@@ -102,6 +102,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+// Floating pill: add .nav--scrolled when user scrolls down.
+(function () {
+  const nav = document.querySelector('.nav');
+  if (!nav) return;
+  function update() {
+    nav.classList.toggle('nav--scrolled', window.scrollY > 20);
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+
 // Re-position indicator on resize (link positions shift with viewport width).
 let _resizeTimer = null;
 window.addEventListener('resize', () => {

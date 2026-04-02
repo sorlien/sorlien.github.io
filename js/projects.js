@@ -211,7 +211,7 @@ window.initProjects = function () {
     slotImgs = { prev: activeImg,  active: nextImg,   next: prevImg   };
 
     renderInfo(currentIndex, true, 'next');
-    setTimeout(() => { window._projectsAnimating = false; }, 1400);
+    setTimeout(() => { window._projectsAnimating = false; }, window.innerWidth < 768 ? 450 : 1050);
   }
 
   // ── Navigate back ────────────────────────────────
@@ -241,7 +241,7 @@ window.initProjects = function () {
     slotImgs = { prev: nextImg,   active: prevImg,   next: activeImg  };
 
     renderInfo(currentIndex, true, 'back');
-    setTimeout(() => { window._projectsAnimating = false; }, 1400);
+    setTimeout(() => { window._projectsAnimating = false; }, window.innerWidth < 768 ? 450 : 1050);
   }
 
   // ── Entrance animation ──────────────────────────

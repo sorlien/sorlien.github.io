@@ -26,15 +26,75 @@
 
     .about {
       position: relative;
-      height: 100vh;
+      height: 320vh;   /* scroll range: 220vh — exit 50vh, word reveal 170vh */
       background-color: var(--color-white);
-      /* No overflow: hidden — lets photo and content animate in from screen edges */
+    }
+
+    .about__sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
     }
 
     .about__inner {
       position: relative;
       height: 100%;
-      overflow: visible; /* Override page-wrapper's overflow-x: hidden */
+      overflow: visible;
+    }
+
+    /* Scroll hint — bouncing arrow at bottom center */
+    .scroll-hint {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--color-black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      opacity: 0;
+      transform: translateX(-50%) translateY(20px);
+    }
+
+    .scroll-hint svg {
+      color: var(--color-white);
+    }
+
+    @keyframes scroll-hint-bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(-8px); }
+    }
+
+    @media (max-width: 767px) {
+      .scroll-hint { position: fixed; bottom: 36px; }
+    }
+
+    /* Reveal text overlaid on the sticky stage */
+    .about__reveal-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      padding: 0 var(--content-indent) 0 264px;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    @media (max-width: 767px) {
+      .about             { height: auto !important; }
+      .about__sticky     { position: static; height: auto; overflow: visible; }
+      .about__reveal-overlay {
+        position: static;
+        opacity: 1 !important;
+        pointer-events: auto;
+        padding: 48px 20px;
+      }
+      .about__reveal-overlay .about-reveal__word { color: var(--color-black); }
     }
 
     /* Large faint "ABOUT ME" watermark */
@@ -46,14 +106,14 @@
       text-align: center;
     }
 
-    /* Photo — left side, with green background baked into the image */
+    /* Photo — right side */
     .about__photo {
       position: absolute;
       bottom: 0;
-      left: -60px;
+      right: -60px;
       width: 56%;
       max-width: 720px;
-      transform: translateX(-100vw);
+      transform: translateX(100vw);
       opacity: 0;
       transition:
         transform 1.1s var(--ease-gentle),
@@ -106,6 +166,160 @@
     .about__bio p + p {
       margin-top: 16px;
     }
+
+    /* ── Headline + bio split section ───────── */
+    .about-split {
+      background-color: var(--color-white);
+      padding: 120px 264px 24px;
+    }
+
+    .about-split__inner {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .about-split__heading {
+      font-family: var(--font-display);
+      font-size: var(--text-h1);
+      line-height: 1;
+      color: var(--color-black);
+    }
+
+    .about-split__body-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .about-split__body {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: 1.6;
+      color: var(--color-text-body);
+    }
+
+    @media (min-width: 1730px) {
+      .about-split {
+        padding-left:  calc((100vw - var(--page-max-width)) / 2);
+        padding-right: calc((100vw - var(--page-max-width)) / 2);
+      }
+    }
+
+    @media (max-width: 767px) {
+      .about-split { padding: 64px 20px; }
+      .about-split__inner { grid-template-columns: 1fr; gap: 24px; }
+    }
+
+    /* ── Word-reveal text section ───────────── */
+    .about-reveal__text {
+      max-width: 860px;
+      font-family: var(--font-display);
+      font-size: clamp(24px, 3vw, 42px);
+      line-height: 1.1;
+      font-weight: 700;
+    }
+
+    .about-reveal__word {
+      display: inline;
+      color: #d8d8d8;
+      transition: color 0.1s ease;
+    }
+
+    .about-reveal__word.is-lit {
+      color: var(--color-black);
+    }
+
+    @media (max-width: 767px) {
+      .about-reveal__text { font-size: 24px; }
+      .about-reveal__word { color: var(--color-black); }
+    }
+
+    /* ── Orbital carousel section ───────────── */
+    .about-orbital {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      background-color: var(--color-white);
+    }
+
+    .orbital-stage {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .orbital-track {
+      position: absolute;
+      inset: 0;
+    }
+
+    .orbital-card {
+      position: absolute;
+      border-radius: 20px;
+      overflow: hidden;
+      background: var(--color-bg-alt);
+      will-change: left, top, width, height, opacity, transform;
+      cursor: default;
+      user-select: none;
+      box-shadow:
+        0 28px 56px rgba(0, 0, 0, 0.22),
+        0 8px 18px rgba(0, 0, 0, 0.12);
+    }
+
+    .orbital-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+      -webkit-user-drag: none;
+    }
+
+    /* Mobile: horizontal scroll strip */
+    @media (max-width: 767px) {
+      .about-orbital { height: auto; padding: 48px 0 64px; overflow: visible; }
+      .orbital-stage  { height: auto; overflow: visible; }
+      .orbital-track  { display: none; }
+      .orbital-hint   { display: none; }
+    }
+
+    .orbital-mobile {
+      display: none;
+    }
+
+    @media (max-width: 767px) {
+      .orbital-mobile {
+        display: flex;
+        overflow-x: auto;
+        overflow-y: visible;
+        gap: 14px;
+        padding: 24px 20px;
+        margin: -24px 0;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      .orbital-mobile::-webkit-scrollbar { display: none; }
+    }
+
+    .orbital-mobile__card {
+      flex-shrink: 0;
+      width: 210px;
+      height: 373px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--color-bg-alt);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .orbital-mobile__card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -153,35 +367,54 @@
 
   <!-- ── About ────────────────────────────────────── -->
   <main>
-    <section class="about">
-      <div class="page-wrapper about__inner">
+    <section class="about" id="aboutSection">
+      <div class="about__sticky">
+        <div class="page-wrapper about__inner">
 
-        <!-- Watermark: fades in -->
-        <span class="watermark about__watermark anim-scale-up"
-              id="aboutWatermark">
-          ABOUT ME
-        </span>
+          <!-- Watermark: fades in, then exits on scroll -->
+          <span class="watermark about__watermark anim-scale-up"
+                id="aboutWatermark">
+            ABOUT ME
+          </span>
 
-        <!-- Photo: slides in from the left -->
-        <div class="about__photo"
-             id="aboutPhoto">
-          <!--
-            Export your about photo (with green background) from Figma and save to:
-            assets/images/about-photo.png
-          -->
-          <img src="assets/images/hero-photo.png" alt="Amalia Sörlien">
-        </div>
-
-        <!-- Text content: slides in from the right -->
-        <div class="about__content"
-             id="aboutContent">
-          <h1 class="about__headline">A curious creator</h1>
-          <div class="about__bio">
-            <p>I'm a designer who loves creating thoughtful, user-focused experiences. With a background in product development, I'm all about solving problems and finding practical ways to bring technology and design together. I enjoy working in that sweet spot where creativity meets functionality, always making sure the user comes first.</p>
-            <p>I enjoy trying new things and picking up new skills. Recently, I started crocheting and made my first balaclava to tackle the windy Gothenburg weather. In my youth, I participated in numerous sports and my passion for sports runs deep. However, I feel like I missed out as a kid on dancing when everyone else was learning. So during the fall I took my first dance lessons! Luckily, beginner courses for adults exist, and it's never too late to try something new 🤠</p>
+          <!-- Photo: slides in from the right, then exits on scroll -->
+          <div class="about__photo"
+               id="aboutPhoto">
+            <img src="assets/images/hero-photo.png" alt="Amalia Sörlien">
           </div>
-        </div>
 
+          <!-- Scroll hint: bouncing arrow, scrolls away on first scroll -->
+          <div class="scroll-hint" id="scrollHint">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9" transform="rotate(0)"/>
+            </svg>
+          </div>
+
+          <!-- Reveal text: fades in during exit, then word-by-word on scroll -->
+          <div class="about__reveal-overlay" id="aboutRevealOverlay">
+            <p class="about-reveal__text" id="aboutRevealText">I'm a designer who loves creating thoughtful, user-focused experiences. With a background in product development, I'm all about solving problems and finding practical ways to bring technology and design together. I enjoy working in that sweet spot where creativity meets functionality, always making sure the user comes first.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Headline + bio split ──────────────────── -->
+    <section class="about-split">
+      <div class="about-split__inner">
+        <h2 class="about-split__heading">A curious creator</h2>
+        <div class="about-split__body-group">
+          <p class="about-split__body">I enjoy trying new things and picking up new skills. To tackle Gothenburg's rough weather, this fall I tried crocheting my own balaclava, turned out pretty good, though it would fit a smaller head better 😅 Something that fascinates me right now is how AI can be used to improve and develop my design work. I like trying new tools to see what's possible, both at work and for personal projects.</p>
+          <p class="about-split__body">In my youth I participated in numerous sports and my passion for sports runs deep. However, I feel like I missed out as a kid on dancing when everyone else was learning. So last year I finally took my first dance lessons! Luckily, beginner courses for adults exist and it's never too late to try something new!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Orbital Carousel ───────────────────── -->
+    <section class="about-orbital" id="aboutOrbital">
+      <div class="orbital-stage" id="orbitalStage">
+        <div class="orbital-track" id="orbitalTrack"></div>
+        <div class="orbital-mobile" id="orbitalMobile"></div>
       </div>
     </section>
   </main>
@@ -194,6 +427,259 @@
   <script src="js/projects.js"></script>
   <script src="js/about-animation.js"></script>
   <script src="js/router.js"></script>
+
+  <script id="page-script">
+  /* ── About: unified exit + word-reveal scroll driver ── */
+  (function () {
+    var section   = document.getElementById('aboutSection');
+    var watermark = document.getElementById('aboutWatermark');
+    var photo     = document.getElementById('aboutPhoto');
+    var overlay   = document.getElementById('aboutRevealOverlay');
+    var textEl    = document.getElementById('aboutRevealText');
+    var hint      = document.getElementById('scrollHint');
+
+    // Remove stale listeners from previous navigations
+    if (window._aboutScroll)       window.removeEventListener('scroll', window._aboutScroll);
+    if (window._aboutMobileScroll) window.removeEventListener('scroll', window._aboutMobileScroll);
+    // Clean up hero-page listeners
+    if (window._heroScroll)    { window.removeEventListener('scroll', window._heroScroll);    window._heroScroll = null; }
+    if (window._heroMouseMove) { document.removeEventListener('mousemove', window._heroMouseMove); window._heroMouseMove = null; }
+    if (window._heroRaf)       { cancelAnimationFrame(window._heroRaf); window._heroRaf = null; }
+
+    // Mobile: just handle hint exit, then stop
+    if (window.innerWidth < 768) {
+      if (hint) {
+        window._aboutMobileScroll = function () {
+          if (!hint._hintActive) return;
+          var hintP = Math.min(1, window.scrollY / 60);
+          if (hintP > 0) {
+            hint.style.animation = 'none';
+            hint.style.opacity   = (1 - hintP).toFixed(3);
+            hint.style.transform = 'translateX(-50%) translateY(' + (hintP * 40) + 'px)';
+          } else {
+            hint.style.animation = 'scroll-hint-bounce 1.4s ease-in-out infinite';
+            hint.style.opacity   = '1';
+            hint.style.transform = 'translateX(-50%) translateY(0)';
+          }
+        };
+        window.addEventListener('scroll', window._aboutMobileScroll, { passive: true });
+      }
+      return;
+    }
+
+    if (!section) return;
+
+    // Split text into word spans
+    var words = textEl.textContent.trim().split(/\s+/);
+    textEl.innerHTML = words.map(function (w) {
+      return '<span class="about-reveal__word">' + w + '</span>';
+    }).join(' ');
+    var spans = textEl.querySelectorAll('.about-reveal__word');
+    var n = spans.length;
+
+    function onScroll() {
+      var vh          = window.innerHeight;
+      var sy          = window.scrollY;
+      var scrollRange = section.offsetHeight - vh;  // 220vh in px
+      var exitEnd     = vh * 0.5;                   // exit completes at 50vh of scroll
+
+      // ── Scroll hint: exit on scroll (only once hint is active) ──
+      if (hint && hint._hintActive) {
+        var hintP = Math.min(1, sy / 60);
+        if (hintP > 0) {
+          hint.style.animation  = 'none';
+          hint.style.opacity    = (1 - hintP).toFixed(3);
+          hint.style.transform  = 'translateX(-50%) translateY(' + (hintP * 40) + 'px)';
+        } else {
+          hint.style.animation  = 'scroll-hint-bounce 1.4s ease-in-out infinite';
+          hint.style.opacity    = '1';
+          hint.style.transform  = 'translateX(-50%) translateY(0)';
+        }
+      }
+
+      // ── Phase 1: exit (0 → exitEnd) — only engage once user scrolls ──
+      if (sy > 0) {
+        var exitP = Math.min(1, Math.max(0, sy / exitEnd));
+
+        if (watermark) {
+          watermark.style.setProperty('transform',  'translateY(' + (-exitP * 90) + 'px) scale(' + (1 - exitP * 0.5) + ')', 'important');
+          watermark.style.setProperty('opacity',    Math.max(0, 1 - exitP * 1.8).toFixed(3), 'important');
+          watermark.style.setProperty('transition', 'none', 'important');
+        }
+        if (photo) {
+          photo.style.setProperty('transform',  'translateX(' + (exitP * exitP * window.innerWidth) + 'px)', 'important');
+          photo.style.setProperty('transition', 'none', 'important');
+        }
+      }
+
+      // ── Phase 2: overlay slides up from below (starts at 35vh, full by 55vh) ──
+      var overlayP = Math.min(1, Math.max(0, (sy - vh * 0.35) / (vh * 0.2)));
+      if (overlay) {
+        var ty2 = (1 - overlayP) * vh * 0.85;
+        overlay.style.opacity       = overlayP.toFixed(3);
+        overlay.style.transform     = 'translateY(' + ty2 + 'px)';
+        overlay.style.pointerEvents = overlayP > 0.5 ? 'auto' : 'none';
+      }
+
+      // ── Phase 3: word reveal (exitEnd → scrollRange) ──
+      var wordP    = Math.min(1, Math.max(0, (sy - exitEnd) / (scrollRange - exitEnd)));
+      var frontier = wordP * n;
+      for (var i = 0; i < n; i++) {
+        spans[i].classList.toggle('is-lit', i < frontier);
+      }
+    }
+
+    window._aboutScroll = onScroll;
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+
+
+  (function () {
+    'use strict';
+
+    var orbitalEl = document.getElementById('aboutOrbital');
+    var stage     = document.getElementById('orbitalStage');
+    var track     = document.getElementById('orbitalTrack');
+    var mobileEl  = document.getElementById('orbitalMobile');
+    if (!track) return;
+
+    /* ── Images ──────────────────────────────── */
+    var IMAGES = [
+      'assets/images/about/image1.jpg',
+      'assets/images/about/image2.JPG',
+      'assets/images/about/image3.JPG',
+      'assets/images/about/image4.JPG',
+      'assets/images/about/image5.JPG',
+      'assets/images/about/image6.JPG',
+      'assets/images/about/image7.JPG'
+    ];
+    var ALTS = ['Image 1', 'Image 2', 'Image 3', 'Image 4', 'Image 5', 'Image 6', 'Image 7'];
+
+    /* ── Mobile: portrait strip ──────────────── */
+    if (window.innerWidth < 768) {
+      if (mobileEl) {
+        for (var m = 0; m < IMAGES.length; m++) {
+          var mc = document.createElement('div');
+          mc.className = 'orbital-mobile__card';
+          var mi = document.createElement('img');
+          mi.src = IMAGES[m];
+          mi.alt = ALTS[m];
+          mc.appendChild(mi);
+          mobileEl.appendChild(mc);
+        }
+      }
+      return;
+    }
+
+    /* ── Config ──────────────────────────────── */
+    var N   = 7;
+    var W   = 300;   // card base width  (px)
+    var H   = 533;   // card base height (9:16 portrait)
+    var R   = 1200;  // orbit radius (px)
+    var GAP = 0.26;  // radians between card centers (~15°)
+
+    // card[i] angle = baseTarget + OFFSETS[i]
+    // INITIAL_BASE chosen so card[3] (offset 0) starts at angle 0 (center, upright)
+    var OFFSETS      = [-3, -2, -1, 0, 1, 2, 3].map(function (x) { return x * GAP; });
+    var INITIAL_BASE = 3 * GAP;  // card[0] (offset -3*GAP) starts at center
+    var BASE_MAX     =  3 * GAP;   // card[0] reaches center (scroll up/back)
+    var BASE_MIN     = -3 * GAP;   // card[6] reaches center (scroll down/forward)
+    var SENS         = 0.00045;      // radians per scroll pixel
+
+    // Spring — inner cards tighter for chain-reaction feel
+    var TENSION  = [0.030, 0.038, 0.044, 0.062, 0.044, 0.038, 0.030];
+    var FRICTION = [0.85,  0.84,  0.83,  0.80,  0.83,  0.84,  0.85];
+
+    /* ── State ───────────────────────────────── */
+    var baseTarget = INITIAL_BASE;
+    var angles     = OFFSETS.map(function (o) { return INITIAL_BASE + o; });
+    var vels       = [0, 0, 0, 0, 0, 0, 0];
+    var rafId      = null;
+
+    /* ── Build DOM ───────────────────────────── */
+    var cards = [];
+    for (var i = 0; i < N; i++) {
+      var el  = document.createElement('div');
+      el.className = 'orbital-card';
+      var img = document.createElement('img');
+      img.src = IMAGES[i];
+      img.alt = ALTS[i];
+      img.draggable = false;
+      el.appendChild(img);
+      track.appendChild(el);
+      cards.push(el);
+    }
+
+    /* ── Render loop ─────────────────────────── */
+    function frame() {
+      var sw = stage.offsetWidth;
+      var sh = stage.offsetHeight;
+      var cx = sw / 2;
+      // Circle centre is BELOW the stage — cards are at the top of the circle.
+      // This gives the fanning-upward arc (outer cards curve down and rotate outward).
+      var cy = sh * 0.5 + R;
+
+      var moving = false;
+
+      for (var j = 0; j < N; j++) {
+        var target = baseTarget + OFFSETS[j];
+        var delta  = target - angles[j];
+        vels[j]    = vels[j] * FRICTION[j] + delta * TENSION[j];
+        angles[j] += vels[j];
+        if (Math.abs(vels[j]) > 0.00008 || Math.abs(delta) > 0.00008) moving = true;
+
+        var a    = angles[j];
+        // Position on circle: subtract from cy because centre is below cards
+        var px   = cx + R * Math.sin(a);
+        var py   = cy - R * Math.cos(a);
+        var rot  = a * (180 / Math.PI);     // card tilts with its arc position
+
+        var dist = Math.abs(a) / GAP;       // card-steps from centre
+        var sc   = Math.max(0.75, 1 - dist * 0.10);
+        var op   = Math.max(0.50, 1 - dist * 0.18);
+        var w    = W * sc;
+        var h    = H * sc;
+
+        var c = cards[j];
+        c.style.width     = w + 'px';
+        c.style.height    = h + 'px';
+        c.style.left      = (px - w / 2) + 'px';
+        c.style.top       = (py - h / 2) + 'px';
+        c.style.opacity   = op.toFixed(3);
+        c.style.transform = 'rotate(' + rot.toFixed(2) + 'deg)';
+        c.style.zIndex    = String(Math.round((1 - dist * 0.12) * 10));
+      }
+
+      rafId = moving ? requestAnimationFrame(frame) : null;
+    }
+
+    function kick() { if (!rafId) rafId = requestAnimationFrame(frame); }
+
+    /* ── Scroll capture ──────────────────────── */
+    function orbitalAtTop() {
+      return orbitalEl.getBoundingClientRect().top <= 2;
+    }
+
+    if (window._aboutWheel) window.removeEventListener('wheel', window._aboutWheel);
+    window._aboutWheel = function (e) {
+      if (!orbitalAtTop()) return;
+
+      // Release when at start and scrolling up — let page scroll back to about section
+      if (e.deltaY < 0 && baseTarget >= INITIAL_BASE - 0.001) return;
+
+      e.preventDefault();
+
+      baseTarget = Math.max(BASE_MIN, Math.min(BASE_MAX, baseTarget - e.deltaY * SENS));
+
+      kick();
+    };
+    window.addEventListener('wheel', window._aboutWheel, { passive: false });
+
+    /* ── Initial render ──────────────────────── */
+    kick();
+  })();
+  </script>
 
 </body>
 </html>

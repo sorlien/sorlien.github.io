@@ -34,8 +34,22 @@ async function navigateTo(href) {
       curStyle.remove();
     }
 
-    // Swap main content
+    // Swap main content first so page-script can find the new DOM elements
     document.querySelector('main').innerHTML = doc.querySelector('main').innerHTML;
+
+    // Swap page-specific script (re-create element to trigger execution)
+    const newScript = doc.getElementById('page-script');
+    const curScript = document.getElementById('page-script');
+    if (curScript) curScript.remove();
+    if (newScript) {
+      const s = document.createElement('script');
+      s.id = 'page-script';
+      s.textContent = newScript.textContent;
+      document.body.appendChild(s);
+    }
+
+    // Reset scroll to top before the new page initialises
+    window.scrollTo(0, 0);
 
     // Update page title and URL
     document.title = doc.title;

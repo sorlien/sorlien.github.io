@@ -30,10 +30,16 @@
   opacity: 0.9;
 }
 
-/* Nav background in dark mode */
+/* Nav in dark mode */
 [data-theme="dark"] .nav {
-  background-color: rgba(17, 17, 17, 0.7);
-  border-bottom-color: rgba(17, 17, 17, 0.3);
+  background-color: transparent;
+}
+
+[data-theme="dark"] .nav--scrolled {
+  background-color: #111111;
+  box-shadow:
+    0 4px 32px rgba(0, 0, 0, 0.4),
+    0 1px 6px  rgba(0, 0, 0, 0.2);
 }
 
 /* ── Toggle button ───────────────────────────────── */
@@ -109,3 +115,7 @@
 [data-theme="dark"] .cs-callout .cs-callout__body {
   color: #ffffff;
 }
+
+/* About page reveal text — dark mode contrast */
+[data-theme="dark"] .about-reveal__word { color: #444444; }
+[data-theme="dark"] .about-reveal__word.is-lit { color: var(--color-primary); }

@@ -10,22 +10,25 @@
   <script>if (sessionStorage.getItem('anim-home-done')) document.documentElement.classList.add('js-skip-intro');</script>
   <style id="page-style">
     /* ── Hero section ───────────────────────────── */
+
+    /* Tall enough to give 50vh of scroll travel.
+       Sticky inner locks the visual stage to the viewport. */
     .hero {
       position: relative;
-      height: 100vh;
-      min-height: 832px;
+      height: 150vh;
       background-color: var(--color-white);
     }
 
-    .hero__inner {
-      position: relative;
-      height: 100%;
-      overflow: visible;
+    .hero__sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
     }
 
     /* Nav — slides down from top */
     .nav--animate {
-      top: calc(-1 * var(--nav-height));
+      top: calc(-1 * var(--nav-height) - 16px);
       opacity: 0;
       transition:
         top     0.7s var(--ease-back),
@@ -33,11 +36,11 @@
     }
 
     .nav--visible {
-      top: 0 !important;
+      top: 16px !important;
       opacity: 1 !important;
     }
 
-    /* Large faint "PORTFOLIO" watermark — grows from small with ease-back */
+    /* PORTFOLIO watermark — sits behind all layers */
     .hero__watermark {
       position: absolute;
       top: 27%;
@@ -45,52 +48,104 @@
       width: 100%;
       text-align: center;
       z-index: 0;
+      pointer-events: none;
     }
 
-    /* Unicorn Studio embed — fills hero, sits above watermark, below nav */
-    .hero__embed {
+    /* ── Three-layer parallax stage ─────────────── */
+    .hero__stage {
       position: absolute;
-      top: 0;
-      left: 0;
+      inset: 0;
+    }
+
+    .hero__layer {
+      position: absolute;
+      inset: 0;
+      will-change: transform;
+    }
+
+    .hero__layer img {
       width: 100%;
       height: 100%;
-      z-index: 1;
+      object-fit: cover;
+      object-position: bottom center;
+      display: block;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* Wide screens: contain images so they never exceed 100vh (white space on sides is fine) */
+    @media (min-width: 1600px) {
+      .hero__layer img {
+        object-fit: contain;
+      }
+    }
+
+    /* Mobile: override main.css rules that were written for the old hero layout */
+    @media (max-width: 767px) {
+      .hero         { height: 150vh !important; overflow: visible !important; }
+      .hero__sticky { height: 100vh; }
+      /* main.css forces watermark position:static on mobile (old layout) — restore absolute */
+      .hero__watermark {
+        position: absolute !important;
+        top: calc(var(--nav-height) + 64px) !important;
+        left: 0 !important;
+        width: 100% !important;
+        padding: 0 var(--content-indent) !important;
+        display: block !important;
+        font-size: calc((100vw - 2 * var(--content-indent)) * 0.34) !important;
+        letter-spacing: 0 !important;
+        text-align: center !important;
+        margin-bottom: 0 !important;
+        white-space: nowrap !important;
+      }
+    }
+
+    /* Name, bg and fg start hidden — scroll reveals them */
+    #heroLayerName,
+    #heroLayerBg,
+    #heroLayerFg {
       opacity: 0;
-      transition: opacity 1s ease;
     }
 
-    .hero__embed.is-visible {
-      opacity: 1;
-    }
-
-    .hero__embed > div {
-      width: 100% !important;
-      height: 100% !important;
-    }
-
-    /* Pill — fixed so it's always above Unicorn Studio's stacking context */
-    .hero__pill {
-      position: fixed;
-      bottom: 19px;
-      left: calc(50% - 160px);
-      transform: translateX(-50%);
-      z-index: 9999;
-      font-family: var(--font-ui);
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--color-white);
-      background-color: var(--color-black);
-      border-radius: 40px;
-      padding: 16px 64px;
+    /* ── View projects button ────────────────────── */
+    .hero__view-btn {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      z-index: 10;
       white-space: nowrap;
-      cursor: pointer;
-      border: none;
-      visibility: hidden;
+      pointer-events: none;
+      text-decoration: none;
+      opacity: 0;
     }
 
-    .hero__pill.is-visible {
-      visibility: visible;
+    /* ── Scroll hint ─────────────────────────────── */
+    .hero__hint {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--color-black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      opacity: 0;
+      transform: translateX(-50%) translateY(20px);
+      pointer-events: none;
     }
+
+    .hero__hint svg {
+      color: var(--color-white);
+    }
+
+    @keyframes hero-hint-bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(-8px); }
+    }
+
   </style>
 </head>
 <body>
@@ -141,24 +196,48 @@
   <!-- ── Hero ────────────────────────────────────── -->
   <main>
     <section class="hero">
-      <div class="page-wrapper hero__inner">
+      <div class="hero__sticky">
 
-        <!-- Watermark: grows from small, sits furthest back -->
-        <span class="watermark hero__watermark anim-scale-up"
-              id="heroWatermark">
-          PORTFOLIO
-        </span>
+        <!-- Watermark: scales up on load, exits on scroll -->
+        <span class="watermark hero__watermark anim-scale-up" id="heroWatermark">PORTFOLIO</span>
 
-        <!-- Unicorn Studio embed: middle layer -->
-        <div class="hero__embed">
-          <div style="width: 1440px; height: 900px" data-us-project="MCIob6439l2kinAOJYdG"></div>
+        <!-- Four-layer composition -->
+        <div class="hero__stage">
+
+          <!-- Layer 0: name — bottom of stack, first to reveal on scroll -->
+          <div class="hero__layer" id="heroLayerName">
+            <img src="assets/images/hero_name.png" alt="">
+          </div>
+
+          <!-- Layer 1: background illustration elements -->
+          <div class="hero__layer" id="heroLayerBg">
+            <img src="assets/images/hero_background.png" alt="">
+          </div>
+
+          <!-- Layer 2: black and white photo -->
+          <div class="hero__layer" id="heroLayerMid">
+            <img src="assets/images/hero_middle.png" alt="">
+          </div>
+
+          <!-- Layer 3: illustrated figure -->
+          <div class="hero__layer" id="heroLayerFg">
+            <img src="assets/images/hero_foreground.png" alt="">
+          </div>
+
+        </div>
+
+        <!-- View projects button: springs up after layers settle -->
+        <a class="btn btn--primary hero__view-btn" id="heroViewBtn" href="projects.html">VIEW PROJECTS</a>
+
+        <!-- Scroll hint: bouncing arrow, exits on scroll -->
+        <div class="hero__hint" id="heroScrollHint">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
         </div>
 
       </div>
-
-      <!-- Pill: fixed so it's always above Unicorn Studio's stacking context -->
-      <button class="hero__pill" id="scrollDownBtn">By Amalia Sörlien</button>
-
     </section>
   </main>
 
@@ -170,6 +249,5 @@
   <script src="js/projects.js"></script>
   <script src="js/about-animation.js"></script>
   <script src="js/router.js"></script>
-  <script type="text/javascript">!function(){var u=window.UnicornStudio;if(u&&u.init){if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",function(){u.init()})}else{u.init()}}else{window.UnicornStudio={isInitialized:!1};var i=document.createElement("script");i.src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.1.5/dist/unicornStudio.umd.js",i.onload=function(){if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",function(){UnicornStudio.init()})}else{UnicornStudio.init()}},(document.head||document.body).appendChild(i)}}();</script>
 </body>
 </html>
