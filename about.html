@@ -261,7 +261,7 @@
       border-radius: 20px;
       overflow: hidden;
       background: var(--color-bg-alt);
-      will-change: left, top, width, height, opacity, transform;
+      will-change: transform, opacity;
       cursor: default;
       user-select: none;
       box-shadow:
@@ -602,6 +602,8 @@
     for (var i = 0; i < N; i++) {
       var el  = document.createElement('div');
       el.className = 'orbital-card';
+      el.style.width  = W + 'px';
+      el.style.height = H + 'px';
       var img = document.createElement('img');
       img.src = IMAGES[i];
       img.alt = ALTS[i];
@@ -638,16 +640,10 @@
         var dist = Math.abs(a) / GAP;       // card-steps from centre
         var sc   = Math.max(0.75, 1 - dist * 0.10);
         var op   = Math.max(0.50, 1 - dist * 0.18);
-        var w    = W * sc;
-        var h    = H * sc;
 
         var c = cards[j];
-        c.style.width     = w + 'px';
-        c.style.height    = h + 'px';
-        c.style.left      = (px - w / 2) + 'px';
-        c.style.top       = (py - h / 2) + 'px';
         c.style.opacity   = op.toFixed(3);
-        c.style.transform = 'rotate(' + rot.toFixed(2) + 'deg)';
+        c.style.transform = 'translate(' + (px - W / 2).toFixed(1) + 'px,' + (py - H / 2).toFixed(1) + 'px) rotate(' + rot.toFixed(2) + 'deg) scale(' + sc.toFixed(4) + ')';
         c.style.zIndex    = String(Math.round((1 - dist * 0.12) * 10));
       }
 
