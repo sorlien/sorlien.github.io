@@ -1,13 +1,16 @@
 /**
  * projects.js
  *
- * Spinning wheel carousel + mechanical text transitions for the projects page.
+ * Spinning-wheel carousel + mechanical text transitions for the Projects
+ * section of the one-pager.
  *
  * - Three slots (A/B/C) cycle roles: prev, active, next
- * - Scroll / swipe / arrow keys navigate between projects
- * - Project number and title roll up/down like an odometer
- * - Description fades out then back in
- * - All text animations complete in sync with the phone transition (650ms)
+ * - Project number and title roll up/down like an odometer; description fades
+ * - NON-INFINITE: navigation clamps at the first/last project. Scroll past the
+ *   ends is released by the ScrollOrchestrator so the page flows to the
+ *   neighbouring section (Hero above, About below).
+ * - Desktop: registers a capture adapter with the orchestrator (pinned, wheel/
+ *   touch spin). Mobile: native page scroll + horizontal swipe to change project.
  *
  * Projects are defined in projects-data.js.
  */
@@ -18,25 +21,29 @@ window.initProjects = function () {
 
   // ── State ───────────────────────────────────────
   const N = projects.length;
+  // Open on a specific project when arriving via a case study's "back to projects"
+  // link (index.html?p=<id>#projects) — otherwise start at the first.
   let currentIndex = 0;
-  // Global flag — shared across re-initialisations so two handler instances
-  // can never both think it's safe to navigate at the same time.
+  try {
+    const pid = new URLSearchParams(window.location.search).get('p');
+    if (pid) {
+      const idx = projects.findIndex((p) => p.id === pid);
+      if (idx >= 0) currentIndex = idx;
+    }
+  } catch (e) {}
   window._projectsAnimating = false;
 
   // ── DOM references ──────────────────────────────
+  const section    = document.querySelector('.projects-view');  // the sticky pin
   const infoEl     = document.getElementById('projectInfo');
   const descEl     = document.getElementById('projectDescription');
   const readMoreEl = document.getElementById('readMoreBtn');
 
-  // Number odometer slots
   const digitA = document.getElementById('projectNumberA');
   const digitB = document.getElementById('projectNumberB');
-
-  // Title roll slots
   const titleA = document.getElementById('projectTitleA');
   const titleB = document.getElementById('projectTitleB');
 
-  // Carousel image slots
   const elA  = document.getElementById('carouselA');
   const elB  = document.getElementById('carouselB');
   const elC  = document.getElementById('carouselC');
@@ -73,9 +80,7 @@ window.initProjects = function () {
   }
 
   // ── Number odometer ──────────────────────────────
-  function extractNum(numberStr) {
-    return numberStr.split(' ')[1]; // "Project 01" → "01"
-  }
+  function extractNum(numberStr) { return numberStr.split(' ')[1]; }
 
   function initNumber(numStr) {
     digitA.textContent      = numStr;
@@ -146,7 +151,6 @@ window.initProjects = function () {
   }
 
   function fadeDesc(text) {
-    // Fade out over 200ms, swap content, fade back in to complete at ~650ms
     descEl.style.transition = 'opacity 0.2s ease';
     descEl.style.opacity    = '0';
     setTimeout(() => {
@@ -162,7 +166,7 @@ window.initProjects = function () {
 
     if (animate) {
       rollNumber(extractNum(p.number), direction);
-      setTimeout(() => rollTitle(p.title, direction), 75); // staggered 75ms after number
+      setTimeout(() => rollTitle(p.title, direction), 75);
       fadeDesc(p.description);
     } else {
       initNumber(extractNum(p.number));
@@ -172,6 +176,14 @@ window.initProjects = function () {
 
     readMoreEl.href = p.readMoreLink;
     document.getElementById('projectCarousel').setAttribute('data-project', p.id);
+    updateEdgeGhosts();
+  }
+
+  // Hide the incoming ghost when there is no further project that direction,
+  // so the wheel/orbital can't appear to loop at the boundaries.
+  function updateEdgeGhosts() {
+    if (slots.next) slots.next.style.visibility = currentIndex === N - 1 ? 'hidden' : '';
+    if (slots.prev) slots.prev.style.visibility = currentIndex === 0     ? 'hidden' : '';
   }
 
   function initCarousel() {
@@ -184,7 +196,7 @@ window.initProjects = function () {
     renderInfo(currentIndex, false);
   }
 
-  // ── Navigate next ────────────────────────────────
+  // ── Navigate next (only called when currentIndex < N-1) ──
   function navigateNext() {
     if (window._projectsAnimating) return;
     window._projectsAnimating = true;
@@ -192,12 +204,8 @@ window.initProjects = function () {
     const newActiveIdx = nextIdx(currentIndex);
     const newNextIdx   = nextIdx(newActiveIdx);
 
-    const prevSlot   = slots.prev;
-    const activeSlot = slots.active;
-    const nextSlot   = slots.next;
-    const prevImg    = slotImgs.prev;
-    const activeImg  = slotImgs.active;
-    const nextImg    = slotImgs.next;
+    const prevSlot = slots.prev, activeSlot = slots.active, nextSlot = slots.next;
+    const prevImg  = slotImgs.prev, activeImg = slotImgs.active, nextImg = slotImgs.next;
 
     setImg(prevImg, newNextIdx);
     setPos(prevSlot, 'exit-right', true);
@@ -211,10 +219,10 @@ window.initProjects = function () {
     slotImgs = { prev: activeImg,  active: nextImg,   next: prevImg   };
 
     renderInfo(currentIndex, true, 'next');
-    setTimeout(() => { window._projectsAnimating = false; }, window.innerWidth < 768 ? 450 : 1050);
+    setTimeout(() => { window._projectsAnimating = false; }, window.innerWidth < 768 ? 850 : 1050);
   }
 
-  // ── Navigate back ────────────────────────────────
+  // ── Navigate back (only called when currentIndex > 0) ──
   function navigateBack() {
     if (window._projectsAnimating) return;
     window._projectsAnimating = true;
@@ -222,12 +230,8 @@ window.initProjects = function () {
     const newActiveIdx = prevIdx(currentIndex);
     const newPrevIdx   = prevIdx(newActiveIdx);
 
-    const prevSlot   = slots.prev;
-    const activeSlot = slots.active;
-    const nextSlot   = slots.next;
-    const prevImg    = slotImgs.prev;
-    const activeImg  = slotImgs.active;
-    const nextImg    = slotImgs.next;
+    const prevSlot = slots.prev, activeSlot = slots.active, nextSlot = slots.next;
+    const prevImg  = slotImgs.prev, activeImg = slotImgs.active, nextImg = slotImgs.next;
 
     setImg(nextImg, newPrevIdx);
     setPos(nextSlot, 'exit-left', true);
@@ -241,145 +245,46 @@ window.initProjects = function () {
     slotImgs = { prev: nextImg,   active: prevImg,   next: activeImg  };
 
     renderInfo(currentIndex, true, 'back');
-    setTimeout(() => { window._projectsAnimating = false; }, window.innerWidth < 768 ? 450 : 1050);
+    setTimeout(() => { window._projectsAnimating = false; }, window.innerWidth < 768 ? 850 : 1050);
   }
 
-  // ── Entrance animation ──────────────────────────
-  const WATERMARK_DELAY    = 600;
-  const WATERMARK_DURATION = 1000;
-  const CONTENT_START      = WATERMARK_DELAY + WATERMARK_DURATION + 100;
+  // ── Initial resting state + scroll-in reveal ─────
+  initCarousel();
+  const revealIO = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        watermark.classList.add('is-visible');
+        infoEl.classList.add('is-visible');
+        revealIO.disconnect();
+      }
+    });
+  }, { threshold: 0.2 });
+  revealIO.observe(section);
 
-  function playEntrance() {
-    if (sessionStorage.getItem('anim-projects-done')) {
-      const main = document.querySelector('main');
-      if (main) main.classList.add('skip-transitions');
-      watermark.classList.add('is-visible');
-      initCarousel();
-      infoEl.classList.add('is-visible');
-      requestAnimationFrame(() => {
-        if (main) main.classList.remove('skip-transitions');
-        document.documentElement.classList.remove('js-skip-intro');
-      });
-      return;
-    }
+  // ── Register capture adapter (desktop AND mobile — scroll drives the carousel) ──
+  if (window.ScrollOrchestrator) {
+    window.ScrollOrchestrator.register({
+      el:      section,
+      atStart: () => currentIndex === 0,
+      atEnd:   () => currentIndex === N - 1,
+      step:    (d) => {
+        if (d > 0 && currentIndex < N - 1) navigateNext();
+        else if (d < 0 && currentIndex > 0) navigateBack();
+      },
+      isBusy:  () => window._projectsAnimating,
+    });
 
-    sessionStorage.setItem('anim-projects-done', '1');
-
-    setImg(slotImgs.prev,   prevIdx(currentIndex));
-    setImg(slotImgs.active, currentIndex);
-    setImg(slotImgs.next,   nextIdx(currentIndex));
-    renderInfo(currentIndex, false);
-
-    // Prev stays invisible off upper-left
-    setPos(slots.prev, 'prev', true);
-
-    // Active: set data-pos but keep transition:none inline so CSS transition
-    // never fires early. Inline transform/opacity hold the start position.
-    const activeEl = slots.active;
-    activeEl.style.transition = 'none';
-    activeEl.style.transform  = 'translateX(-420px) translateY(600px) scale(0.12)';
-    activeEl.style.filter     = 'blur(14px)';
-    activeEl.style.opacity    = '0';
-    activeEl.setAttribute('data-pos', 'active');
-
-    // Ghost: same approach, starts further down the arc
-    const ghostEl = slots.next;
-    ghostEl.style.transition = 'none';
-    ghostEl.style.transform  = 'translateX(-500px) translateY(750px) scale(0.08)';
-    ghostEl.style.filter     = 'blur(16px)';
-    ghostEl.style.opacity    = '0';
-    ghostEl.setAttribute('data-pos', 'next');
-
-    // Commit start positions before any timeouts
-    void activeEl.offsetWidth;
-
-    setTimeout(() => watermark.classList.add('is-visible'), WATERMARK_DELAY);
-
-    // Active phone launches along the arc to its final position
-    const ACTIVE_START = CONTENT_START;
-    setTimeout(() => {
-      infoEl.classList.add('is-visible');
-
-      void activeEl.offsetWidth; // ensure start state is committed in this frame
-      activeEl.style.transition = 'transform 1.5s cubic-bezier(0.34, 1.35, 0.64, 1), filter 1.2s ease, opacity 1.1s cubic-bezier(0.34, 1.35, 0.64, 1)';
-      activeEl.style.transform  = '';
-      activeEl.style.filter     = '';
-      activeEl.style.opacity    = '';
-
-      setTimeout(() => { activeEl.style.transition = ''; }, 1050);
-    }, ACTIVE_START);
-
-    // Ghost phone follows 350ms after active, travels same arc, stops at ghost position
-    const GHOST_START = ACTIVE_START + 350;
-    setTimeout(() => {
-      void ghostEl.offsetWidth;
-      ghostEl.style.transition = 'transform 1.5s cubic-bezier(0.34, 1.35, 0.64, 1), filter 1.2s ease, opacity 1.1s cubic-bezier(0.34, 1.35, 0.64, 1)';
-      ghostEl.style.transform  = '';
-      ghostEl.style.filter     = '';
-      ghostEl.style.opacity    = '';
-
-      setTimeout(() => { ghostEl.style.transition = ''; }, 1050);
-    }, GHOST_START);
+    // Keyboard navigation while the section is the active (pinned) one.
+    document.addEventListener('keydown', (e) => {
+      const a = window.ScrollOrchestrator.active;
+      if (!a || a.el !== section) return;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        if (currentIndex < N - 1) { e.preventDefault(); window._projectsAnimating = false; navigateNext(); }
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        if (currentIndex > 0) { e.preventDefault(); window._projectsAnimating = false; navigateBack(); }
+      }
+    });
   }
-
-  // ── Scroll navigation ────────────────────────────
-  function handleWheel(e) {
-    e.preventDefault();
-    if (e.deltaY > 0) navigateNext();
-    else if (e.deltaY < 0) navigateBack();
-  }
-
-  // ── Touch navigation ─────────────────────────────
-  let touchStartY = 0;
-
-  function handleTouchStart(e) {
-    touchStartY = e.touches[0].clientY;
-  }
-
-  function handleTouchEnd(e) {
-    const diff = touchStartY - e.changedTouches[0].clientY;
-    if (Math.abs(diff) > 30) {
-      if (diff > 0) navigateNext();
-      else navigateBack();
-    }
-  }
-
-  const section = document.querySelector('.projects-view');
-
-  if (window._projectsWheel)      section.removeEventListener('wheel',      window._projectsWheel);
-  if (window._projectsTouchStart) section.removeEventListener('touchstart', window._projectsTouchStart);
-  if (window._projectsTouchEnd)   section.removeEventListener('touchend',   window._projectsTouchEnd);
-
-  window._projectsWheel      = handleWheel;
-  window._projectsTouchStart = handleTouchStart;
-  window._projectsTouchEnd   = handleTouchEnd;
-
-  section.addEventListener('wheel',      handleWheel,      { passive: false });
-  section.addEventListener('touchstart', handleTouchStart, { passive: true  });
-  section.addEventListener('touchend',   handleTouchEnd,   { passive: true  });
-
-  // ── Keyboard navigation ──────────────────────────
-  if (window._projectsKeydown) document.removeEventListener('keydown', window._projectsKeydown);
-
-  function handleKeydown(e) {
-    if (!document.getElementById('projectsWatermark')) {
-      document.removeEventListener('keydown', handleKeydown);
-      return;
-    }
-    // Keyboard bypasses the animation lock — clear it so key presses are always instant.
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' ||
-        e.key === 'ArrowLeft'  || e.key === 'ArrowUp') {
-      window._projectsAnimating = false;
-    }
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigateNext();
-    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   navigateBack();
-  }
-
-  window._projectsKeydown = handleKeydown;
-  document.addEventListener('keydown', handleKeydown);
-
-  // ── Init ────────────────────────────────────────
-  playEntrance();
 };
 
 document.addEventListener('DOMContentLoaded', window.initProjects);

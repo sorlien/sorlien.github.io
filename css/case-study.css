@@ -124,6 +124,26 @@ main {
   .cs-screenshots { grid-template-columns: 1fr !important; }
 }
 
+/* ── Back-to-projects link (centred breadcrumb above the title) ── */
+.cs-back {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 28px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color var(--dur-fast, 0.2s) ease, gap var(--dur-fast, 0.2s) ease;
+}
+.cs-back__arrow { transition: transform var(--dur-fast, 0.2s) ease; }
+.cs-back:hover { color: var(--color-primary); }
+.cs-back:hover .cs-back__arrow { transform: translateX(-3px); }
+
 /* ── Case study hero ──────────────────────── */
 @media (max-width: 1199px) {
   .cs-hero { height: 100vh; }
