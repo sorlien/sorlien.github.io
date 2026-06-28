@@ -1,0 +1,6 @@
+# macOS
+.DS_Store
+
+# Claude Code (local tooling / notes — keep out of the public repo)
+.claude/
+CLAUDE.md
