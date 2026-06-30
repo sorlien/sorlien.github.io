@@ -26,8 +26,19 @@
 
 const projects = [
   {
-    id:          'public-matches',
+    id:          'home-screen',
     number:      'Project 01',
+    title:       'Home Screen',
+    description: 'A home screen for the MATCHi app that started as a passion project and a hackathon prototype, designed to move the experience beyond booking toward something more exploratory and social.',
+    readMoreLink: 'projects/home-screen.html',
+    image:        'assets/images/projects/home-screen/carousel.png',
+    cardImage:        'assets/images/projects/home-screen/hero.png',
+    cardCircleColor:  'rgba(123, 97, 255, 0.00)',
+    cardSubtitle:     'Adding a feature',
+  },
+  {
+    id:          'public-matches',
+    number:      'Project 02',
     title:       'Public Matches',
     description: 'Adding a marketplace to the MATCHi app made it easier for players to connect and team up for matches. The feature was designed to fit seamlessly into the platform while also helping venues fill their courts.',
     readMoreLink: 'projects/public-matches.html',
@@ -50,7 +61,7 @@ const projects = [
   // },
   {
     id:          'montah',
-    number:      'Project 02',
+    number:      'Project 03',
     title:       'Montah',
     description: 'A personal exploration into AI-driven product development, building a bead pattern generator from idea to live website, without a line of hand-written code.',
     readMoreLink: 'projects/montah.html',
@@ -61,7 +72,7 @@ const projects = [
   },
   {
     id:          'split-payment',
-    number:      'Project 03',
+    number:      'Project 04',
     title:       'Split Payment',
     description: 'Adding a split payment feature to an existing app, making it easier for groups to share costs seamlessly within the booking flow.',
     readMoreLink: 'projects/split-payment.html',
@@ -70,15 +81,16 @@ const projects = [
     cardCircleColor:  'rgba(0, 212, 255, 0.00)',
     cardSubtitle:     'Adding a feature',
   },
-  {
-    id:          'clima-card',
-    number:      'Project 04',
-    title:       'Clima Card',
-    description: 'A private project exploring a weather-integrated card interface, combining data visualisation with a clean, minimal aesthetic.',
-    readMoreLink: 'projects/clima-card.html',
-    image:        'assets/images/projects/clima-card/clima_card_carousel.png',
-    cardImage:        'assets/images/projects/clima-card/hero.png',
-    cardCircleColor:  'rgba(255, 61, 138, 0.00)',
-    cardSubtitle:     'Private project',
-  },
+  // Hidden — preserved for later use. Re-add by uncommenting and giving it a number.
+  // {
+  //   id:          'clima-card',
+  //   number:      'Project 05',
+  //   title:       'Clima Card',
+  //   description: 'A private project exploring a weather-integrated card interface, combining data visualisation with a clean, minimal aesthetic.',
+  //   readMoreLink: 'projects/clima-card.html',
+  //   image:        'assets/images/projects/clima-card/clima_card_carousel.png',
+  //   cardImage:        'assets/images/projects/clima-card/hero.png',
+  //   cardCircleColor:  'rgba(255, 61, 138, 0.00)',
+  //   cardSubtitle:     'Private project',
+  // },
 ];

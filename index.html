@@ -30,7 +30,7 @@
       height: 100vh;
       display: flex;
       align-items: center;
-      gap: 4vw;
+      gap: clamp(32px, 4vw, 64px);
       padding: 0 var(--content-indent);
       overflow: hidden;
     }
@@ -181,6 +181,16 @@
     @media (min-width: 768px) {
       .hero-fold__text { transform: translateX(56px); }
       .intro-active .hero-fold__text { transform: translateX(56px) translateY(24px); }
+    }
+
+    /* Wide screens: cap the composition to the site's content column and centre
+       it as a unit, so the text and fold keep their ratio instead of the text
+       drifting left while the fold stays centred. */
+    @media (min-width: 1440px) {
+      .hero-fold__sticky {
+        max-width: calc(var(--page-max-width) + 2 * var(--content-indent));
+        margin-inline: auto;
+      }
     }
 
     @media (max-width: 767px) {
