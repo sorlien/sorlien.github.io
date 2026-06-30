@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Screen — Amalia Sörlien</title>
+<script>if(localStorage.getItem('theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/dark-mode.css"><!-- DARK MODE: remove this line to disable -->
+  <link rel="stylesheet" href="../css/case-study.css">
+  <style>
+    .cs-hero {
+      position: relative;
+      height: 100vh;
+      min-height: 832px;
+      overflow: hidden;
+      background-color: var(--color-white);
+    }
+
+    .cs-hero__inner {
+      position: relative;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: calc(var(--nav-height) + 24px);
+      padding-bottom: 24px;
+    }
+
+    .cs-hero__text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .cs-hero__title {
+      font-family: var(--font-display);
+      font-size: var(--text-h1);
+      line-height: 1;
+      color: var(--color-black);
+    }
+
+    .cs-hero__description {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: 24px;
+      color: var(--color-text-body);
+      max-width: 437px;
+      text-align: center;
+    }
+
+    .cs-hero__phones {
+      flex: 1;
+      min-height: 0;
+      margin-top: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    /* Landscape (4:3) hero — scale by the available slot, capped so it
+       never overflows the hero. Tuned per device below. */
+    .cs-hero__phones img {
+      max-height: 100%;
+      max-width: min(100%, 820px);
+      width: auto;
+      display: block;
+    }
+
+    .cs-hero__phones.anim-from-below {
+      transform: translateY(80px);
+      transition: opacity 0.9s var(--ease-gentle), transform 1.1s var(--ease-gentle);
+    }
+
+    .cs-hero__phones.is-visible {
+      transform: none !important;
+      opacity: 1 !important;
+    }
+
+    .cs-section {
+      width: 100%;
+      padding: 100px 264px;
+    }
+
+    .cs-section--first { padding-top: 80px; }
+
+    .cs-section__heading {
+      font-family: var(--font-display);
+      font-size: var(--text-h2);
+      line-height: 1;
+      color: var(--color-black);
+      margin-bottom: 48px;
+    }
+
+    .cs-subsection__heading {
+      font-family: var(--font-display);
+      font-size: var(--text-h2);
+      line-height: 1;
+      color: var(--color-black);
+      margin-bottom: 16px;
+    }
+
+    .cs-subheading {
+      font-family: var(--font-display);
+      font-size: var(--text-h3);
+      line-height: 1;
+      color: var(--color-black);
+      margin-bottom: 16px;
+    }
+
+    .cs-subsection + .cs-subsection { margin-top: 128px; }
+    .cs-overview__main .cs-subsection + .cs-subsection { margin-top: 0; }
+
+    .cs-overview {
+      display: grid;
+      grid-template-columns: 1fr 172px;
+      gap: 42px;
+      align-items: start;
+    }
+
+    .cs-overview__main {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    .cs-subsection {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cs-subsection p,
+    .cs-subsection ul {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: 24px;
+      color: var(--color-text-body);
+    }
+
+    .cs-subsection ul {
+      padding-left: 24px;
+      list-style: disc;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cs-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    .cs-meta__item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cs-meta__label {
+      font-family: var(--font-display);
+      font-size: var(--text-ui);
+      line-height: 1;
+      color: var(--color-black);
+    }
+
+    .cs-meta__value {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: normal;
+      color: var(--color-text-body);
+    }
+
+    .cs-other {
+      text-align: center;
+      padding: 80px 264px 100px;
+    }
+
+    .cs-other__heading {
+      font-family: var(--font-display);
+      font-size: var(--text-h3);
+      line-height: 1;
+      color: var(--color-black);
+      margin-bottom: 48px;
+    }
+
+    #otherProjectsGrid {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+    }
+
+    .cs-subsection p + p { margin-top: 16px; }
+
+    .cs-subsection__heading {
+      font-family: var(--font-display);
+      font-size: var(--text-h2);
+      line-height: 1;
+      color: var(--color-black);
+      margin-bottom: 16px;
+    }
+
+    /* ── Comparison table ────────────────────────── */
+    .cs-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 6px;
+      margin-top: 32px;
+    }
+
+    .cs-table th,
+    .cs-table td {
+      padding: 16px;
+      text-align: left;
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: 24px;
+      border-radius: 4px;
+    }
+
+    .cs-table th {
+      font-weight: 600;
+      color: var(--color-black);
+      background-color: var(--color-bg-alt);
+    }
+
+    .cs-table th.cs-table__feature-header {
+      background-color: rgba(123, 97, 255, 0.25);
+      color: #7B61FF;
+    }
+
+    .cs-table td.cs-table__cell {
+      background-color: var(--color-bg-alt);
+    }
+
+    .cs-table td.cs-table__feature {
+      background-color: rgba(123, 97, 255, 0.25);
+      color: #7B61FF;
+      font-size: 14px;
+    }
+
+    /* ── Screenshot grid ─────────────────────────── */
+    .cs-screenshots {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .cs-screenshots img {
+      width: 100%;
+      height: auto;
+      border-radius: 4px;
+      display: block;
+    }
+
+    /* ── Screens on grey background ─────────────── */
+    .cs-screens-bg {
+      background-color: var(--color-bg-alt);
+      border-radius: 8px;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+      margin-top: 32px;
+    }
+
+    .cs-screens-bg img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ── Before / after row ──────────────────────── */
+    .cs-compare {
+      display: flex;
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .cs-compare__col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .cs-compare__label {
+      font-family: var(--font-display);
+      font-size: var(--text-ui);
+      line-height: 1;
+      color: var(--color-black);
+    }
+
+    .cs-compare__col img {
+      width: 100%;
+      height: auto;
+      border-radius: 4px;
+      display: block;
+    }
+
+    .cs-compare__arrow {
+      flex: 0 0 auto;
+      align-self: center;
+      width: clamp(40px, 6vw, 88px);
+      color: var(--color-black);
+    }
+
+    .cs-compare__arrow svg { width: 100%; height: auto; display: block; }
+
+    /* When the two cards differ a lot in height, pin the arrow higher instead
+       of centering it on the taller card (margin-top is relative to width, so
+       it scales with the layout). */
+    .cs-compare--top {
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cs-compare--top .cs-compare__arrow {
+      align-self: flex-start;
+      margin-top: 22%;
+    }
+
+    /* ── Grey question box (tester prompts) ──────── */
+    .cs-questions {
+      background: var(--color-bg-alt);
+      border-radius: 8px;
+      padding: 32px;
+      margin-top: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .cs-q { display: flex; flex-direction: column; gap: 4px; }
+
+    .cs-q__label {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: var(--text-body);
+      color: var(--color-black);
+    }
+
+    .cs-q__text {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: 24px;
+      color: var(--color-text-body);
+    }
+
+    /* ── Feedback synthesis board ────────────────── */
+    .cs-synthesis {
+      margin-top: 40px;
+      /* Component-scoped surfaces + success pill, overridden for dark mode below */
+      --theme-card-bg: var(--color-bg);
+      --theme-card-border: rgba(17, 28, 24, 0.12);
+      --ship-bg: rgba(20, 184, 166, 0.15);
+      --ship-text: #0f766e;
+    }
+
+    .cs-syn-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .cs-syn-stat {
+      background: var(--theme-card-bg);
+      border: 0.5px solid var(--theme-card-border);
+      border-radius: 8px;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .cs-syn-stat__label {
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--color-text-muted);
+    }
+
+    .cs-syn-stat__value {
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: clamp(22px, 2.4vw, 28px);
+      line-height: 1.1;
+      color: var(--color-black);
+    }
+
+    .cs-themes {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .cs-theme {
+      background: var(--theme-card-bg);
+      border: 0.5px solid var(--theme-card-border);
+      border-radius: 8px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .cs-theme__head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .cs-theme__title {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: var(--text-body);
+      color: var(--color-black);
+    }
+
+    .cs-theme__pill {
+      flex: 0 0 auto;
+      font-family: var(--font-body);
+      font-size: 11px;
+      line-height: 1.5;
+      padding: 2px 9px;
+      border-radius: 100px;
+      white-space: nowrap;
+      background: var(--ship-bg);
+      color: var(--ship-text);
+    }
+
+    .cs-theme .cs-theme__feedback {
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--color-text-muted);
+    }
+
+    .cs-theme .cs-theme__action {
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--color-black);
+      margin-top: 6px;
+    }
+
+    /* Theme cards flip in with a staggered reveal as the grid scrolls into view.
+       Gated to motion-friendly users; .is-revealed is added by JS (or immediately
+       as a fallback when IntersectionObserver is unavailable). */
+    .cs-themes { perspective: 1400px; }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .cs-theme {
+        opacity: 0;
+        transform: rotateX(12deg) translateY(14px);
+        transform-origin: center top;
+        transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .cs-themes.is-revealed .cs-theme { opacity: 1; transform: rotateX(0) translateY(0); }
+      .cs-themes.is-revealed .cs-theme:nth-child(1) { transition-delay: 0s; }
+      .cs-themes.is-revealed .cs-theme:nth-child(2) { transition-delay: 0.07s; }
+      .cs-themes.is-revealed .cs-theme:nth-child(3) { transition-delay: 0.14s; }
+      .cs-themes.is-revealed .cs-theme:nth-child(4) { transition-delay: 0.21s; }
+      .cs-themes.is-revealed .cs-theme:nth-child(5) { transition-delay: 0.28s; }
+      .cs-themes.is-revealed .cs-theme:nth-child(6) { transition-delay: 0.35s; }
+      .cs-themes.is-revealed .cs-theme:nth-child(7) { transition-delay: 0.42s; }
+      .cs-themes.is-revealed .cs-theme:nth-child(8) { transition-delay: 0.49s; }
+    }
+
+    [data-theme="dark"] .cs-synthesis {
+      --theme-card-bg: var(--color-bg-alt);
+      --theme-card-border: rgba(255, 255, 255, 0.14);
+      --ship-bg: rgba(45, 212, 191, 0.18);
+      --ship-text: #5eead4;
+    }
+
+    /* ── Rollout ramp ────────────────────────────── */
+    .cs-rollout {
+      margin-top: 28px;
+      display: flex;
+      align-items: flex-end;
+      gap: clamp(6px, 1.5vw, 20px);
+      height: 150px;
+    }
+
+    .cs-rollout__col {
+      flex: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .cs-rollout__pct {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--color-black);
+    }
+
+    .cs-rollout__bar {
+      width: 100%;
+      max-width: 44px;
+      min-height: 4px;
+      background: var(--color-primary, #7B61FF);
+      border-radius: 4px 4px 0 0;
+    }
+
+    /* Bars grow up from the baseline, staggered left to right, when the chart
+       scrolls into view. .is-revealed is toggled by JS (or set immediately as a
+       fallback when IntersectionObserver is unavailable). */
+    @media (prefers-reduced-motion: no-preference) {
+      .cs-rollout__bar {
+        transform: scaleY(0);
+        transform-origin: bottom;
+        transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .cs-rollout.is-revealed .cs-rollout__bar { transform: scaleY(1); }
+      .cs-rollout.is-revealed .cs-rollout__col:nth-child(1) .cs-rollout__bar { transition-delay: 0s; }
+      .cs-rollout.is-revealed .cs-rollout__col:nth-child(2) .cs-rollout__bar { transition-delay: 0.09s; }
+      .cs-rollout.is-revealed .cs-rollout__col:nth-child(3) .cs-rollout__bar { transition-delay: 0.18s; }
+      .cs-rollout.is-revealed .cs-rollout__col:nth-child(4) .cs-rollout__bar { transition-delay: 0.27s; }
+      .cs-rollout.is-revealed .cs-rollout__col:nth-child(5) .cs-rollout__bar { transition-delay: 0.36s; }
+      .cs-rollout.is-revealed .cs-rollout__col:nth-child(6) .cs-rollout__bar { transition-delay: 0.45s; }
+    }
+
+    /* Timeline arrow below the bars */
+    .cs-rollout-axis {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .cs-rollout-axis__track {
+      position: relative;
+      width: 100%;
+      border-top: 1.5px solid var(--color-text-muted);
+    }
+
+    .cs-rollout-axis__track::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: -4px;
+      width: 1.5px;
+      height: 8px;
+      background: var(--color-text-muted);
+    }
+
+    .cs-rollout-axis__track::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: -4px;
+      border-left: 7px solid var(--color-text-muted);
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+    }
+
+    .cs-rollout-axis__label {
+      font-family: var(--font-body);
+      font-size: 12px;
+      color: var(--color-text-muted);
+    }
+
+    /* ── Launch screen + commentary (two columns) ── */
+    .cs-launch {
+      display: flex;
+      align-items: center;
+      gap: clamp(24px, 5vw, 56px);
+      margin-top: 40px;
+    }
+
+    .cs-launch__media {
+      flex: 0 0 auto;
+      width: 280px;
+      max-width: 100%;
+    }
+
+    .cs-launch__media img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 20px;
+    }
+
+    .cs-launch__text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    @media (max-width: 767px) {
+      .cs-launch { flex-direction: column; align-items: center; gap: 28px; }
+      .cs-launch__media { width: 260px; }
+      .cs-launch__text { width: 100%; }
+    }
+
+    /* ── Evolution: before / v1 / today, three phones side by side ── */
+    .cs-evolution {
+      display: flex;
+      flex-direction: column;
+      margin-top: 40px;
+    }
+
+    /* Hand-drawn arrows above, straddling the gaps to show the order */
+    .cs-evolution__arrows {
+      position: relative;
+      height: clamp(28px, 5vw, 44px);
+      margin-bottom: 2px;
+    }
+
+    .cs-evolution__arrow {
+      position: absolute;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: clamp(34px, 5.5vw, 64px);
+      height: auto;
+      display: block;
+    }
+
+    .cs-evolution__arrow--1 { left: 33.3%; }
+    .cs-evolution__arrow--2 { left: 66.6%; }
+
+    /* arrow.svg is monochrome line art, so invert it in dark mode */
+    [data-theme="dark"] .cs-evolution__arrow { filter: invert(1); }
+
+    .cs-evolution__row {
+      display: flex;
+      gap: clamp(12px, 3vw, 32px);
+      align-items: flex-start;
+    }
+
+    .cs-evolution__item {
+      flex: 1 1 0;
+      min-width: 0;
+      text-align: center;
+    }
+
+    .cs-evolution__item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: clamp(8px, 1.5vw, 20px);
+    }
+
+    .cs-evolution__label {
+      display: block;
+      font-family: var(--font-display);
+      font-size: var(--text-ui);
+      line-height: 1;
+      color: var(--color-black);
+      margin-top: 16px;
+    }
+
+    .cs-evolution__when {
+      display: block;
+      font-size: 12px;
+      color: var(--color-text-muted);
+      margin-top: 4px;
+    }
+
+    @media (max-width: 767px) {
+      .cs-evolution { gap: 8px; }
+      .cs-evolution__label { font-size: 14px; margin-top: 10px; }
+    }
+
+    /* ── Lift counters (count up on scroll) ────────── */
+    .cs-lift {
+      margin-top: 32px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: clamp(24px, 6vw, 72px);
+    }
+
+    .cs-lift__stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 8px;
+    }
+
+    .cs-lift__value {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(44px, 7vw, 68px);
+      line-height: 1;
+      color: var(--color-primary, #7B61FF);
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+      text-align: center;
+    }
+
+    .cs-lift__plus,
+    .cs-lift__unit {
+      font-size: 0.45em;
+      font-weight: 700;
+    }
+
+    .cs-lift__unit { margin-left: 0.1em; }
+
+    .cs-lift__label {
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--color-text-body);
+    }
+
+    @media (max-width: 767px) {
+      .cs-lift { gap: 24px; }
+    }
+
+    /* ── Pull quote ──────────────────────────────── */
+    .cs-quote {
+      margin-top: 44px;
+      max-width: 600px;
+      align-self: center;
+      text-align: center;
+    }
+
+    .cs-quote__mark {
+      display: block;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 72px;
+      line-height: 0.7;
+      color: var(--color-primary, #7B61FF);
+      margin-bottom: 8px;
+    }
+
+    .cs-quote .cs-quote__text {
+      font-family: var(--font-body);
+      font-size: clamp(20px, 2.4vw, 26px);
+      line-height: 1.4;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--color-black);
+    }
+
+    .cs-quote__cite {
+      display: block;
+      margin-top: 14px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-style: normal;
+      color: var(--color-text-muted);
+    }
+
+    /* ── Annotated vision board (notes layer + phone) ── */
+    .cs-vision {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 12px;
+      margin: 32px auto 0;
+      max-width: 680px;
+    }
+
+    .cs-vision__notes,
+    .cs-vision__phone { min-width: 0; }
+    .cs-vision__notes { flex: 764 1 0; }   /* proportional to native widths so */
+    .cs-vision__phone { flex: 846 1 0; }   /* both render at the same scale */
+
+    .cs-vision img { display: block; width: 100%; height: auto; }
+
+    /* The annotations are monochrome line art, so invert them in dark mode */
+    [data-theme="dark"] .cs-vision__notes img { filter: invert(1); }
+
+    @media (max-width: 767px) {
+      .cs-syn-stats { grid-template-columns: 1fr; gap: 8px; }
+      .cs-themes { grid-template-columns: 1fr; gap: 8px; margin-top: 24px; }
+    }
+
+    /* ── Metric cards (data-driven look, no numbers) ── */
+    .cs-metrics {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .cs-metric {
+      background: var(--color-bg-alt);
+      border-radius: 8px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .cs-metric--wide { grid-column: 1 / -1; }
+
+    .cs-metric__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .cs-metric__name {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: var(--text-body);
+      color: var(--color-black);
+    }
+
+    .cs-metric__tag {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 12px;
+      line-height: 1.5;
+      padding: 3px 10px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+
+    .cs-metric__desc {
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--color-text-muted);
+    }
+
+    .cs-metric__spark {
+      width: 100%;
+      height: 40px;
+      display: block;
+      margin-top: 6px;
+    }
+
+    .cs-metric__spark--journey { height: auto; }
+    .cs-metric__spark--journey .spark-line { stroke-width: 2.5; }
+
+    .cs-metric__spark .spark-line {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .cs-metric__spark .spark-area { fill: currentColor; opacity: 0.12; stroke: none; }
+    .cs-metric__spark .spark-dot { fill: currentColor; }
+
+    /* Intent colour-coding: guardrails stay neutral, the metrics we hoped to
+       grow use the purple accent. */
+    .cs-metric[data-intent="guardrail"] .cs-metric__spark { color: var(--color-text-muted); }
+    .cs-metric[data-intent="guardrail"] .cs-metric__tag {
+      color: var(--color-text-muted);
+      border: 1px solid var(--color-text-muted);
+    }
+
+    .cs-metric[data-intent="goal"] .cs-metric__spark,
+    .cs-metric[data-intent="journey"] .cs-metric__spark { color: var(--color-primary); }
+    .cs-metric[data-intent="goal"] .cs-metric__tag {
+      color: var(--color-primary);
+      background: rgba(123, 97, 255, 0.15);
+    }
+    .cs-metric[data-intent="journey"] .cs-metric__tag {
+      color: var(--color-primary);
+      border: 1px solid var(--color-primary);
+    }
+
+    /* Draw-on for sparklines: a left-to-right clip wipe reveals the line, area
+       and dots as it passes — keeps the stroke solid (a dasharray draw-on would
+       render as dashes here because of vector-effect: non-scaling-stroke).
+       Armed by JS only (progressive enhancement) and skipped for reduced motion;
+       without JS the sparklines render normally. */
+    .cs-metric.spark-armed .cs-metric__spark { clip-path: inset(0 100% 0 0); }
+    .cs-metric.spark-armed.spark-in .cs-metric__spark {
+      clip-path: inset(0 0 0 0);
+      transition: clip-path 1.1s ease;
+    }
+
+    @media (max-width: 767px) {
+      .cs-metrics { grid-template-columns: 1fr; }
+    }
+
+    /* ── Process flow timeline ───────────────────── */
+    .cs-flow {
+      margin-top: 40px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* On mobile, break out of the section padding so the timeline runs to the
+       screen edges — the first point stays aligned with the text, and the line
+       bleeds off the right edge to signal it continues on horizontal scroll. */
+    @media (max-width: 767px) {
+      .cs-flow {
+        margin-left: calc(-1 * var(--content-indent, 20px));
+        margin-right: calc(-1 * var(--content-indent, 20px));
+        padding-left: var(--content-indent, 20px);
+      }
+    }
+
+    .cs-flow svg {
+      display: block;
+      width: 100%;
+      min-width: 720px;   /* below this it scrolls horizontally instead of shrinking labels */
+      max-width: 960px;
+      height: auto;
+      margin: 0 auto;
+      color: var(--color-text-body);
+    }
+
+    .cs-flow__line,
+    .cs-flow__dash {
+      fill: none;
+      stroke: var(--color-primary, #7B61FF);
+      stroke-width: 3;
+    }
+
+    .cs-flow__line {
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .cs-flow__dash {
+      stroke-dasharray: 7 9;
+      stroke-linecap: round;
+    }
+
+    .cs-flow__dot { fill: var(--color-primary, #7B61FF); }
+    .cs-flow__arrowhead { fill: var(--color-primary, #7B61FF); }
+
+    .cs-flow__label {
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 700;
+      fill: currentColor;
+      text-anchor: middle;
+    }
+
+    .cs-flow__sub {
+      font-family: var(--font-body);
+      font-size: 13px;
+      fill: currentColor;
+      opacity: 0.5;
+      text-anchor: middle;
+    }
+
+    /* Scroll-triggered draw-on — reuses reveal.js's .visible on the parent
+       subsection. Static final state by default; only animates when motion is allowed. */
+    @media (prefers-reduced-motion: no-preference) {
+      .cs-flow__line {
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
+      }
+      .cs-subsection.visible .cs-flow__line {
+        stroke-dashoffset: 0;
+        transition: stroke-dashoffset 1.5s ease;
+      }
+
+      .cs-flow__dash { opacity: 0; }
+      .cs-subsection.visible .cs-flow__dash {
+        opacity: 1;
+        transition: opacity 0.5s ease 1.3s;
+      }
+
+      .cs-flow__node { opacity: 0; }
+      .cs-subsection.visible .cs-flow__node {
+        opacity: 1;
+        transition: opacity 0.5s ease;
+      }
+      .cs-subsection.visible .cs-flow__node:nth-of-type(1) { transition-delay: 0.15s; }
+      .cs-subsection.visible .cs-flow__node:nth-of-type(2) { transition-delay: 0.30s; }
+      .cs-subsection.visible .cs-flow__node:nth-of-type(3) { transition-delay: 0.45s; }
+      .cs-subsection.visible .cs-flow__node:nth-of-type(4) { transition-delay: 0.75s; }
+      .cs-subsection.visible .cs-flow__node:nth-of-type(5) { transition-delay: 1.00s; }
+      .cs-subsection.visible .cs-flow__node:nth-of-type(6) { transition-delay: 1.30s; }
+    }
+  </style>
+</head>
+<body class="page-home-screen">
+
+  <nav class="nav" id="siteNav">
+    <a href="../index.html" class="nav__logo" aria-label="Home">
+      <img src="../assets/images/logo_as.svg" alt="AS">
+    </a>
+
+    <button class="nav__hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span class="nav__burger"><span></span><span></span></span>
+    </button>
+
+    <button class="theme-toggle" aria-label="Toggle dark mode">
+      <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+
+    <div class="nav__menu" id="navMenu">
+      <ul class="nav__menu-list">
+        <li><a href="../index.html#hero" class="nav__link">Home</a></li>
+        <li><a href="../index.html#projects" class="nav__link">Projects</a></li>
+        <li><a href="../index.html#about" class="nav__link">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main data-project-id="home-screen">
+
+    <section class="cs-hero section--white">
+      <div class="page-wrapper cs-hero__inner">
+
+        <a href="../index.html?p=home-screen#projects" class="cs-back"><span class="cs-back__arrow" aria-hidden="true">←</span> Back to projects</a>
+
+        <div class="cs-hero__text anim-from-below anim-delay-1" id="csTitle">
+          <h1 class="cs-hero__title">Home Screen</h1>
+        </div>
+
+        <div class="cs-hero__text anim-from-below anim-delay-2" id="csDescription">
+          <p class="cs-hero__description">
+            Giving the MATCHi app a real home screen, with one section I built myself in code using AI.
+          </p>
+        </div>
+
+        <div class="cs-hero__phones anim-from-below anim-delay-3" id="csPhones">
+          <!-- EDIT: Add hero image at assets/images/projects/home-screen/hero.png -->
+          <img src="../assets/images/projects/home-screen/hero.png"
+               alt="Home Screen screens">
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="cs-section cs-section--first section--gray">
+      <div class="page-wrapper">
+
+        <h2 class="cs-section__heading">Project overview</h2>
+
+        <div class="cs-overview">
+          <div class="cs-overview__main">
+
+            <div class="cs-subsection">
+              <h3 class="cs-subheading">Challenge</h3>
+              <p>This started as one of my passion projects. I had a vision for a more appealing home screen, one that moved the app beyond purely transactional toward something more exploratory and social. At the time it wasn't seen as a priority, so I kept it in the back of my mind.</p>
+              <p>Over time the need became hard to ignore. We kept running into the same problem: there was nowhere good to put new features. Opening the app dropped you straight into the booking tab, a list of available times, with no real landing screen.</p>
+              <p>At an internal hackathon in late 2025, I teamed up with two frontend engineers to build a prototype, something concrete enough to prove the need rather than just argue for it. The prototype got people interested, and more of them came to understand its value. The home screen was picked up as a bet for our team during the following planning period.</p>
+            </div>
+
+            <div class="cs-subsection">
+              <h3 class="cs-subheading">My objectives</h3>
+              <ul>
+                <li>Give the app a real home screen, a starting point rather than dropping users straight into the booking flow</li>
+                <li>Shift the experience beyond purely transactional toward something more exploratory and social</li>
+                <li>Build a flexible structure that could finally give new features a place to live</li>
+              </ul>
+            </div>
+
+          </div>
+
+          <div class="cs-meta">
+            <div class="cs-meta__item">
+              <p class="cs-meta__label">Company</p>
+              <p class="cs-meta__value">MATCHi</p>
+            </div>
+            <div class="cs-meta__item">
+              <p class="cs-meta__label">Project scope</p>
+              <p class="cs-meta__value">Feature design</p>
+            </div>
+            <div class="cs-meta__item">
+              <p class="cs-meta__label">Tools</p>
+              <p class="cs-meta__value">Figma, Claude Code, Claude Design, ChatGPT, Github</p>
+            </div>
+            <div class="cs-meta__item">
+              <p class="cs-meta__label">When</p>
+              <p class="cs-meta__value">2026</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ════ Design process ════ -->
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+
+        <div class="cs-subsection">
+          <h2 class="cs-section__heading">Design process</h2>
+          <p>The first version was really a proof of concept. I iterated through a range of concepts quickly, without much upfront research, just to test whether the idea held up. I really believed in the idea of a home screen, so I teamed up with two front-enders to implement it during an internal hackathon.</p>
+          <p>It turned out to be a great PoC, and we got a lot of interest internally. Once it was picked up as a bet by my development team, the work became more structured. We broke the remaining work down into milestones and folded it into our sprint planning. I took the concepts forward into a final design, this time grounded in research and our own data.</p>
+          <p>The design review was a moment where other teams could provide input, and where feedback broadened my way of viewing the feature. And after shipping the initial version, we kept improving the home screen rather than treating it as done.</p>
+
+          <div class="cs-flow">
+            <svg viewBox="0 100 980 200" xmlns="http://www.w3.org/2000/svg" role="img"
+                 aria-label="Process timeline: Prototype (built at hackathon), Became a bet, Design, then an iterative loop into Design review (scope broadens), Ship, and after release Future improvements.">
+              <defs>
+                <marker id="flow-arrow" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14"
+                        refX="11" refY="7" orient="auto">
+                  <polygon points="0 1, 13 7, 0 13" class="cs-flow__arrowhead"/>
+                </marker>
+              </defs>
+
+              <!-- Solid line: straight (Prototype → Design), iterative tangle (Design → Design review), straight (→ Ship).
+                   Tangle is the exact supplied path, translated +55 on x to open room for the left-hand labels. -->
+              <path class="cs-flow__line" pathLength="1"
+                    d="M70 200 L310 200 C327 162, 367 158, 377 195 C385 230, 341 236, 351 204 C358 176, 405 168, 423 200 C437 228, 405 242, 419 210 C429 184, 473 174, 487 206 C495 230, 517 224, 525 200 L670 200"/>
+
+              <!-- Dashed gap after release: Ship → Second bet -->
+              <path class="cs-flow__dash" d="M685 200 L790 200" marker-end="url(#flow-arrow)"/>
+
+              <!-- 1 Prototype -->
+              <g class="cs-flow__node">
+                <circle class="cs-flow__dot" cx="70" cy="200" r="6"/>
+                <text class="cs-flow__label" x="70" y="240">Prototype</text>
+                <text class="cs-flow__sub" x="70" y="259">built at hackathon</text>
+              </g>
+              <!-- 2 Became a bet -->
+              <g class="cs-flow__node">
+                <circle class="cs-flow__dot" cx="190" cy="200" r="6"/>
+                <text class="cs-flow__label" x="190" y="240">Became a bet</text>
+              </g>
+              <!-- 3 Design -->
+              <g class="cs-flow__node">
+                <circle class="cs-flow__dot" cx="310" cy="200" r="6"/>
+                <text class="cs-flow__label" x="310" y="240">Design</text>
+              </g>
+              <!-- 4 Design review (larger dot, label above) -->
+              <g class="cs-flow__node">
+                <circle class="cs-flow__dot" cx="525" cy="200" r="6"/>
+                <text class="cs-flow__sub" x="525" y="143">scope broadens</text>
+                <text class="cs-flow__label" x="525" y="165">Design review</text>
+              </g>
+              <!-- 5 Ship -->
+              <g class="cs-flow__node">
+                <circle class="cs-flow__dot" cx="670" cy="200" r="6"/>
+                <text class="cs-flow__label" x="670" y="240">Ship</text>
+              </g>
+              <!-- 6 Future improvements (label above) -->
+              <g class="cs-flow__node">
+                <circle class="cs-flow__dot" cx="820" cy="200" r="6"/>
+                <text class="cs-flow__sub" x="820" y="143">after release</text>
+                <text class="cs-flow__label" x="820" y="165">Future improvements</text>
+              </g>
+            </svg>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ════ Competitive research ════ -->
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+
+        <div class="cs-subsection">
+          <h2 class="cs-section__heading">Competitive research</h2>
+          <p>The app used to open directly onto court bookings, with no home screen to speak of. Since I wasn't refining something that already existed, the competitive research was about learning what a good home screen could be, not confirming a direction I'd already picked. I went in with two questions:</p>
+
+          <h3 class="cs-subheading" style="margin-top: 40px;">How do other apps balance booking and discovery?</h3>
+          <p>Within racket sports, the answer was mostly "booking, very little discovery." The home screens I found clustered around two approaches. One kept things high level, essentially a launchpad of quick actions routing you on to other sections. Another centred the experience on your favourite marked venue, making it fast to rebook there, almost like a white-label app for a single club. Both were useful, but both treated the home screen as a way to get to a booking, not as a place to explore.</p>
+
+          <h3 class="cs-subheading" style="margin-top: 40px;">Where do they surface social features?</h3>
+          <p>Barely. Across the racket sport apps, the home screen was doing very little socially. That made it more of an open opportunity in the category than a solved pattern, and a clear place to do something different.</p>
+
+          <p style="margin-top: 40px;">To see how a home screen could do more, I looked outside racket sports at general booking apps. Even though they operate in different domains, they showed how a home screen can invite exploration, surfacing recommendations and browsable content alongside booking, without losing quick access to the core action.</p>
+
+          <div class="cs-callout">
+            <span class="cs-callout__icon">💡</span>
+            <div class="cs-callout__content">
+              <span class="cs-callout__label">Key insight</span>
+              <p class="cs-callout__body">Competitors treated the home screen mainly as a route to booking, with limited social features. I decided the concept should do both, keeping the quick booking access users rely on while making room for discovery and social features. Since these were rare among competitors, I decided to include them in my concepts, but communicate that the actual implementation could be scoped out to reach an initial release faster.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ════ Setting the baseline ════ -->
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+
+        <div class="cs-subsection">
+          <h2 class="cs-section__heading">Baseline metrics</h2>
+          <p>Adding a home screen meant changing the app's entry point. Instead of opening straight into booking, users now landed somewhere new first. That introduced a real risk, since anything that slowed down or distracted from booking could hurt the numbers the business relies on. So before rolling it out, we wanted to make sure the core booking experience wasn't affected negatively, and to see whether the home screen actually helped people discover more. I proposed the metrics I thought we should watch and presented them to our product manager, who then set up the tracking together with a developer.</p>
+          <p>Everything was measured as a comparison between users who had the home screen and users who didn't, using a feature flag to split the two groups.</p>
+
+          <div class="cs-callout">
+            <span class="cs-callout__icon">💡</span>
+            <div class="cs-callout__content">
+              <span class="cs-callout__label">Key insight</span>
+              <p class="cs-callout__body">I knew this first version was really a redesign of the app's entry points, not an engagement feature in itself. I didn't expect it to lift bookings or engagement on its own. On the core metrics, success meant holding steady; the real value was laying a foundation that more engagement-focused work could build on later.</p>
+            </div>
+          </div>
+
+          <h3 class="cs-subheading" style="margin-top: 40px;">Protecting the core experience</h3>
+          <div class="cs-metrics">
+            <div class="cs-metric" data-intent="guardrail">
+              <div class="cs-metric__head">
+                <span class="cs-metric__name">Overall booking conversion</span>
+                <span class="cs-metric__tag">Hold steady</span>
+              </div>
+              <p class="cs-metric__desc">From opening the app through to completed payment.</p>
+              <svg class="cs-metric__spark" viewBox="0 0 140 40" preserveAspectRatio="none" aria-hidden="true">
+                <polyline class="spark-line" vector-effect="non-scaling-stroke" pathLength="1" points="4,22 30,19 56,24 82,20 108,22 136,21"/>
+              </svg>
+            </div>
+            <div class="cs-metric" data-intent="guardrail">
+              <div class="cs-metric__head">
+                <span class="cs-metric__name">Activity booking conversion</span>
+                <span class="cs-metric__tag">Hold steady</span>
+              </div>
+              <p class="cs-metric__desc">Conversion for activity-type bookings specifically.</p>
+              <svg class="cs-metric__spark" viewBox="0 0 140 40" preserveAspectRatio="none" aria-hidden="true">
+                <polyline class="spark-line" vector-effect="non-scaling-stroke" pathLength="1" points="4,20 30,23 56,19 82,22 108,20 136,21"/>
+              </svg>
+            </div>
+            <div class="cs-metric cs-metric--wide" data-intent="guardrail">
+              <div class="cs-metric__head">
+                <span class="cs-metric__name">Bookings within 2 minutes</span>
+                <span class="cs-metric__tag">Hold steady</span>
+              </div>
+              <p class="cs-metric__desc">Watched to make sure the new screen didn't slow people down on their way to booking.</p>
+              <svg class="cs-metric__spark" viewBox="0 0 140 40" preserveAspectRatio="none" aria-hidden="true">
+                <polyline class="spark-line" vector-effect="non-scaling-stroke" pathLength="1" points="4,21 30,20 56,22 82,19 108,21 136,20"/>
+              </svg>
+            </div>
+          </div>
+
+          <h3 class="cs-subheading" style="margin-top: 40px;">What we hoped to gain</h3>
+          <div class="cs-metrics">
+            <div class="cs-metric cs-metric--wide" data-intent="goal">
+              <div class="cs-metric__head">
+                <span class="cs-metric__name">Feature discovery</span>
+                <span class="cs-metric__tag">Hoping to lift</span>
+              </div>
+              <p class="cs-metric__desc">Visits to Activities, Public Matches and Leagues.</p>
+              <svg class="cs-metric__spark" viewBox="0 0 140 40" preserveAspectRatio="none" aria-hidden="true">
+                <path class="spark-area" d="M4,32 L30,30 L56,26 L82,20 L108,13 L136,6 L136,40 L4,40 Z"/>
+                <polyline class="spark-line" vector-effect="non-scaling-stroke" pathLength="1" points="4,32 30,30 56,26 82,20 108,13 136,6"/>
+              </svg>
+            </div>
+          </div>
+
+          <h3 class="cs-subheading" style="margin-top: 40px;">Where users went next</h3>
+          <div class="cs-metrics">
+            <div class="cs-metric cs-metric--wide" data-intent="journey">
+              <div class="cs-metric__head">
+                <span class="cs-metric__name">Journeys from the home screen</span>
+                <span class="cs-metric__tag">Observed</span>
+              </div>
+              <p class="cs-metric__desc">The paths users took after landing on the home screen, to understand where it actually led them.</p>
+              <svg class="cs-metric__spark cs-metric__spark--journey" viewBox="0 0 820 150" aria-hidden="true">
+                <!-- trunk -->
+                <path class="spark-line" vector-effect="non-scaling-stroke" pathLength="1" d="M24,75 L260,75"/>
+                <!-- primary branches -->
+                <path class="spark-line" vector-effect="non-scaling-stroke" pathLength="1" d="M260,75 C360,75 410,30 520,30"/>
+                <path class="spark-line" vector-effect="non-scaling-stroke" pathLength="1" d="M260,75 L520,75"/>
+                <path class="spark-line" vector-effect="non-scaling-stroke" pathLength="1" d="M260,75 C360,75 410,120 520,120"/>
+                <!-- secondary branches (top and bottom split again) -->
+                <path class="spark-line" vector-effect="non-scaling-stroke" pathLength="1" d="M520,30 C620,30 690,18 780,18"/>
+                <path class="spark-line" vector-effect="non-scaling-stroke" pathLength="1" d="M520,30 C620,30 690,48 780,48"/>
+                <path class="spark-line" vector-effect="non-scaling-stroke" pathLength="1" d="M520,75 L800,75"/>
+                <path class="spark-line" vector-effect="non-scaling-stroke" pathLength="1" d="M520,120 C620,120 690,100 780,100"/>
+                <path class="spark-line" vector-effect="non-scaling-stroke" pathLength="1" d="M520,120 C620,120 690,134 780,134"/>
+                <!-- nodes -->
+                <circle class="spark-dot" cx="24" cy="75" r="6"/>
+                <circle class="spark-dot" cx="260" cy="75" r="6"/>
+                <circle class="spark-dot" cx="520" cy="30" r="5"/>
+                <circle class="spark-dot" cx="520" cy="75" r="5"/>
+                <circle class="spark-dot" cx="520" cy="120" r="5"/>
+                <circle class="spark-dot" cx="780" cy="18" r="4.5"/>
+                <circle class="spark-dot" cx="780" cy="48" r="4.5"/>
+                <circle class="spark-dot" cx="800" cy="75" r="4.5"/>
+                <circle class="spark-dot" cx="780" cy="100" r="4.5"/>
+                <circle class="spark-dot" cx="780" cy="134" r="4.5"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ════ Concept generation ════ -->
+    <section class="cs-section section--white" style="padding-bottom: 48px;">
+      <div class="page-wrapper">
+
+        <div class="cs-subsection">
+          <h2 class="cs-section__heading">Concept generation</h2>
+          <p>I started by listing the elements we already had to work with, then explored different ways of arranging them on the home screen:</p>
+          <ul style="margin-top: 16px;">
+            <li>Shortcuts</li>
+            <li>Favourite venues</li>
+            <li>Venue search</li>
+            <li>Notifications</li>
+            <li>Chat messages</li>
+            <li>Friends</li>
+          </ul>
+          <p style="margin-top: 16px;">I tried a range of approaches, from giving booking more space to treating it more as quick access. When it came time to narrow down, it was important that booking stayed easily accessible without taking up too much space, so there was room for discovery and the home screen stayed future-proof. The concepts below are just a selection of what I explored.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Concepts — full-viewport-width image -->
+    <section>
+      <img src="../assets/images/projects/home-screen/concepts.png"
+           alt="A range of early home screen concepts"
+           style="width: 100%; max-width: 2000px; margin: 0 auto; display: block;">
+    </section>
+
+    <!-- Concept rationale + Spotting an opportunity (continuation of Concept generation) -->
+    <section class="cs-section section--white" style="padding-top: 48px;">
+      <div class="page-wrapper">
+
+        <div class="cs-subsection">
+          <h3 class="cs-subheading">Spotting an opportunity</h3>
+          <p>During the concept phase, I came up with the idea of using the home screen to front MATCHi's offers. The company had a separate initiative around selling gift cards but no natural place to surface it in the app, and the home screen felt like the right home for that and more. I anchored the idea with the commercial and marketing teams, who all thought it would be great. That's how the offers section came to be.</p>
+          <p style="margin-top: 16px;">We landed on three offers to include:</p>
+          <ul style="margin-top: 16px;">
+            <li>MATCHi gift card</li>
+            <li>Wellness allowance</li>
+            <li>MATCHi TV premium</li>
+          </ul>
+          <p style="margin-top: 16px;">Since offers aren't core to the booking experience, I kept the section on the home screen but placed it at the bottom, so it stays discoverable without competing with booking.</p>
+
+          <img src="../assets/images/projects/home-screen/offers.png" alt="New offers section"
+               style="width: 100%; display: block; margin-top: 32px;">
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ════ Design review ════ -->
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+
+        <div class="cs-subsection">
+          <h2 class="cs-section__heading">Design review</h2>
+          <p>During the design review, I presented the home screen concept to the other designers, the product managers and our CPO. The PMs were mainly concerned about the impact on conversion. I assured them that we had tracking in place and would roll out gradually, so we could see the impact before any broader release.</p>
+          <p>The designers had more detailed feedback, so I arranged a separate session to go deeper on the design.</p>
+          <p>At the time, we had an ongoing project on the web that had updated our fonts and icons. The plan was to use this new look across all our products, but there was no clear decision on when each product would adopt it. Since the home screen was already a new experience in the app, the designers pushed to bring the new fonts and icons into this project, using it to roll out a fresh look and feel across the app.</p>
+          <p>One designer also pushed for something I had planned for phase two: showing friend recommendations on the home screen to bring in more dynamic content. Overall, the review pushed me to include more than I had scoped. I took it back to my team, and the engineers made a new estimate that we deemed feasible.</p>
+
+          <div class="cs-callout" data-variant="2">
+            <span class="cs-callout__icon">💡</span>
+            <div class="cs-callout__content">
+              <span class="cs-callout__label">Scope broadened</span>
+              <p class="cs-callout__body">The concept held, but the review grew its scope: rolling out our new fonts and icons across the whole app, and pulling friend recommendations forward from a later phase. I was glad about it, since the refresh could ship in one go rather than piecemeal and friend recommendations added the dynamic, social content the home screen was built for. I confirmed with engineering it was still feasible.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="cs-subsection" style="margin-top: 48px;">
+          <h3 class="cs-subheading">Introducing new icons and a new font</h3>
+          <p>The new fonts and icons came out of a separate web project, so the visual choices weren't mine to make. I took on updating the fonts across the whole app, while a developer handled the icons. It was my first time pushing code to our app, and I made the changes with Claude Code. It was amazing how smooth the actual work was.</p>
+          <p>The only real friction was the setup: getting everything configured and getting access to our mobile codebase. Once that part gets simpler, development will be genuinely accessible to everyone.</p>
+
+          <!-- EDIT: before/after images — assets/images/projects/home-screen/font-before.png + font-after.png -->
+          <div class="cs-compare">
+            <div class="cs-compare__col">
+              <img src="../assets/images/projects/home-screen/font-before.png" alt="Before the font and icon change">
+            </div>
+            <div class="cs-compare__arrow" aria-hidden="true">
+              <!-- Hand-drawn arrow (source: assets/images/projects/home-screen/arrow.svg),
+                   inlined with currentColor so it recolors with the light/dark theme -->
+              <svg viewBox="0 0 57 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.10337 22.4731C1.48829 21.7204 2.01218 21.0486 2.3276 20.2555C4.96222 13.2313 10.2001 8.69827 16.449 5.31147C18.6 4.14462 21.2418 3.4958 23.728 3.36106C30.814 2.87954 37.6966 4.04685 44.1863 7.03183C46.0583 7.88837 47.7999 9.13412 49.3817 10.6589C48.7206 10.5998 48.0048 10.5554 47.3289 10.4413C45.3709 10.1393 43.3981 9.78213 41.4149 9.60494C40.5749 9.53478 39.6445 9.78408 38.7836 10.0738C38.4552 10.1618 38.0955 10.7896 38.1293 11.1348C38.1632 11.4801 38.654 11.9981 38.9424 11.9799C43.9782 12.1658 48.7663 13.8353 53.6152 15.0751C55.3144 15.5056 56.1857 15.0359 56.4439 13.3724C57.042 9.25586 56.7054 5.1536 55.5183 1.16112C55.4887 1.05093 55.2255 0.944309 54.8086 0.701737C51.9043 2.77901 53.8342 6.04101 52.9999 9.27605C52.4397 8.71758 52.0184 8.23997 51.5719 7.88721C42.3879 1.19551 32.0375 -0.873134 20.9771 0.319024C19.3162 0.468833 17.5944 1.04829 16.0263 1.7637C10.2865 4.42359 5.60208 8.39503 2.30568 13.8251C1.25176 15.5837 0.699055 17.6804 0.116822 19.6669C-0.143868 20.4453 0.107089 21.3819 0.149572 22.1972C0.467506 22.2892 0.78544 22.3811 1.10337 22.4731Z" fill="currentColor"/>
+              </svg>
+            </div>
+            <div class="cs-compare__col">
+              <img src="../assets/images/projects/home-screen/font-after.png" alt="After the font and icon change">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ════ Test and release ════ -->
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+
+        <div class="cs-subsection">
+          <h2 class="cs-section__heading">Test and release</h2>
+          <p>I ran an internal beta with around 20 testers across iOS and Android. To keep the feedback structured and comparable, I asked everyone the same set of questions:</p>
+
+          <div class="cs-questions">
+            <div class="cs-q">
+              <span class="cs-q__label">First impression</span>
+              <p class="cs-q__text">What was your first impression when opening the home screen?</p>
+            </div>
+            <div class="cs-q">
+              <span class="cs-q__label">Clarity</span>
+              <p class="cs-q__text">Was it clear what you could do from the home screen? Anything confusing or missing?</p>
+            </div>
+            <div class="cs-q">
+              <span class="cs-q__label">What worked, what didn't</span>
+              <p class="cs-q__text">👍 One thing you liked<br>👎 One thing you didn't like or would improve</p>
+            </div>
+            <div class="cs-q">
+              <span class="cs-q__label">Anything else?</span>
+              <p class="cs-q__text">Open thoughts, ideas, or reactions.</p>
+            </div>
+          </div>
+
+          <p style="margin-top: 24px;">I then clustered the responses into themes and prioritized what to act on before the wider rollout.</p>
+
+          <div class="cs-synthesis">
+            <div class="cs-syn-stats">
+              <div class="cs-syn-stat">
+                <span class="cs-syn-stat__label">Testers</span>
+                <span class="cs-syn-stat__value">~20</span>
+              </div>
+              <div class="cs-syn-stat">
+                <span class="cs-syn-stat__label">Platforms</span>
+                <span class="cs-syn-stat__value">iOS + Android</span>
+              </div>
+              <div class="cs-syn-stat">
+                <span class="cs-syn-stat__label">Themes</span>
+                <span class="cs-syn-stat__value">8</span>
+              </div>
+            </div>
+
+            <div class="cs-themes">
+              <div class="cs-theme">
+                <div class="cs-theme__head">
+                  <span class="cs-theme__title">Naming &amp; labels</span>
+                  <span class="cs-theme__pill">Shipped in v1</span>
+                </div>
+                <p class="cs-theme__feedback">"Discover" read as the wrong word; "More racket sport" confused English users.</p>
+                <p class="cs-theme__action">Renamed Discover → Play, section → Offers.</p>
+              </div>
+
+              <div class="cs-theme">
+                <div class="cs-theme__head">
+                  <span class="cs-theme__title">Favourite venues</span>
+                  <span class="cs-theme__pill">Shipped in v1</span>
+                </div>
+                <p class="cs-theme__feedback">A second venue was easy to miss, and the sort order felt unpredictable.</p>
+                <p class="cs-theme__action">Added shadow + border, pinned times to today. Sorting by distance.</p>
+              </div>
+
+              <div class="cs-theme">
+                <div class="cs-theme__head">
+                  <span class="cs-theme__title">Core booking clarity</span>
+                </div>
+                <p class="cs-theme__feedback">Booking a court felt less obvious than before; some warned of a release dip.</p>
+                <p class="cs-theme__action">Trusting our metrics to give us real data to base any decision on.</p>
+              </div>
+
+              <div class="cs-theme">
+                <div class="cs-theme__head">
+                  <span class="cs-theme__title">Navigation &amp; findability</span>
+                  <span class="cs-theme__pill">Shipped in v1</span>
+                </div>
+                <p class="cs-theme__feedback">Getting back from sub-pages was unclear, and Leagues got harder to find.</p>
+                <p class="cs-theme__action">Added a back button. Re-added Leagues to the bottom bar.</p>
+              </div>
+
+              <div class="cs-theme">
+                <div class="cs-theme__head">
+                  <span class="cs-theme__title">Platform bugs (Android)</span>
+                  <span class="cs-theme__pill">Shipped in v1</span>
+                </div>
+                <p class="cs-theme__feedback">Dark-mode contrast, nav-bar insets, a filter crash, past times in the carousel.</p>
+                <p class="cs-theme__action">Fixed as a batch before release.</p>
+              </div>
+
+              <div class="cs-theme">
+                <div class="cs-theme__head">
+                  <span class="cs-theme__title">Make it feel more alive</span>
+                </div>
+                <p class="cs-theme__feedback">Clean but a little flat; wanted stats, streaks or an upcoming-bookings view.</p>
+                <p class="cs-theme__action">Captured for later improvements.</p>
+              </div>
+
+              <div class="cs-theme">
+                <div class="cs-theme__head">
+                  <span class="cs-theme__title">Social suggestions</span>
+                  <span class="cs-theme__pill">Shipped in v1</span>
+                </div>
+                <p class="cs-theme__feedback">"Players you might know" kept showing people after a request, and felt random.</p>
+                <p class="cs-theme__action">Hid sent/connected players. Forwarded the feedback to the data team responsible for the recommendations engine.</p>
+              </div>
+
+              <div class="cs-theme">
+                <div class="cs-theme__head">
+                  <span class="cs-theme__title">Offers &amp; partner sensitivity</span>
+                </div>
+                <p class="cs-theme__feedback">Promoting our own offers prominently could unsettle venue partners.</p>
+                <p class="cs-theme__action">Aligned on a principle: as long as we sell our own offers, we shouldn't be afraid to promote them.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cs-subsection" style="margin-top: 48px;">
+          <h3 class="cs-subheading">Rollout</h3>
+          <p>We rolled out gradually behind the feature flag, expanding in stages and checking the metrics held at each step. It took longer than our usual rollout because I was away on vacation partway through, and since there was no rush, the team held off on widening until I was back. We also wanted it to sit around 50% for a while, to get a clean comparison between the two A/B groups.</p>
+
+          <div class="cs-rollout" role="img" aria-label="Rollout ramp from 5% to 100% over about six weeks: 5%, 10%, 25%, 50%, 70%, 100%.">
+            <div class="cs-rollout__col">
+              <span class="cs-rollout__pct">5%</span>
+              <div class="cs-rollout__bar" style="height: 6px;"></div>
+            </div>
+            <div class="cs-rollout__col">
+              <span class="cs-rollout__pct">10%</span>
+              <div class="cs-rollout__bar" style="height: 12px;"></div>
+            </div>
+            <div class="cs-rollout__col">
+              <span class="cs-rollout__pct">25%</span>
+              <div class="cs-rollout__bar" style="height: 30px;"></div>
+            </div>
+            <div class="cs-rollout__col">
+              <span class="cs-rollout__pct">50%</span>
+              <div class="cs-rollout__bar" style="height: 60px;"></div>
+            </div>
+            <div class="cs-rollout__col">
+              <span class="cs-rollout__pct">70%</span>
+              <div class="cs-rollout__bar" style="height: 84px;"></div>
+            </div>
+            <div class="cs-rollout__col">
+              <span class="cs-rollout__pct">100%</span>
+              <div class="cs-rollout__bar" style="height: 120px;"></div>
+            </div>
+          </div>
+          <div class="cs-rollout-axis">
+            <div class="cs-rollout-axis__track"></div>
+            <span class="cs-rollout-axis__label">~6 weeks</span>
+          </div>
+
+          <div class="cs-callout" style="margin-top: 32px;">
+            <span class="cs-callout__icon">💡</span>
+            <div class="cs-callout__content">
+              <span class="cs-callout__label">Insights during staged rollout</span>
+              <p class="cs-callout__body">Starting small paid off. Because of an internal miscommunication, we hadn't been told that gift cards and wellness cards only apply to Swedish venues, so they were showing to users who could never use them. We caught it at 5%, added a feature flag to hide them for non-Swedish users, and widened from there.</p>
+            </div>
+          </div>
+
+          <div class="cs-launch">
+            <div class="cs-launch__media">
+              <img src="../assets/images/projects/home-screen/home_screen_initial.png" alt="The home screen that shipped">
+            </div>
+            <div class="cs-launch__text">
+              <h3 class="cs-subheading">What was shipped</h3>
+              <p><strong>Header</strong><br>A personal greeting with quick access to notifications and chat.</p>
+              <p><strong>Search</strong><br>A prominent search for both venues and players. Player search used to be buried in the profile, with no natural place to surface it.</p>
+              <p><strong>Quick access</strong><br>Shortcuts to the main things people come to do: book a court, browse activities, matches and leagues.</p>
+              <p><strong>Favourite venues</strong><br>The venues you've added as favourites, with their next available times so rebooking is fast.</p>
+              <p><strong>Players you might know</strong><br>A social nudge, suggesting people to connect and play with.</p>
+              <p><strong>Offers</strong><br>A place to surface MATCHi's own offers, the first of its kind in the app, without crowding the booking flow.</p>
+              <p><strong>Bottom navigation bar</strong><br>Updated the profile tab to show the user's photo instead of a generic avatar, and refined the spacing and alignment.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ════ Follow-up on metrics ════ -->
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+
+        <div class="cs-subsection">
+          <h2 class="cs-section__heading">Follow-up on metrics</h2>
+          <p>For the cleanest read I compared the two A/B groups during the week the rollout sat at roughly 50/50, rather than before and after release. A before-and-after view is noisy: booking behaviour shifts with things unrelated to the home screen, like weather, holidays and red days. Comparing both groups in the same week holds those constant, so any difference is more likely down to the home screen itself.</p>
+          <p>I'd still treat this as a signal, not hard proof. It's a single week and not a fully controlled experiment. But the direction was consistent: the group with the home screen booked faster and converted better, most clearly on booking speed.</p>
+
+          <div class="cs-lift">
+            <div class="cs-lift__stat">
+              <span class="cs-lift__value"><span class="cs-lift__plus">+</span><span class="cs-lift__num" data-target="5.0">5.0</span></span>
+              <span class="cs-lift__label">Overall booking conversion</span>
+            </div>
+            <div class="cs-lift__stat">
+              <span class="cs-lift__value"><span class="cs-lift__plus">+</span><span class="cs-lift__num" data-target="12.8">12.8</span></span>
+              <span class="cs-lift__label">Bookings within 2 minutes</span>
+            </div>
+            <div class="cs-lift__stat">
+              <span class="cs-lift__value"><span class="cs-lift__plus">+</span><span class="cs-lift__num" data-target="2.6">2.6</span></span>
+              <span class="cs-lift__label">Activity conversion</span>
+            </div>
+          </div>
+          <p style="font-size: 12px; font-style: italic; color: var(--color-text-muted); margin-top: 24px; text-align: center;">Increase with the home screen versus without, in percentage points (same-week A/B).</p>
+
+          <p style="margin-top: 40px;">The booking speed result surprised me most. The home screen sits in front of the booking flow, so I expected it might slow people down a little. Instead they booked faster, and the conversion lift was just as unexpected given the same worry.</p>
+          <p>My read is that the home screen isn't really an extra step, it's a better starting point. Favourites with their next available times, quick access and search send people toward a booking more directly than dropping them straight into the flow ever did. Adding a screen didn't add friction, because the content earned its place. That was the whole bet, and the early signal says it held.</p>
+
+          <blockquote class="cs-quote">
+            <span class="cs-quote__mark" aria-hidden="true">&ldquo;</span>
+            <p class="cs-quote__text">If I could change one thing in the app and lift booking conversion by just one percent, that would be amazing. Take a moment to understand how impactful this change is.</p>
+            <cite class="cs-quote__cite">&ndash; MATCHi CTO</cite>
+          </blockquote>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ════ The second bet ════ -->
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+
+        <div class="cs-subsection">
+          <h2 class="cs-section__heading">A solid foundation</h2>
+          <p>The home screen has opened up possibilities for new and existing features that would have been hard to surface in our previous app.</p>
+          <p>I want to highlight a few of them. Two are good examples of how the home screen can be put to use, and one I'm especially proud of, because I took it all the way from design through to code myself.</p>
+        </div>
+
+        <div class="cs-subsection" style="margin-top: 48px;">
+          <h3 class="cs-subheading">Recommended activities</h3>
+          <p>Together with our frontend lead and the data team, I took on a side bet to bring recommended activities to the home screen, a way to make it feel more dynamic and tailored to each player.</p>
+          <p>Finding the right activity used to mean scrolling through a list that was the same for everyone. Now the home screen surfaces upcoming activities chosen for you, based on what you play, when you play and who you play with. The new "Recommended for you" feed is different for every player. It learns from how you book and play, and puts the activities most relevant to you first.</p>
+
+          <div class="cs-vision">
+            <div class="cs-vision__notes">
+              <img src="../assets/images/projects/home-screen/arrow_recommended.png" alt="Annotations: dedicated colors and larger icons, an activity or sport fallback image, and players in cards with a connect button">
+            </div>
+            <div class="cs-vision__phone">
+              <img src="../assets/images/projects/home-screen/vision_recommend.png" alt="Concept of the recommended activities home screen">
+            </div>
+          </div>
+
+          <p style="margin-top: 40px;">Alongside the recommended activities, I took the opportunity to improve a couple of things on the existing design, since we were already making changes here.</p>
+          <p>The quick access icons were all the same green, which made them blend together. Giving each one a dedicated color makes them quicker to tell apart at a glance.</p>
+          <p>The old "Players you might know" cards didn't make the action obvious. To do anything, like add someone as a friend, you first had to open their profile. The redesign brings the action onto the card itself, with a clear connect button and the option to dismiss a card to see someone new.</p>
+        </div>
+
+        <div class="cs-subsection" style="margin-top: 48px;">
+          <h3 class="cs-subheading">Articles using AI</h3>
+          <p>I'm always looking for ways to improve the design, and one thing that bothered me was how static the Offers section was. For players outside Sweden we could only show MATCHi TV premium, so it barely felt like an offers section at all.</p>
+          <p>To change that, I thought about ways to keep the section more alive and landed on a new concept: moving Offers into Articles. To make the section feel full for players outside Sweden too, I reworked the existing offers into a more article-style format and added two new ones.</p>
+          <img src="../assets/images/projects/home-screen/articles.png" alt="The Articles section: a row of cards including guides, news and offers" style="width: 100%; display: block; margin: 32px 0;">
+          <p>Articles opens up a place where designers and the marketing team can create and manage more curated content. It's built to be flexible in what we can add, so the section is easy to keep up to date whenever we want to surface something new.</p>
+          <p>I wanted it to feel like news articles or blog posts, so I looked across different apps for inspiration. When I found something I liked, I brought it into Claude Design and used it to generate concepts. I picked out the parts I liked and, just to experiment, asked Claude Code to recreate them in Figma. I showed this to a few stakeholders, and they all thought it was a clear improvement.</p>
+          <p>Rather than wait for a developer to pick it up, I wanted to try building it myself, just to see if I could take a feature all the way. I branched off main and implemented all the articles. I got help reviewing the code, and after a few changes it was ready to merge.</p>
+
+          <div class="cs-compare cs-compare--top">
+            <div class="cs-compare__col">
+              <img src="../assets/images/projects/home-screen/old_gift_card.png" alt="The gift card before, as a static offer card">
+            </div>
+            <div class="cs-compare__arrow" aria-hidden="true">
+              <svg viewBox="0 0 57 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.10337 22.4731C1.48829 21.7204 2.01218 21.0486 2.3276 20.2555C4.96222 13.2313 10.2001 8.69827 16.449 5.31147C18.6 4.14462 21.2418 3.4958 23.728 3.36106C30.814 2.87954 37.6966 4.04685 44.1863 7.03183C46.0583 7.88837 47.7999 9.13412 49.3817 10.6589C48.7206 10.5998 48.0048 10.5554 47.3289 10.4413C45.3709 10.1393 43.3981 9.78213 41.4149 9.60494C40.5749 9.53478 39.6445 9.78408 38.7836 10.0738C38.4552 10.1618 38.0955 10.7896 38.1293 11.1348C38.1632 11.4801 38.654 11.9981 38.9424 11.9799C43.9782 12.1658 48.7663 13.8353 53.6152 15.0751C55.3144 15.5056 56.1857 15.0359 56.4439 13.3724C57.042 9.25586 56.7054 5.1536 55.5183 1.16112C55.4887 1.05093 55.2255 0.944309 54.8086 0.701737C51.9043 2.77901 53.8342 6.04101 52.9999 9.27605C52.4397 8.71758 52.0184 8.23997 51.5719 7.88721C42.3879 1.19551 32.0375 -0.873134 20.9771 0.319024C19.3162 0.468833 17.5944 1.04829 16.0263 1.7637C10.2865 4.42359 5.60208 8.39503 2.30568 13.8251C1.25176 15.5837 0.699055 17.6804 0.116822 19.6669C-0.143868 20.4453 0.107089 21.3819 0.149572 22.1972C0.467506 22.2892 0.78544 22.3811 1.10337 22.4731Z" fill="currentColor"/>
+              </svg>
+            </div>
+            <div class="cs-compare__col">
+              <img src="../assets/images/projects/home-screen/new_gift_card_article.png" alt="The gift card after, reworked into an article">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="cs-section section--white">
+      <div class="page-wrapper">
+        <div class="cs-subsection">
+          <h2 class="cs-section__heading">Evolution</h2>
+          <p>The home screen has come a long way. Before, the app opened straight to the booking tab, with the old font and icons. The first release introduced the home screen itself, and today it has grown into a space other teams also use to surface relevant content.</p>
+          <div class="cs-evolution">
+            <div class="cs-evolution__arrows" aria-hidden="true">
+              <img class="cs-evolution__arrow cs-evolution__arrow--1" src="../assets/images/projects/home-screen/arrow.svg" alt="">
+              <img class="cs-evolution__arrow cs-evolution__arrow--2" src="../assets/images/projects/home-screen/arrow.svg" alt="">
+            </div>
+            <div class="cs-evolution__row">
+              <div class="cs-evolution__item">
+                <img src="../assets/images/projects/home-screen/Play_tab.png" alt="The play tab the app opened to before the home screen, with the old font and icons">
+                <span class="cs-evolution__label">Before</span>
+              </div>
+              <div class="cs-evolution__item">
+                <img src="../assets/images/projects/home-screen/home_screen_v1.png" alt="The home screen at its first release">
+                <span class="cs-evolution__label">First release</span>
+              </div>
+              <div class="cs-evolution__item">
+                <img src="../assets/images/projects/home-screen/home_screen_current.png" alt="The home screen today, with other teams able to add relevant content">
+                <span class="cs-evolution__label">Today</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="cs-section section--gray">
+      <div class="page-wrapper">
+
+        <h2 class="cs-section__heading">Final thoughts</h2>
+
+        <div class="cs-subsection">
+          <p>Anyone who's worked closely with me knows the home screen has been a bit like my baby. It's a project I fought for, and one our previous CPO turned down because he couldn't see the value in it. What I took from it is that when you believe in something, sometimes you just have to make it tangible for people to grasp the concept. And the further you take it, into a prototype, into real code, the more likely it is to get approved.</p>
+          <p>This is one of the few bets I've been able to keep iterating on and improve over time. I think that comes down to two things: working with developers who genuinely care about the product, and the lower threshold for me to build things in code myself, which let me contribute on a new level. It's a reminder of how much it matters to work with people who share a product mindset.</p>
+          <p>Not long ago I ran into a former colleague who had left three years before this project even started. He said, "I'm happy to see you finally got your home screen out." I'd clearly been talking about it for a long time, so it means a lot to see it live.</p>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="cs-other section--white">
+      <div class="page-wrapper">
+        <h2 class="cs-other__heading">View other projects</h2>
+        <div id="otherProjectsGrid">
+          <!-- Injected by case-study.js -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="../js/dark-mode.js"></script><!-- DARK MODE: remove this line to disable -->
+  <script src="../js/nav-indicator.js"></script>
+  <script src="../js/nav-mobile.js"></script>
+  <script src="../js/projects-data.js"></script>
+  <script src="../js/case-study.js"></script>
+  <script src="../js/reveal.js"></script>
+  <script>
+    // Draw-on for the Baseline metrics sparklines: arm each card and draw its
+    // line as it scrolls into view. Progressive enhancement — skipped when the
+    // user prefers reduced motion or IntersectionObserver is unavailable.
+    (function () {
+      if (!('IntersectionObserver' in window)) return;
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var cards = document.querySelectorAll('.cs-metric');
+      if (!cards.length) return;
+      cards.forEach(function (c) { c.classList.add('spark-armed'); });
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            e.target.classList.add('spark-in');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.3, rootMargin: '0px 0px -10% 0px' });
+      cards.forEach(function (c) { io.observe(c); });
+    }());
+
+    // Count-up for the Follow-up lift figures (matches the Clima Card counter).
+    // Animates the number from 0 to its data-target when it scrolls into view.
+    (function () {
+      var nums = document.querySelectorAll('.cs-lift__num');
+      if (!nums.length) return;
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+
+      function animate(el) {
+        var raw      = el.getAttribute('data-target');
+        var target   = parseFloat(raw);
+        var decimals = raw.indexOf('.') !== -1 ? 1 : 0;
+        // Lock the whole value's width (it currently shows the target) so the
+        // "+" stays glued to the number and the label doesn't shift while rolling.
+        var box = el.parentNode;
+        box.style.minWidth = box.getBoundingClientRect().width + 'px';
+        if (reduce) { el.textContent = target.toFixed(decimals); return; }
+        var duration = 1400, start = performance.now();
+        function tick(now) {
+          var p = Math.min((now - start) / duration, 1);
+          el.textContent = (easeOut(p) * target).toFixed(decimals);
+          if (p < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      }
+
+      if (!('IntersectionObserver' in window)) {
+        nums.forEach(function (n) { animate(n); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { animate(e.target); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.5 });
+      nums.forEach(function (n) { io.observe(n); });
+    }());
+
+    // Staggered flip-in for the synthesis theme cards. CSS handles the stagger
+    // and the reduced-motion gate; this just toggles .is-revealed when the grid
+    // scrolls into view, with an immediate fallback when IO is unavailable.
+    (function () {
+      var grid = document.querySelector('.cs-themes');
+      if (!grid) return;
+      if (!('IntersectionObserver' in window) ||
+          (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+        grid.classList.add('is-revealed');
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { grid.classList.add('is-revealed'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
+      io.observe(grid);
+    }());
+
+    // Rollout bars grow up from the baseline when the chart scrolls into view.
+    // CSS handles the scaleY transition, stagger, and reduced-motion gate.
+    (function () {
+      var chart = document.querySelector('.cs-rollout');
+      if (!chart) return;
+      if (!('IntersectionObserver' in window) ||
+          (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+        chart.classList.add('is-revealed');
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { chart.classList.add('is-revealed'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.3, rootMargin: '0px 0px -10% 0px' });
+      io.observe(chart);
+    }());
+  </script>
+</body>
+</html>
