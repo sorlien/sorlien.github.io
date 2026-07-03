@@ -1,0 +1,490 @@
+/**
+ * themes.css
+ *
+ * Self-contained multi-theme system:
+ *   1. Theme menu component (palette button dropdown in the nav)
+ *   2. Theme token blocks — vintage, cyber-retro, neo-brutalism
+ *      (light lives in main.css :root, dark in dark-mode.css — untouched)
+ *   3. Per-theme signature effects and component overrides
+ *
+ * TO REMOVE THEMES COMPLETELY:
+ *   1. Delete this file and js/theme.js
+ *   2. In each HTML file: remove the themes.css <link>, restore the old
+ *      pre-paint script + sun/moon toggle markup, point the script tag
+ *      back to js/dark-mode.js
+ *   3. css/dark-mode.css and main.css tokens keep working as before.
+ */
+
+/* ============================================
+   THEME MENU — palette button + dropdown
+   ============================================ */
+
+.theme-menu {
+  justify-self: end;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+}
+
+.theme-menu__list {
+  --radius-menu: 16px;
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 200px;
+  z-index: 3;
+  border-radius: var(--radius-menu);
+  overflow: hidden;
+  background: var(--color-white);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.16),
+    0 2px 8px  rgba(0, 0, 0, 0.08);
+  /* Closed state — springs open from the button corner */
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.94) translateY(-6px);
+  transform-origin: top right;
+  pointer-events: none;
+  transition:
+    opacity   var(--dur-fast) ease,
+    transform var(--dur-fast) ease,
+    visibility 0s linear var(--dur-fast);
+}
+
+.theme-menu__list.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+  transition:
+    opacity   var(--dur-ui) var(--ease-pop),
+    transform var(--dur-ui) var(--ease-pop),
+    visibility 0s;
+}
+
+/* ── Menu items — styled by the ACTIVE theme (holistic). A small split
+      swatch previews each theme's surface + accent; the swatch colors are
+      intentionally literal (they preview specific themes and must not
+      respond to the active theme's tokens). ── */
+
+.theme-menu__item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 13px 16px;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  background: transparent;
+  color: var(--color-text-body);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1;
+  transition: padding-left var(--dur-fast) var(--ease-pop), background-color var(--dur-fast) ease;
+}
+
+.theme-menu__item:hover,
+.theme-menu__item:focus-visible {
+  padding-left: 24px;
+  background: var(--color-bg-alt);
+}
+
+.theme-menu__item:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
+}
+
+.theme-menu__item[aria-checked="true"] {
+  background: var(--color-bg-alt);
+}
+
+/* Active check */
+.theme-menu__item[aria-checked="true"]::after {
+  content: '✓';
+  margin-left: auto;
+  padding-left: 12px;
+  color: var(--color-text-muted);
+}
+
+
+/* Swatch — surface/accent split circle per theme, drawn as inline SVG
+   (a CSS gradient's hard diagonal edge aliases; SVG anti-aliases cleanly) */
+.theme-menu__item::before {
+  content: '';
+  width: 14px;
+  height: 14px;
+  margin-right: 10px;
+  flex-shrink: 0;
+  background-size: 14px 14px;
+  background-repeat: no-repeat;
+}
+
+.theme-menu__item[data-theme-value="light"]::before { background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'><circle cx='7' cy='7' r='6.5' fill='%23ffffff' stroke='rgba%28127%2C127%2C127%2C0.5%29'/><path d='M11.6 2.4A6.5 6.5 0 0 1 2.4 11.6Z' fill='%237B61FF'/></svg>"); }
+.theme-menu__item[data-theme-value="dark"]::before { background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'><circle cx='7' cy='7' r='6.5' fill='%23111111' stroke='rgba%28127%2C127%2C127%2C0.5%29'/><path d='M11.6 2.4A6.5 6.5 0 0 1 2.4 11.6Z' fill='%237B61FF'/></svg>"); }
+.theme-menu__item[data-theme-value="vintage"]::before { background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'><circle cx='7' cy='7' r='6.5' fill='%23F3EBDD' stroke='rgba%28127%2C127%2C127%2C0.5%29'/><path d='M11.6 2.4A6.5 6.5 0 0 1 2.4 11.6Z' fill='%239C5500'/></svg>"); }
+.theme-menu__item[data-theme-value="cyber-retro"]::before { background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'><circle cx='7' cy='7' r='6.5' fill='%231A1A2E' stroke='rgba%28127%2C127%2C127%2C0.5%29'/><path d='M11.6 2.4A6.5 6.5 0 0 1 2.4 11.6Z' fill='%2300E5FF'/></svg>"); }
+.theme-menu__item[data-theme-value="neo-brutalism"]::before { background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'><circle cx='7' cy='7' r='6.5' fill='%23FFD93D' stroke='rgba%28127%2C127%2C127%2C0.5%29'/><path d='M11.6 2.4A6.5 6.5 0 0 1 2.4 11.6Z' fill='%23FF5EA8'/></svg>"); }
+
+/* Palette icon — same springy twist-and-grow the sun/moon toggle had */
+.theme-toggle .icon-palette {
+  transition: transform var(--dur-reveal) var(--ease-pop);
+}
+
+.theme-toggle:hover .icon-palette {
+  transform: rotate(-18deg) scale(1.12);
+}
+
+
+/* ============================================
+   THEME: NEO-BRUTALISM — cream, candy colors,
+   thick borders, hard offset shadows
+   ============================================ */
+
+/* Space Grotesk — the canonical neo-brutalism face (OFL, see
+   assets/fonts/SpaceGrotesk-OFL.txt). Only referenced under
+   [data-theme="neo-brutalism"], so browsers fetch it lazily on first use.
+   font-display: swap (not block like Thunder/Inter) — the system fallback
+   shows instantly during a theme switch, then swaps in. */
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('../assets/fonts/SpaceGrotesk-VariableFont_wght.woff2') format('woff2');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+[data-theme="neo-brutalism"] {
+  --color-white:      #FFFDF5;   /* cream */
+  --color-bg-alt:     #FFD93D;   /* vivid yellow */
+  --color-black:      #0D0D0D;
+  --color-text-body:  #0D0D0D;
+  --color-text-muted: #40403A;
+  --color-primary:    #FF5EA8;   /* hot pink — chip surface with black text */
+  --color-on-accent:  #0D0D0D;
+  --color-watermark:  rgba(255, 217, 61, 0.5);
+
+  /* Solid accents are text-safe darker brights; -rgb triplets stay
+     candy-bright for tinted surfaces (meshes, pills) */
+  --accent-1: #6C2BD9;  --accent-1-rgb: 124, 77, 255;   /* violet */
+  --accent-2: #D14900;  --accent-2-rgb: 255, 107, 53;   /* orange */
+  --accent-3: #00806B;  --accent-3-rgb: 42, 212, 192;   /* teal */
+  --accent-4: #D6146C;  --accent-4-rgb: 255, 94, 168;   /* pink */
+
+  --font-display: 'Space Grotesk', system-ui, 'Helvetica Neue', Arial, sans-serif;
+  --font-body:    'Space Grotesk', system-ui, Arial, sans-serif;
+  --font-ui:      'Space Grotesk', system-ui, Arial, sans-serif;
+
+  /* Space Grotesk is far wider than Thunder — compensate */
+  --text-watermark: clamp(64px, 15vw, 190px);
+  --text-h1:        clamp(40px, 6vw, 72px);
+  --text-h2:        clamp(28px, 4vw, 48px);
+  --text-h3:        26px;
+  --tracking-watermark: 0;
+  --roll-height: 1.35em;
+
+  /* Chunky rounded corners; pill stays a pill (badges only, per the style) */
+  --radius-btn:  12px;
+  --radius-card: 12px;
+}
+
+/* Buttons — thick border + hard offset shadow, mechanical press.
+   Default is a pink color block (neo-brutalist grammar); hover floods black. */
+[data-theme="neo-brutalism"] .btn {
+  border: 2px solid var(--color-black);
+  box-shadow: 4px 4px 0 var(--color-black);
+}
+
+[data-theme="neo-brutalism"] .btn--primary {
+  background: var(--color-primary);
+  color: var(--color-black);
+}
+
+[data-theme="neo-brutalism"] .btn--primary:hover {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+[data-theme="neo-brutalism"] .btn:hover {
+  box-shadow: 2px 2px 0 var(--color-black);
+  transform: translate(2px, 2px);
+}
+
+[data-theme="neo-brutalism"] .btn:active {
+  box-shadow: 0 0 0 var(--color-black);
+  transform: translate(4px, 4px);
+}
+
+/* Cards and panels get the sticker treatment */
+[data-theme="neo-brutalism"] .cs-callout,
+[data-theme="neo-brutalism"] .cs-timeline__card {
+  border: 2px solid var(--color-black);
+  box-shadow: 5px 5px 0 var(--color-black);
+}
+
+[data-theme="neo-brutalism"] .theme-menu__list {
+  --radius-menu: 12px;
+  border: 2px solid var(--color-black);
+  box-shadow: 6px 6px 0 var(--color-black);
+}
+
+/* Hot pink is a chip surface, not a text color (fails contrast on cream) */
+[data-theme="neo-brutalism"] .nav__link:hover,
+[data-theme="neo-brutalism"] .nav__menu .nav__link:hover,
+[data-theme="neo-brutalism"] .cs-back:hover,
+[data-theme="neo-brutalism"] .theme-toggle:hover {
+  color: var(--color-black);
+  background: var(--color-primary);
+}
+
+/* The palette button becomes a proper sticker on hover — a bare pink square
+   reads as an accident; the chip chrome makes it deliberate */
+[data-theme="neo-brutalism"] .theme-toggle:hover {
+  border: 2px solid var(--color-black);
+  border-radius: 8px;
+  box-shadow: 2px 2px 0 var(--color-black);
+}
+
+[data-theme="neo-brutalism"] .theme-toggle:hover svg {
+  fill: none;
+}
+
+/* Eyebrow becomes a slightly-tilted pink sticker */
+[data-theme="neo-brutalism"] .hero-fold__eyebrow {
+  color: var(--color-black);
+  background: var(--color-primary);
+  border: 2px solid var(--color-black);
+  border-radius: 8px;
+  box-shadow: 3px 3px 0 var(--color-black);
+  display: inline-block;
+  padding: 4px 10px;
+  transform: rotate(-1.5deg);
+}
+
+[data-theme="neo-brutalism"] .project-info__number,
+[data-theme="neo-brutalism"] .project-number__wrap {
+  color: var(--accent-1);
+}
+
+/* About scroll-reveal — words lighten normally while scrolling; once the
+   LAST word lights up, the whole paragraph becomes one pink sticker
+   (same language as the hero eyebrow). Constant padding + transparent
+   chrome in the default state so nothing shifts when it lands. */
+[data-theme="neo-brutalism"] .about-reveal__text {
+  padding: 20px 28px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  transition:
+    background-color var(--dur-reveal) var(--ease-out),
+    border-color     var(--dur-reveal) var(--ease-out),
+    box-shadow       var(--dur-reveal) var(--ease-out);
+}
+
+[data-theme="neo-brutalism"] .about-reveal__text:has(.about-reveal__word:last-of-type.is-lit) {
+  background: var(--color-primary);
+  border-color: var(--color-black);
+  box-shadow: 6px 6px 0 var(--color-black);
+}
+
+[data-theme="neo-brutalism"] .nav--scrolled {
+  box-shadow: none;
+}
+
+
+/* ============================================
+   THEME: VINTAGE — warm analog film
+   ============================================ */
+
+[data-theme="vintage"] {
+  --color-white:      #F3EBDD;
+  --color-bg-alt:     #EAE0CC;
+  --color-black:      #2A2118;
+  --color-text-body:  #3D2F1F;
+  --color-text-muted: #6B5842;
+  --color-primary:    #9C5500;
+  --color-on-accent:  #FFF6E8;
+  --color-watermark:  rgba(120, 96, 60, 0.14);
+
+  --accent-1: #9C5500;  --accent-1-rgb: 156, 85, 0;
+  --accent-2: #A4432D;  --accent-2-rgb: 164, 67, 45;
+  --accent-3: #4C6B54;  --accent-3-rgb: 76, 107, 84;
+  --accent-4: #8A4A62;  --accent-4-rgb: 138, 74, 98;
+
+  --font-display: 'Iowan Old Style', Palatino, Georgia, serif;
+  --font-body:    Georgia, 'Times New Roman', serif;
+  --font-ui:      Georgia, 'Times New Roman', serif;
+
+  /* Serif is wider than Thunder — compensate */
+  --text-watermark: clamp(64px, 15vw, 190px);
+  --text-h1:        clamp(40px, 6vw, 72px);
+  --text-h2:        clamp(28px, 4vw, 48px);
+  --text-h3:        26px;
+  --tracking-watermark: 0.02em;
+  --roll-height: 1.35em;
+
+  --radius-btn: 6px;
+}
+
+/* Serif ascenders clip at line-height 1 */
+[data-theme="vintage"] h1,
+[data-theme="vintage"] h2,
+[data-theme="vintage"] h3 {
+  line-height: 1.1;
+}
+
+/* Film grain — static overlay, never animated. Sits above everything
+   (nav is 1000, fold-loader 2000) but never intercepts input. */
+[data-theme="vintage"] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 2100;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+
+/* ============================================
+   THEME: CYBER-RETRO — synthwave terminal
+   ============================================ */
+
+[data-theme="cyber-retro"] {
+  --color-white:      #1A1A2E;
+  --color-bg-alt:     #232340;
+  --color-black:      #F5F5FF;
+  --color-text-body:  #E4E4F4;
+  --color-text-muted: #9A9AC0;
+  --color-primary:    #FF4FD8;
+  --color-on-accent:  #14142A;
+  --color-watermark:  rgba(0, 229, 255, 0.07);
+
+  --accent-1: #FF4FD8;  --accent-1-rgb: 255, 79, 216;
+  --accent-2: #00E5FF;  --accent-2-rgb: 0, 229, 255;
+  --accent-3: #9D6BFF;  --accent-3-rgb: 157, 107, 255;
+  --accent-4: #FFB84D;  --accent-4-rgb: 255, 184, 77;
+
+  --font-display: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --font-body:    ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --font-ui:      ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Mono is far wider than Thunder — compensate */
+  --text-watermark: clamp(56px, 13vw, 170px);
+  --text-h1:        clamp(36px, 5.5vw, 64px);
+  --text-h2:        clamp(26px, 3.6vw, 44px);
+  --text-h3:        24px;
+  --tracking-watermark: 0.1em;
+  --roll-height: 1.35em;
+
+  --radius-btn:  4px;
+  --radius-pill: 6px;
+  --radius-card: 4px;
+}
+
+/* Dark surface — invert the logo like dark mode does */
+[data-theme="cyber-retro"] .nav__logo img {
+  filter: invert(1);
+}
+
+/* Scanlines — static overlay, same pattern as vintage grain */
+[data-theme="cyber-retro"] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 2100;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    transparent 0 2px,
+    rgba(0, 0, 0, 0.12) 2px 3px
+  );
+}
+
+/* Neon glow — kept low so readability wins */
+[data-theme="cyber-retro"] h1,
+[data-theme="cyber-retro"] h2,
+[data-theme="cyber-retro"] .nav__link--active {
+  text-shadow: 0 0 12px rgba(var(--accent-1-rgb), 0.45);
+}
+
+[data-theme="cyber-retro"] .watermark {
+  text-shadow: 0 0 24px rgba(var(--accent-2-rgb), 0.25);
+}
+
+[data-theme="cyber-retro"] .btn--primary:hover,
+[data-theme="cyber-retro"] .btn--outline:hover {
+  box-shadow: 0 0 16px rgba(var(--accent-2-rgb), 0.35);
+}
+
+[data-theme="cyber-retro"] .theme-menu__list {
+  --radius-menu: 6px;
+  border: 1px solid rgba(var(--accent-2-rgb), 0.4);
+  box-shadow: 0 0 20px rgba(var(--accent-2-rgb), 0.2);
+}
+
+[data-theme="cyber-retro"] .nav--scrolled {
+  background-color: var(--color-white);
+  box-shadow: 0 1px 0 rgba(var(--accent-2-rgb), 0.3);
+}
+
+
+/* ============================================
+   SHARED WIDE-FONT COMPENSATION
+   Thunder is ultra-condensed; every replacement stack is wider and taller.
+   ============================================ */
+
+/* Project carousel title — must fit its roll window on one line */
+[data-theme="vintage"] .project-info__title,
+[data-theme="cyber-retro"] .project-info__title,
+[data-theme="neo-brutalism"] .project-info__title {
+  font-size: clamp(28px, 3.6vw, 46px);
+}
+
+/* Number roll ("Project 02") — digits have no descenders, so they don't
+   need the 1.35em title headroom; restore the 1em Thunder-tuned alignment
+   (the wrap's top:3px + vertical-align:text-top were calibrated for 1em) */
+[data-theme="vintage"] .project-info__number,
+[data-theme="cyber-retro"] .project-info__number,
+[data-theme="neo-brutalism"] .project-info__number {
+  --roll-height: 1em;
+}
+
+/* Georgia only has old-style figures (x-height digits, descending 3/4/5/7/9)
+   — use serifs with lining figures for the number roll */
+[data-theme="vintage"] .project-info__number {
+  font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+  font-variant-numeric: lining-nums;
+}
+
+/* Design-process columns — "2 Conceptualization" can't fit Thunder-width
+   equal columns in wider fonts; let columns size by content instead */
+[data-theme="vintage"] .cs-process__step,
+[data-theme="cyber-retro"] .cs-process__step,
+[data-theme="neo-brutalism"] .cs-process__step {
+  flex: 0 1 auto;
+}
+
+[data-theme="cyber-retro"] .cs-process__number {
+  font-size: 17px !important;   /* mono runs widest — trim so four steps share a row */
+}
+
+/* Desktop/tablet: force one line so flex sizes the column to the full label.
+   Mobile keeps the 2-col grid and may wrap — nowrap would overflow 375px. */
+@media (min-width: 768px) {
+  [data-theme="vintage"] .cs-process__number,
+  [data-theme="cyber-retro"] .cs-process__number,
+  [data-theme="neo-brutalism"] .cs-process__number {
+    white-space: nowrap;
+  }
+}
+
+/* Watermark glyph overshoot — serif/mono/system ascenders exceed line-height 1 */
+[data-theme="vintage"] .watermark,
+[data-theme="cyber-retro"] .watermark,
+[data-theme="neo-brutalism"] .watermark {
+  line-height: 1.2;
+}
+
+/* ── About scroll-reveal words — unlit state must read as "off" against
+      each theme's surface (base is #d8d8d8, tuned for white) ── */
+[data-theme="vintage"] .about-reveal__word     { color: #D9CCB2; }
+[data-theme="cyber-retro"] .about-reveal__word { color: #3F3F66; }

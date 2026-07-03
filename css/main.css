@@ -58,6 +58,18 @@
   --color-text-body:  #111c18;
   --color-text-muted: #4f4f4f;
   --color-watermark:  rgba(193, 197, 213, 0.25);
+  --color-on-accent:  #ffffff;   /* text on primary-colored surfaces */
+
+  /* Accent quartet — timeline pills (solid) + aurora meshes (rgb triplets) */
+  --accent-1: #7B61FF;  --accent-1-rgb: 123, 97, 255;
+  --accent-2: #FF6B35;  --accent-2-rgb: 255, 107, 53;
+  --accent-3: #0099BB;  --accent-3-rgb: 0, 212, 255;  /* solid pill vs mesh cyan differ today — both preserved */
+  --accent-4: #FF3D8A;  --accent-4-rgb: 255, 61, 138;
+
+  /* Shape — stylistic radii (structural 50%/2px stay literal) */
+  --radius-btn:  30px;
+  --radius-pill: 999px;
+  --radius-card: 10px;
 
   /* Typography scale */
   --text-watermark: clamp(120px, 29.5vw, 378px);
@@ -94,6 +106,12 @@
   --dur-ui:     0.35s;   /* state swaps (hamburger, icon opacity) */
   --dur-reveal: 0.55s;   /* icon/menu transforms, theme reveal */
   --dur-slow:   0.9s;    /* section & content entrances, carousel */
+
+  /* Typography compensation — themes with wider display fonts override these */
+  --tracking-watermark: 20px;
+  /* Odometer clip windows (watermark roll, project title/number roll).
+     1em fits Thunder exactly; wider fonts need headroom for ascenders/descenders */
+  --roll-height: 1em;
 }
 
 
@@ -149,7 +167,7 @@ ul {
   font-weight: 900;
   color: var(--color-watermark);
   line-height: 1;
-  letter-spacing: 20px;
+  letter-spacing: var(--tracking-watermark);
   pointer-events: none;
   user-select: none;
   white-space: nowrap;
@@ -216,7 +234,7 @@ p {
   gap: 32px;
   padding: 0 40px;
   background-color: transparent;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -257,6 +275,12 @@ p {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  /* Same springy pop as the theme toggle's hover */
+  transition: transform var(--dur-reveal) var(--ease-pop);
+}
+
+.nav__logo:hover img {
+  transform: scale(1.12);
 }
 
 .nav__links {
@@ -285,7 +309,7 @@ p {
   pointer-events: none;
   transform: translateY(0);
   transition: left 0.35s ease;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
 }
 
 .nav__indicator--instant {
@@ -311,7 +335,7 @@ p {
   justify-content: center;
   gap: 12px;
   padding: 10px 30px;
-  border-radius: 30px;
+  border-radius: var(--radius-btn);
   font-family: var(--font-ui);
   font-size: var(--text-body);
   font-weight: 700;
@@ -329,7 +353,7 @@ p {
 
 .btn--primary:hover {
   background-color: var(--color-primary);
-  color: #ffffff;
+  color: var(--color-on-accent);
 }
 
 /* Outlined button (Back / Next) */
@@ -341,7 +365,7 @@ p {
 
 .btn--outline:hover {
   background-color: var(--color-primary);
-  color: #ffffff;
+  color: var(--color-on-accent);
   border-color: var(--color-primary);
 }
 
@@ -425,37 +449,37 @@ p {
 /* Public Matches — purple-led */
 [data-project-id="public-matches"] .project-card__circle {
   background:
-    radial-gradient(ellipse 70% 70% at 30% 40%, rgba(123, 97,  255, 0.50) 0%, transparent 65%),
-    radial-gradient(ellipse 60% 60% at 80% 20%, rgba(255, 107, 53,  0.22) 0%, transparent 65%),
-    radial-gradient(ellipse 65% 65% at 70% 80%, rgba(0,   212, 255, 0.18) 0%, transparent 65%),
-    radial-gradient(ellipse 55% 55% at 10% 75%, rgba(255, 61,  138, 0.22) 0%, transparent 65%);
+    radial-gradient(ellipse 70% 70% at 30% 40%, rgba(var(--accent-1-rgb), 0.50) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 60% at 80% 20%, rgba(var(--accent-2-rgb), 0.22) 0%, transparent 65%),
+    radial-gradient(ellipse 65% 65% at 70% 80%, rgba(var(--accent-3-rgb), 0.18) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 55% at 10% 75%, rgba(var(--accent-4-rgb), 0.22) 0%, transparent 65%);
 }
 
 /* Montah — orange-led */
 [data-project-id="montah"] .project-card__circle {
   background:
-    radial-gradient(ellipse 70% 70% at 70% 35%, rgba(255, 107, 53,  0.50) 0%, transparent 65%),
-    radial-gradient(ellipse 60% 60% at 20% 20%, rgba(123, 97,  255, 0.22) 0%, transparent 65%),
-    radial-gradient(ellipse 65% 65% at 80% 80%, rgba(255, 61,  138, 0.25) 0%, transparent 65%),
-    radial-gradient(ellipse 55% 55% at 15% 80%, rgba(0,   212, 255, 0.18) 0%, transparent 65%);
+    radial-gradient(ellipse 70% 70% at 70% 35%, rgba(var(--accent-2-rgb), 0.50) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 60% at 20% 20%, rgba(var(--accent-1-rgb), 0.22) 0%, transparent 65%),
+    radial-gradient(ellipse 65% 65% at 80% 80%, rgba(var(--accent-4-rgb), 0.25) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 55% at 15% 80%, rgba(var(--accent-3-rgb), 0.18) 0%, transparent 65%);
 }
 
 /* Split Payment — cyan-led */
 [data-project-id="split-payment"] .project-card__circle {
   background:
-    radial-gradient(ellipse 70% 70% at 50% 65%, rgba(0,   212, 255, 0.50) 0%, transparent 65%),
-    radial-gradient(ellipse 60% 60% at 15% 25%, rgba(123, 97,  255, 0.22) 0%, transparent 65%),
-    radial-gradient(ellipse 60% 60% at 85% 20%, rgba(255, 107, 53,  0.22) 0%, transparent 65%),
-    radial-gradient(ellipse 55% 55% at 80% 75%, rgba(255, 61,  138, 0.20) 0%, transparent 65%);
+    radial-gradient(ellipse 70% 70% at 50% 65%, rgba(var(--accent-3-rgb), 0.50) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 60% at 15% 25%, rgba(var(--accent-1-rgb), 0.22) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 60% at 85% 20%, rgba(var(--accent-2-rgb), 0.22) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 55% at 80% 75%, rgba(var(--accent-4-rgb), 0.20) 0%, transparent 65%);
 }
 
 /* Clima Card — pink-led */
 [data-project-id="clima-card"] .project-card__circle {
   background:
-    radial-gradient(ellipse 70% 70% at 55% 50%, rgba(255, 61,  138, 0.50) 0%, transparent 65%),
-    radial-gradient(ellipse 60% 60% at 15% 20%, rgba(123, 97,  255, 0.22) 0%, transparent 65%),
-    radial-gradient(ellipse 60% 60% at 80% 15%, rgba(255, 107, 53,  0.22) 0%, transparent 65%),
-    radial-gradient(ellipse 55% 55% at 20% 80%, rgba(0,   212, 255, 0.18) 0%, transparent 65%);
+    radial-gradient(ellipse 70% 70% at 55% 50%, rgba(var(--accent-4-rgb), 0.50) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 60% at 15% 20%, rgba(var(--accent-1-rgb), 0.22) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 60% at 80% 15%, rgba(var(--accent-2-rgb), 0.22) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 55% at 20% 80%, rgba(var(--accent-3-rgb), 0.18) 0%, transparent 65%);
 }
 
 /* Hover: circle shrinks, image grows */
