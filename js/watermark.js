@@ -61,8 +61,11 @@
 
     void track.offsetWidth;                                   // commit before animating
     var n = track.children.length;                            // roll up to the newest line
+    // Words are --roll-height tall (1em for Thunder, taller for theme fonts) —
+    // measure instead of assuming 1em, or the glide lands short and snaps.
+    var wordH = parseFloat(getComputedStyle(track.children[0]).height) || track.children[0].offsetHeight;
     track.style.transition = 'transform ' + (ROLL_MS / 1000) + 's cubic-bezier(0.4, 0, 0.2, 1)';
-    track.style.transform = 'translateY(-' + (n - 1) + 'em)';
+    track.style.transform = 'translateY(-' + ((n - 1) * wordH) + 'px)';
 
     fit();   // scale to keep side margins for the incoming word
 
