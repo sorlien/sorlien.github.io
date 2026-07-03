@@ -56,6 +56,23 @@ window.ScrollOrchestrator = (function () {
   var endArrived   = 0;
   var startArrived = 0;
 
+  // ── Gesture gating (one item-step per gesture) ──
+  // A trackpad flick's momentum tail outlives the carousel's busy window, so
+  // the leftover wheel events used to fire a SECOND step (skipping an item).
+  // A step is allowed once per gesture. A new wheel gesture starts after a
+  // silence gap, or when the delta magnitude RISES again mid-tail (a fresh
+  // flick); a new touch gesture starts on touchstart. Boundary holds and
+  // releases are untouched — a single fling can still carry you out.
+  var stepAllowed  = true;
+  var lastWheelT   = 0;
+  var lastWheelMag = 0;
+  var WHEEL_GAP_MS = 220;  // wheel silence longer than this = new gesture
+                           // (a quick re-flick inside the gap is caught by WHEEL_RISE)
+  var WHEEL_RISE   = 1.4;  // |delta| must exceed the tail by this ratio = new flick
+  var WHEEL_FLOOR  = 40;   // …and by this absolute amount. A dying tail jitters
+                           // around tiny values (2–7) where a pure ratio test
+                           // false-triggers; a genuine flick starts well above this.
+
   function register(adapter) {
     if (adapter && adapter.el) captures.push(adapter);
   }
@@ -91,6 +108,7 @@ window.ScrollOrchestrator = (function () {
   function engage(c) {
     engaged = c;
     endArrived = 0; startArrived = 0;
+    stepAllowed = false;      // the gesture that carried you in shouldn't also spin
     // Frame the pin at the top, gliding there smoothly. The arrival dwell starts
     // once the glide settles, so the entry item rests for a beat before spinning.
     lockY = Math.round(window.scrollY + c.el.getBoundingClientRect().top);
@@ -153,7 +171,12 @@ window.ScrollOrchestrator = (function () {
       }
       startArrived = 0;
     }
-    if (!(a.isBusy && a.isBusy())) a.step(delta);
+    // Loose sections (the About orbital) spin continuously with the gesture —
+    // gesture gating only applies to stepped sections (the Projects carousel).
+    if ((a.loose || stepAllowed) && !(a.isBusy && a.isBusy())) {
+      if (!a.loose) stepAllowed = false; // consumed — next step needs a new gesture
+      a.step(delta);
+    }
   }
 
   // ── Scroll: hold the lock; arm/engage when appropriate ──
@@ -177,6 +200,11 @@ window.ScrollOrchestrator = (function () {
   function onWheel(e) {
     var now = performance.now();
     if (now < suppressUntil) return;                  // in-page nav in progress — let it scroll
+    // New gesture? (silence gap, or delta rising again = fresh flick mid-tail)
+    var mag = Math.abs(e.deltaY);
+    if (now - lastWheelT > WHEEL_GAP_MS ||
+        (mag >= WHEEL_FLOOR && mag > lastWheelMag * WHEEL_RISE)) stepAllowed = true;
+    lastWheelT = now; lastWheelMag = mag;
     if (!engaged) {
       var d = e.deltaY > 0 ? 1 : -1;
       if (!armed && d !== releaseDir) armed = true;   // reversed direction → re-arm
@@ -191,7 +219,7 @@ window.ScrollOrchestrator = (function () {
   // ── Touch ──
   var touchY = 0, touchAccum = 0, TOUCH_STEP = 44;
 
-  function onTouchStart(e) { touchY = e.touches[0].clientY; touchAccum = 0; }
+  function onTouchStart(e) { touchY = e.touches[0].clientY; touchAccum = 0; stepAllowed = true; }
 
   function onTouchMove(e) {
     var now = performance.now();

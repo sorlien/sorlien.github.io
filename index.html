@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Amalia Sörlien — UX Portfolio</title>
-  <script>if(localStorage.getItem('theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
+  <script>(function(){var t=localStorage.getItem('theme');if(t&&t!=='light'&&['dark','vintage','cyber-retro','neo-brutalism'].indexOf(t)>-1)document.documentElement.setAttribute('data-theme',t);})();</script>
   <script>try{if(sessionStorage.getItem('foldLoaded'))document.documentElement.classList.add('frames-cached');}catch(e){}</script>
   <script>
     /* One-pager: always start at the top on entry. Don't let the browser restore
@@ -13,8 +13,9 @@
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     if (!location.hash) window.addEventListener('load', function () { window.scrollTo(0, 0); });
   </script>
-  <link rel="stylesheet" href="css/main.css?v=85">
+  <link rel="stylesheet" href="css/main.css?v=86">
   <link rel="stylesheet" href="css/dark-mode.css?v=85"><!-- DARK MODE: remove this line to disable -->
+  <link rel="stylesheet" href="css/themes.css?v=3"><!-- THEMES: remove this line to disable -->
   <style>
     /* ════════════════════════════════════════════
        HERO — origami fold scrubber
@@ -254,14 +255,14 @@
     .project-info { display: flex; flex-direction: column; gap: 20px; width: 437px; }
     .project-info__meta { display: flex; flex-direction: column; gap: 6px; }
     .project-info__number { font-family: var(--font-ui); font-weight: 600; font-size: 16px; color: var(--color-primary); }
-    .project-info__title { font-family: var(--font-display); font-size: var(--text-h1); font-weight: 700; line-height: 1; color: var(--color-black); white-space: nowrap; }
+    .project-info__title { font-family: var(--font-display); font-size: clamp(48px, 7vw, 90px); font-weight: 700; line-height: 1; color: var(--color-black); white-space: nowrap; }  /* capped below --text-h1: longest names must fit the roll window */
     .project-info__body { display: flex; flex-direction: column; gap: 16px; }
     .project-info__description { font-family: var(--font-body); font-size: var(--text-body); font-weight: 400; line-height: 24px; color: var(--color-text-body); width: 385px; }
 
-    .project-title__wrap  { display: block; overflow: hidden; height: 1em; position: relative; }
-    .project-title__digit { position: absolute; top: 0; left: 0; white-space: nowrap; line-height: 1; }
-    .project-number__wrap { display: inline-block; overflow: hidden; height: 1em; min-width: 2.2ch; vertical-align: text-top; position: relative; top: 3px; }
-    .project-number__digit{ position: absolute; top: 0; left: 0; line-height: 1; white-space: nowrap; }
+    .project-title__wrap  { display: block; overflow: hidden; height: var(--roll-height); position: relative; }
+    .project-title__digit { position: absolute; top: 0; left: 0; white-space: nowrap; line-height: var(--roll-height); }
+    .project-number__wrap { display: inline-block; overflow: hidden; height: var(--roll-height); min-width: 2.2ch; vertical-align: text-top; position: relative; top: 3px; }
+    .project-number__digit{ position: absolute; top: 0; left: 0; line-height: var(--roll-height); white-space: nowrap; }
 
     @media (max-width: 767px) {
       .projects-track { height: 106vh; }   /* minimal release tail — less white before About */
@@ -379,16 +380,16 @@
       pointer-events: none;
     }
     /* Vertical odometer roll: old word rolls up & out, new word rises in. */
-    .site-watermark__roll { height: 1em; line-height: 1; overflow: hidden; font-size: var(--text-watermark); }
+    .site-watermark__roll { height: var(--roll-height); line-height: 1; overflow: hidden; font-size: var(--text-watermark); }
     .site-watermark__track { display: flex; flex-direction: column; align-items: center; will-change: transform; }
     .site-watermark__word {
-      height: 1em;
+      height: var(--roll-height);
       font-family: var(--font-display);
       font-weight: 900;
       font-size: 1em;
       color: var(--color-watermark);
-      line-height: 1;
-      letter-spacing: 20px;
+      line-height: var(--roll-height);
+      letter-spacing: var(--tracking-watermark);
       white-space: nowrap;
     }
     @media (max-width: 767px) { .site-watermark { display: none; } }   /* too cramped on mobile */
@@ -423,24 +424,25 @@
       <span class="nav__burger"><span></span><span></span></span>
     </button>
 
-    <button class="theme-toggle" aria-label="Toggle dark mode">
-      <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-      </svg>
-      <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="5"/>
-        <line x1="12" y1="1"  x2="12" y2="3"/>
-        <line x1="12" y1="21" x2="12" y2="23"/>
-        <line x1="4.22" y1="4.22"   x2="5.64"  y2="5.64"/>
-        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-        <line x1="1"  y1="12" x2="3"  y2="12"/>
-        <line x1="21" y1="12" x2="23" y2="12"/>
-        <line x1="4.22"  y1="19.78" x2="5.64"  y2="18.36"/>
-        <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"/>
-      </svg>
-    </button>
+    <div class="theme-menu">
+      <button class="theme-toggle theme-menu__btn" aria-label="Choose theme" aria-haspopup="menu" aria-expanded="false">
+        <svg class="icon-palette" width="20" height="20" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.65-.75 1.65-1.69 0-.44-.18-.84-.44-1.13-.29-.29-.44-.65-.44-1.12a1.64 1.64 0 0 1 1.67-1.67h2c3.05 0 5.55-2.5 5.55-5.55C21.99 6.01 17.46 2 12 2z"/>
+          <circle cx="13.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+          <circle cx="17.5" cy="10.5" r="1" fill="currentColor" stroke="none"/>
+          <circle cx="8.5" cy="7.5" r="1" fill="currentColor" stroke="none"/>
+          <circle cx="6.5" cy="12.5" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+      </button>
+      <div class="theme-menu__list" role="menu" aria-label="Theme">
+        <button class="theme-menu__item" role="menuitemradio" aria-checked="true"  data-theme-value="light">Light</button>
+        <button class="theme-menu__item" role="menuitemradio" aria-checked="false" data-theme-value="dark">Dark</button>
+        <button class="theme-menu__item" role="menuitemradio" aria-checked="false" data-theme-value="neo-brutalism">Neo-brutalism</button>
+        <button class="theme-menu__item" role="menuitemradio" aria-checked="false" data-theme-value="cyber-retro">Cyber-retro</button>
+        <button class="theme-menu__item" role="menuitemradio" aria-checked="false" data-theme-value="vintage">Vintage</button>
+      </div>
+    </div>
 
     <div class="nav__menu" id="navMenu">
       <ul class="nav__menu-list">
@@ -548,11 +550,11 @@
   </main>
 
   <!-- ── Scripts ─────────────────────────────────── -->
-  <script src="js/dark-mode.js?v=85"></script><!-- DARK MODE: remove this line to disable -->
+  <script src="js/theme.js?v=3"></script><!-- THEMES: remove this line to disable -->
   <script src="js/nav-indicator.js?v=85"></script>
   <script src="js/nav-mobile.js?v=85"></script>
-  <script src="js/watermark.js?v=85"></script>
-  <script src="js/scroll-orchestrator.js?v=85"></script>
+  <script src="js/watermark.js?v=86"></script>
+  <script src="js/scroll-orchestrator.js?v=88"></script>
   <script src="js/hero-fold.js?v=85"></script>
   <script src="js/projects-data.js?v=85"></script>
   <script src="js/projects.js?v=85"></script>
