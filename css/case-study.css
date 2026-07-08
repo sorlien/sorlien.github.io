@@ -146,7 +146,8 @@ main {
 
 /* ── Case study hero ──────────────────────── */
 @media (max-width: 1199px) {
-  .cs-hero { height: 100vh; }
+  /* svh, not vh: keeps the hero clear of iPadOS' expanded browser bar */
+  .cs-hero { height: 100svh; }
   .cs-hero__inner {
     justify-content: center;
     padding-top: var(--nav-height) !important;

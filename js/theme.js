@@ -60,13 +60,17 @@
     /* ── Open / close ─────────────────────────────── */
     let open = false;
 
-    function openMenu() {
+    function openMenu(focusItems) {
       if (open) return;
       open = true;
       list.classList.add('is-open');
       btn.setAttribute('aria-expanded', 'true');
-      const active = items.filter(i => i.getAttribute('aria-checked') === 'true')[0] || items[0];
-      active.focus();
+      // Only move focus on keyboard opens — on tap/click, focusing the active
+      // item makes iOS Safari draw a :focus-visible ring on it
+      if (focusItems) {
+        const active = items.filter(i => i.getAttribute('aria-checked') === 'true')[0] || items[0];
+        active.focus();
+      }
     }
 
     function closeMenu(refocus) {
@@ -106,7 +110,8 @@
     }
 
     /* ── Events ───────────────────────────────────── */
-    btn.addEventListener('click', () => { open ? closeMenu(false) : openMenu(); });
+    // e.detail is 0 when the click came from Enter/Space, >0 from a pointer
+    btn.addEventListener('click', (e) => { open ? closeMenu(false) : openMenu(e.detail === 0); });
 
     items.forEach(item => {
       item.addEventListener('click', () => select(item.dataset.themeValue));
@@ -128,9 +133,12 @@
       if (open && !menu.contains(e.target)) closeMenu(false);
     });
 
-    // Tabbing out closes
+    // Tabbing out closes. relatedTarget is null when a focused item merely
+    // blurs (iOS taps don't focus buttons) — closing then would flip the list
+    // to pointer-events:none before the tap's click lands, eating the
+    // selection. Outside taps are handled by the document click listener.
     list.addEventListener('focusout', (e) => {
-      if (open && !menu.contains(e.relatedTarget)) closeMenu(false);
+      if (open && e.relatedTarget && !menu.contains(e.relatedTarget)) closeMenu(false);
     });
 
     syncChecked();
