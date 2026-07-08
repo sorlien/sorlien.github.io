@@ -926,7 +926,9 @@ p {
   .projects-view {
     position: sticky !important;       /* pinned: scroll drives the carousel (like the old page) */
     top: 0;
-    height: 100vh !important;
+    /* svh, not vh: on iOS the expanded browser bar hides the bottom of a
+       100vh pin (the case-study CTA) — same reasoning as .hero */
+    height: 100svh !important;
     overflow: hidden !important;
   }
 

@@ -95,6 +95,11 @@
   outline-offset: -2px;
 }
 
+/* Round the outline on the end items so the list's overflow:hidden
+   + border-radius doesn't crop its corners */
+.theme-menu__item:first-child { border-radius: var(--radius-menu) var(--radius-menu) 0 0; }
+.theme-menu__item:last-child  { border-radius: 0 0 var(--radius-menu) var(--radius-menu); }
+
 .theme-menu__item[aria-checked="true"] {
   background: var(--color-bg-alt);
 }
