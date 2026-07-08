@@ -300,6 +300,18 @@
    THEME: VINTAGE — warm analog film
    ============================================ */
 
+/* Fraunces — wonky early-1900s soft serif for vintage headings (OFL, see
+   assets/fonts/Fraunces-OFL.txt). Only referenced under
+   [data-theme="vintage"], so browsers fetch it lazily on first use.
+   font-display: swap — same reasoning as Space Grotesk above. */
+@font-face {
+  font-family: 'Fraunces';
+  src: url('../assets/fonts/Fraunces-VariableFont_opsz,wght.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 [data-theme="vintage"] {
   --color-white:      #F3EBDD;
   --color-bg-alt:     #EAE0CC;
@@ -315,7 +327,7 @@
   --accent-3: #4C6B54;  --accent-3-rgb: 76, 107, 84;
   --accent-4: #8A4A62;  --accent-4-rgb: 138, 74, 98;
 
-  --font-display: 'Iowan Old Style', Palatino, Georgia, serif;
+  --font-display: 'Fraunces', 'Iowan Old Style', Palatino, Georgia, serif;
   --font-body:    Georgia, 'Times New Roman', serif;
   --font-ui:      Georgia, 'Times New Roman', serif;
 
@@ -456,7 +468,7 @@
 /* Georgia only has old-style figures (x-height digits, descending 3/4/5/7/9)
    — use serifs with lining figures for the number roll */
 [data-theme="vintage"] .project-info__number {
-  font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+  font-family: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
   font-variant-numeric: lining-nums;
 }
 
